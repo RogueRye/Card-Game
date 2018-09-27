@@ -12,7 +12,9 @@ public class Board : MonoBehaviour {
 
     public List<GameObject> rows = new List<GameObject>(); 
 
-    
+    public Slot[][] fieldA;
+    public Slot[][] fieldB;
+
 
 
     public void FindRows()
@@ -52,9 +54,9 @@ public class Board : MonoBehaviour {
         
         foreach (GameObject row in rows)
         {
-            foreach (Transform child in row.transform)
-            {                
-                DestroyImmediate(child.gameObject);
+            for (int i = 0; i < row.transform.childCount; i++)
+            {
+                DestroyImmediate(row.transform.GetChild(i).gameObject);
             }
         }
 

@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    public Deck deck;
 
-    List<Card> hand = new List<Card>();
 
 
 }

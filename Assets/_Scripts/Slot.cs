@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour {
 
+    public Card currentCard;
+
+
 	// Use this for initialization
 	void Start () {
 		
