@@ -8,4 +8,10 @@ public class Deck : ScriptableObject {
 
     public Card[] mDeck = new Card[40];
 
+
+    public void Shuffle()
+    {
+
+    }
+
 }
