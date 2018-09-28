@@ -12,8 +12,8 @@ public class Board : MonoBehaviour {
 
     public List<GameObject> rows = new List<GameObject>(); 
 
-    public Slot[][] fieldA;
-    public Slot[][] fieldB;
+    public static Slot[,] fieldA;
+    public static Slot[,] fieldB;
 
 
 
@@ -32,9 +32,6 @@ public class Board : MonoBehaviour {
     {
 
         FindRows();
-
-
-
         foreach(GameObject row in rows)
         {
             for (int i = 0; i < slotsPerRow; i++)
@@ -45,6 +42,31 @@ public class Board : MonoBehaviour {
                     row.transform.localPosition.y,
                     row.transform.localPosition.z               
                     ); 
+            }
+        }
+
+        if (fieldA == null)
+        {
+            fieldA = new Slot[rows.Count / 2 ,slotsPerRow];
+        }
+        if(fieldB == null)
+        {
+            fieldB = new Slot[rows.Count / 2 ,slotsPerRow];
+        }
+        for (int i = 0; i < rows.Count / 2; i++)
+        {
+            for (int k = 0; k < rows[i].transform.childCount; k++)
+            {
+                fieldA[i,k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
+                Debug.Log(fieldA[i,k]);
+            }
+        }
+        for (int i = rows.Count / 2; i < rows.Count; i++)
+        {
+            for (int k = 0; k < rows[i].transform.childCount; k++)
+            {
+                fieldB[(i - (rows.Count/2)),k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
+                Debug.Log(fieldB[(i - (rows.Count / 2)), k]);
             }
         }
     }

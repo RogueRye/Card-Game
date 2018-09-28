@@ -7,36 +7,36 @@ using System.Linq;
 [CreateAssetMenu(menuName = "Deck/New Deck")]
 public class Deck : ScriptableObject {
 
-    public Card[] mDeck = new Card[40];
+
+    [SerializeField]
+    private List<Card> deckList;
+
+    public Stack<Card> mDeck = new Stack<Card>();
 
 
-    
+    public void Awake()
+    {
+        foreach(Card card in deckList)
+        {
+            mDeck.Push(card);
+        }   
+    }
 
     public void Shuffle()
     {
-        mDeck.Shuffle();
+        Shuffle(mDeck);
     }
 
-}
 
-
-namespace System
-{
-    public static class MSSystemExtenstions
+    private void Shuffle(Stack<Card> stack)
     {
-        private static Random rng = new Random();
-        public static void Shuffle<T>(this T[] array)
-        {
-            rng = new Random();
-            int n = array.Length;
-            while (n > 1)
-            {
-                int k = rng.Next(n);
-                n--;
-                T temp = array[n];
-                array[n] = array[k];
-                array[k] = temp;
-            }
-        }
+        System.Random rnd = new System.Random();
+        var values = stack.ToArray();
+        stack.Clear();
+        foreach (var value in values.OrderBy(x => rnd.Next()))
+            stack.Push(value);
     }
 }
+
+
+

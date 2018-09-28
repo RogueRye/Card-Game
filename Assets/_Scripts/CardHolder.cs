@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CardHolder : MonoBehaviour {
 
     public Card thisCard;
 
     public SpriteRenderer artWork;
-
-    public TextMesh costDisplay;
-    public TextMesh description;
+    public TextMeshPro nameDisplay;
+    public TextMeshPro costDisplay;
+    public TextMeshPro description;
 
 
     public 

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ce003ce020dfff4da7899907ddb3d9a, type: 3}
   m_Name: Player 1
   m_EditorClassIdentifier: 
-  mDeck:
-  - {fileID: 11400000, guid: fe43989be7d99494cbfd36ed943497ed, type: 2}
+  deckList:
   - {fileID: 11400000, guid: 03ee449174d37274f825e5f4df199a83, type: 2}
+  - {fileID: 11400000, guid: fe43989be7d99494cbfd36ed943497ed, type: 2}
   - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}

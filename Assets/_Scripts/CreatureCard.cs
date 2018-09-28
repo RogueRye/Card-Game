@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Slot : MonoBehaviour {
-
-    public Card currentCard;
-
-    bool isLocked; 
+public class CreatureCard : CardHolder {
 
 	// Use this for initialization
 	void Start () {
