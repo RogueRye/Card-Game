@@ -24,5 +24,11 @@ public class CreatureCard : CardHolder
         }
     }
 
+    public override void Cast()
+    {
+        throw new System.NotImplementedException();
+    }
+
+
 
 }

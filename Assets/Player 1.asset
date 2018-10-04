@@ -14,4 +14,32 @@ MonoBehaviour:
   deckList:
   - {fileID: 11400000, guid: 03ee449174d37274f825e5f4df199a83, type: 2}
   - {fileID: 11400000, guid: fe43989be7d99494cbfd36ed943497ed, type: 2}
+  - {fileID: 11400000, guid: fe43989be7d99494cbfd36ed943497ed, type: 2}
   - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  - {fileID: 11400000, guid: b90a0e26be3593d40ac4689aa6e3f155, type: 2}
+  deckSize: 30

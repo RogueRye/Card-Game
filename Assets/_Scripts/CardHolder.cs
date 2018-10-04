@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CardHolder : MonoBehaviour {
+public abstract class CardHolder : MonoBehaviour {
 
     public Card thisCard;
 
@@ -13,11 +13,6 @@ public class CardHolder : MonoBehaviour {
     public TextMeshPro costDisplay;
     public TextMeshPro description;
 
-
-    public virtual void Start()
-    {
-      
-    }
 
 
     public virtual void CreateCard()
@@ -28,5 +23,6 @@ public class CardHolder : MonoBehaviour {
         description.text = thisCard.description;
     }
 
+    public abstract void Cast();
 
 }

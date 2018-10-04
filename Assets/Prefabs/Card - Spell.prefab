@@ -155,8 +155,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224523740871529432}
   - component: {fileID: 65614122452795352}
-  - component: {fileID: 114350937901127544}
   - component: {fileID: 114171444106060210}
+  - component: {fileID: 114417350290287714}
   m_Layer: 0
   m_Name: Card - Spell
   m_TagString: Untagged
@@ -536,7 +536,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.22, y: -0.03, z: 1.81}
+  m_Size: {x: 1.22, y: 0.03, z: 1.81}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114171444106060210
 MonoBehaviour:
@@ -670,7 +670,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
---- !u!114 &114350937901127544
+--- !u!114 &114417350290287714
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -678,10 +678,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1745657204714576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ef7dfbd415b314a830a0de928bf565, type: 3}
+  m_Script: {fileID: 11500000, guid: d627498da10cafb4fb1fbe3f464c7e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisCard: {fileID: 0}
+  thisCard: {fileID: 11400000, guid: fc7a982982378df47b36db6d68740083, type: 2}
   artWork: {fileID: 212044315183165080}
   nameDisplay: {fileID: 114229300940061670}
   costDisplay: {fileID: 114470670614927918}
@@ -1286,7 +1286,7 @@ RectTransform:
   - {fileID: 4315111088005546}
   - {fileID: 4676484228030348}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

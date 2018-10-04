@@ -10,13 +10,13 @@ public class Deck : ScriptableObject {
 
     [SerializeField]
     private List<Card> deckList;
-
+    public int deckSize; 
     public Stack<Card> mDeck = new Stack<Card>();
 
 
     public void Init()
     {
-        
+        deckSize = deckList.Count;
         foreach(Card card in deckList)
         {
            
