@@ -7,4 +7,13 @@ public class GameController : MonoBehaviour {
 
 
 
+
+
+}
+
+public enum CardTypes
+{
+    Creature,
+    Spell
+
 }

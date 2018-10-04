@@ -22,19 +22,14 @@ public class Deck : ScriptableObject {
         }   
     }
 
+
     public void Shuffle()
     {
-        Shuffle(mDeck);
-    }
-
-
-    private void Shuffle(Stack<Card> stack)
-    {
         System.Random rnd = new System.Random();
-        var values = stack.ToArray();
-        stack.Clear();
+        var values = mDeck.ToArray();
+        mDeck.Clear();
         foreach (var value in values.OrderBy(x => rnd.Next()))
-            stack.Push(value);
+            mDeck.Push(value);
     }
 }
 

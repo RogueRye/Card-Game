@@ -14,15 +14,19 @@ public class CardHolder : MonoBehaviour {
     public TextMeshPro description;
 
 
-    public 
+    public virtual void Start()
+    {
+      
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public virtual void CreateCard()
+    {
+        artWork.sprite = thisCard.sprite;
+        nameDisplay.text = thisCard.cardName;
+        costDisplay.text = thisCard.castCost.ToString();
+        description.text = thisCard.description;
+    }
+
+
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Card : ScriptableObject {
 
     public string cardName = "Lion";
+    public CardTypes type = CardTypes.Creature;
     public int castCost;
     public string description;
     public Sprite sprite;
