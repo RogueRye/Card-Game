@@ -14,22 +14,30 @@ public class Deck : ScriptableObject {
     public Stack<Card> mDeck = new Stack<Card>();
 
 
-    public void Awake()
+    public void Init()
     {
+        
         foreach(Card card in deckList)
         {
+           
             mDeck.Push(card);
+
         }   
     }
 
 
     public void Shuffle()
     {
+       
         System.Random rnd = new System.Random();
         var values = mDeck.ToArray();
+        
         mDeck.Clear();
         foreach (var value in values.OrderBy(x => rnd.Next()))
+        {
+            
             mDeck.Push(value);
+        }
     }
 }
 

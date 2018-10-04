@@ -21,7 +21,7 @@ public class CardHolder : MonoBehaviour {
 
 
     public virtual void CreateCard()
-    {
+    {        
         artWork.sprite = thisCard.sprite;
         nameDisplay.text = thisCard.cardName;
         costDisplay.text = thisCard.castCost.ToString();

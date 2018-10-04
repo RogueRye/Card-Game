@@ -14,6 +14,7 @@ public class CreatureCard : CardHolder
     public override void CreateCard()
     {
         base.CreateCard();
+
         if (thisCard is Creature)
         {
             thisCardC = (Creature)thisCard;
