@@ -61,7 +61,10 @@ public class Player : MonoBehaviour {
         {
             RayCastForSelection();
         }
-        
+        else if (Input.GetMouseButtonDown(1))
+        {
+            DelselectCard();
+        }
     }
 
     public void DrawCard(int numOfCards)
@@ -69,7 +72,7 @@ public class Player : MonoBehaviour {
         
         for (int i = 0; i < numOfCards; i++)
         {
-            //Deal with this later
+            
 
             if (deckStack.Count == 0)
             {
@@ -77,7 +80,7 @@ public class Player : MonoBehaviour {
                 return;
             }
 
-            //New way
+           
             var newCard = deckStack.Pop();
             hand.Add(newCard);            
             newCard.transform.SetParent(handObj);
@@ -88,30 +91,6 @@ public class Player : MonoBehaviour {
                 layout.spacing = 1.5f / (hand.Count * .15f);
             else
                 layout.spacing = 1.5f;
-
-        // Old way
-            //var cardToDraw = deck.mDeck.Pop();
-            ////Debug.Log(cardToDraw);
-            //switch(cardToDraw.type)
-            //{
-            //    case CardTypes.Creature:
-            //        CreatureCard temp;
-            //        temp = (CreatureCard)Instantiate(cardTypes[0], handObj);
-            //        temp.thisCard = (Creature)cardToDraw;
-            //        temp.CreateCard();
-            //        hand.Add(temp);
-
-            //        break;
-            //    case CardTypes.Spell:
-            //        CardHolder temp2;
-            //        temp2 = Instantiate(cardTypes[1], handObj);
-            //        temp2.thisCard = cardToDraw;
-            //        temp2.CreateCard();
-            //        hand.Add(temp2);
-            //        break;               
-                  
-            //}
-
         }   
     }
 
@@ -137,7 +116,8 @@ public class Player : MonoBehaviour {
                 selectedCard = clickedCard;
                 optionsMenu.gameObject.SetActive(true);
                 optionsMenu.gameObject.transform.position = Input.mousePosition;
-                selectedCard.transform.localScale *= 1.5f;
+                //selectedCard.transform.localScale *= 1.5f;
+                selectedCard.transform.position += (Vector3.up * .5f);
             }  
             else if(hit.transform.GetComponent<Slot>() != null)
             {
@@ -155,7 +135,8 @@ public class Player : MonoBehaviour {
             return;
 
         optionsMenu.gameObject.SetActive(false);
-        selectedCard.transform.localScale /= 1.5f;
+       // selectedCard.transform.localScale /= 1.5f;
+        selectedCard.transform.position -= (Vector3.up * .5f);
         selectedCard = null;
 
     }
