@@ -43,7 +43,7 @@ public class Player : MonoBehaviour {
             
             var cardToPlace = deck.mDeck.Pop();
 
-            var pos = deckSpot.position + (Vector3.up * (i * 0.015f));
+            var pos = deckSpot.position + (Vector3.up * (i * 0.075f));
             var deckCard = Instantiate(cardTypes[(int)cardToPlace.type], pos, deckSpot.rotation, deckSpot);
             deckCard.thisCard = cardToPlace;
             deckCard.CreateCard();
@@ -85,12 +85,12 @@ public class Player : MonoBehaviour {
             hand.Add(newCard);            
             newCard.transform.SetParent(handObj);
             newCard.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            newCard.transform.localPosition = Vector3.zero;
+            newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .001f * hand.Count);
 
-            if (hand.Count != 0 && hand.Count > 7)
-                layout.spacing = 1.5f / (hand.Count * .15f);
+            if (hand.Count != 0 && hand.Count > 6)
+                layout.spacing = 7.5f / (hand.Count * .25f);
             else
-                layout.spacing = 1.5f;
+                layout.spacing = 7.5f;
         }   
     }
 
@@ -117,7 +117,7 @@ public class Player : MonoBehaviour {
                 optionsMenu.gameObject.SetActive(true);
                 optionsMenu.gameObject.transform.position = Input.mousePosition;
                 //selectedCard.transform.localScale *= 1.5f;
-                selectedCard.transform.position += (Vector3.up * .5f);
+                selectedCard.transform.position += (Vector3.up * 2.5f);
             }  
             else if(hit.transform.GetComponent<Slot>() != null)
             {
@@ -136,7 +136,7 @@ public class Player : MonoBehaviour {
 
         optionsMenu.gameObject.SetActive(false);
        // selectedCard.transform.localScale /= 1.5f;
-        selectedCard.transform.position -= (Vector3.up * .5f);
+        selectedCard.transform.position -= (Vector3.up * 2.5f);
         selectedCard = null;
 
     }
