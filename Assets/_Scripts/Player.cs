@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class Player : MonoBehaviour {
 
@@ -12,8 +14,12 @@ public class Player : MonoBehaviour {
     public Transform handObj;
     public CardHolder[] cardTypes;
     public Transform optionsMenu;
-    public Transform deckSpot;
-    List<CardHolder> hand = new List<CardHolder>();
+    public RectTransform deckSpot;
+    public GameObject TextPanel;
+    public TMP_Text closeUp;
+
+    [HideInInspector]
+    public List<CardHolder> hand = new List<CardHolder>();
     Stack<CardHolder> deckStack = new Stack<CardHolder>();
     Slot[,] field; 
     float curLifePoints;
@@ -22,19 +28,18 @@ public class Player : MonoBehaviour {
     CardHolder selectedCard;
     HorizontalLayoutGroup layout;
 
+    #region Inputs
+    bool input1;
+    bool input2;
+    #endregion
+
+
     private void Start()
     {
         layout = handObj.GetComponent<HorizontalLayoutGroup>();
         deck.Init();
         curLifePoints = lifePoints;
         field = (isPlayerA) ? Board.fieldA : Board.fieldB;
-
-        //for (int i = 0; i < deck.mDeck.Count; i++)
-        //{
-        //    var pos = deckSpot.position + (Vector3.up * (i * .015f));
-        //    var deckCard = Instantiate(cardTypes[0], pos, deckSpot.rotation, deckSpot);
-
-        //}
 
         deck.Shuffle();
         
@@ -45,35 +50,77 @@ public class Player : MonoBehaviour {
 
             var pos = deckSpot.position + (Vector3.up * (i * 0.075f));
             var deckCard = Instantiate(cardTypes[(int)cardToPlace.type], pos, deckSpot.rotation, deckSpot);
-            deckCard.thisCard = cardToPlace;
-            deckCard.CreateCard();
+
+            deckCard.Init(cardToPlace, this);
+            deckCard.ToggleVisible(false);
             deckStack.Push(deckCard);
         }
-
         DrawCard(startingHandSize);
+
+        if (isPlayerA)
+        {
+            StartTurn();
+        }
+    }
+
+    private void StartTurn()
+    {
+        DrawCard(1);
+        StartCoroutine(PickingCard());
+    }
+
+    private IEnumerator PickingCard()
+    {
+        while(selectedCard == null)
+        {
+
+            yield return null;
+        }
 
     }
 
-
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RayCastForSelection();
-        }
-        else if (Input.GetMouseButtonDown(1))
+        GetInput();
+        if (input2)
         {
             DelselectCard();
         }
     }
 
-    public void DrawCard(int numOfCards)
+    void GetInput()
     {
-        
+#if UNITY_STANDALONE || UNITY_EDITOR
+
+        input1 = Input.GetMouseButtonDown(0);
+        input2 = Input.GetMouseButtonDown(1);
+
+
+
+#elif UNITY_ANDROID || UNITY_IOS
+                if(Input.touchCount > 0)
+        {
+            input1 = Input.GetTouch(0).tapCount == 1;
+            input2 = Input.GetTouch(0).tapCount > 1;
+        }
+#endif
+    }
+
+    /// <summary>
+    /// Add card from deck to hand
+    /// </summary>
+    /// <param name="numOfCards">Number of cards to draw</param>
+    public void DrawCard(int numOfCards)
+    {  
         for (int i = 0; i < numOfCards; i++)
         {
-            
 
+            if (hand.Count > 7)
+            {
+                deckStack.Pop();
+                //Send card to Graveyard
+                return;
+            }
             if (deckStack.Count == 0)
             {
                 Debug.Log("out of cards");
@@ -84,19 +131,24 @@ public class Player : MonoBehaviour {
             var newCard = deckStack.Pop();
             hand.Add(newCard);            
             newCard.transform.SetParent(handObj);
-            newCard.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .001f * hand.Count);
+            newCard.ToggleVisible(true);
+            newCard.transform.localRotation = Quaternion.Euler(Vector3.up * 180);
+            newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .01f * hand.Count);
 
             if (hand.Count != 0 && hand.Count > 6)
-                layout.spacing = 7.5f / (hand.Count * .25f);
-            else
-                layout.spacing = 7.5f;
+                layout.spacing -= (.7f);
+            else if (hand.Count < 6)
+                layout.spacing = .7f;
         }   
     }
 
+
+    /// <summary>
+    /// Check to see if you clicked on something
+    /// </summary>
     public void RayCastForSelection()
     {
-        var pos = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var pos = Camera.main.ViewportPointToRay(Input.mousePosition);
         RaycastHit hit;
         DelselectCard();
         if(Physics.Raycast(pos, out hit))
@@ -112,33 +164,43 @@ public class Player : MonoBehaviour {
                 {                    
                     return;
                 }
-               
-                selectedCard = clickedCard;
-                optionsMenu.gameObject.SetActive(true);
-                optionsMenu.gameObject.transform.position = Input.mousePosition;
-                //selectedCard.transform.localScale *= 1.5f;
-                selectedCard.transform.position += (Vector3.up * 2.5f);
+                SelectCard(clickedCard);
+              
             }  
-            else if(hit.transform.GetComponent<Slot>() != null)
-            {
-
-            }
         }
-        Debug.Log(selectedCard);
+        //Debug.Log(selectedCard);
     }
 
+    public void SelectCard(CardHolder card)
+    {
+
+        DelselectCard();   
+        selectedCard = card;
+        optionsMenu.gameObject.SetActive(true);
+        optionsMenu.gameObject.transform.position = Input.mousePosition;
+        
+        selectedCard.transform.position += (Vector3.up * 2.5f);
+    }
 
     public void DelselectCard()
     {
-        Debug.Log(selectedCard);
+        if (selectedCard == null)
+            return;
+      
+        selectedCard.transform.position -= (Vector3.up * 2.5f);
+        selectedCard = null;
+        optionsMenu.gameObject.SetActive(false);
+       
+
+    }
+
+    public void ShowText()
+    {
         if (selectedCard == null)
             return;
 
-        optionsMenu.gameObject.SetActive(false);
-       // selectedCard.transform.localScale /= 1.5f;
-        selectedCard.transform.position -= (Vector3.up * 2.5f);
-        selectedCard = null;
-
+        TextPanel.SetActive(true);
+        closeUp.text = selectedCard.thisCard.description;
     }
 
     public void TakeDamage(float power)

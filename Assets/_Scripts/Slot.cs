@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour {
 
-    public Card currentCard;
+    public CreatureCard currentCard;
 
     bool isLocked; 
 

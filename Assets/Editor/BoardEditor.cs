@@ -17,6 +17,10 @@ public class BoardEditor : Editor {
         {
             myScript.CreateRows();
         }
+        if (GUILayout.Button("Create Fields"))
+        {
+            myScript.CreateFields();
+        }
         if (GUILayout.Button("Find Rows"))
         {
             myScript.FindRows();

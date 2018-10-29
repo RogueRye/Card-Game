@@ -20,13 +20,16 @@ public class Board : MonoBehaviour {
     public void FindRows()
     {
         rows.Clear();
-        foreach(Transform child in gameObject.transform)
+        foreach(Transform child in transform.GetChild(0))
         {
             if (child.CompareTag("Row"))
             {
                 rows.Add(child.gameObject);
             }
         }
+
+
+
     }
     public void CreateRows()
     {
@@ -45,28 +48,33 @@ public class Board : MonoBehaviour {
             }
         }
 
+
+    }
+
+    public void CreateFields()
+    {
         if (fieldA == null)
         {
-            fieldA = new Slot[rows.Count / 2 ,slotsPerRow];
+            fieldA = new Slot[rows.Count / 2, slotsPerRow];
         }
-        if(fieldB == null)
+        if (fieldB == null)
         {
-            fieldB = new Slot[rows.Count / 2 ,slotsPerRow];
+            fieldB = new Slot[rows.Count / 2, slotsPerRow];
         }
         for (int i = 0; i < rows.Count / 2; i++)
         {
             for (int k = 0; k < rows[i].transform.childCount; k++)
             {
-                fieldA[i,k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
-                Debug.Log(fieldA[i,k]);
+                fieldA[i, k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
+                Debug.Log(fieldA[i, k] + " is in field A");
             }
         }
         for (int i = rows.Count / 2; i < rows.Count; i++)
         {
             for (int k = 0; k < rows[i].transform.childCount; k++)
             {
-                fieldB[(i - (rows.Count/2)),k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
-                Debug.Log(fieldB[(i - (rows.Count / 2)), k]);
+                fieldB[(i - (rows.Count / 2)), k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
+                Debug.Log(fieldB[(i - (rows.Count / 2)), k] + " is in field B");
             }
         }
     }

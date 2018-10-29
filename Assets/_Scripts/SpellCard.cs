@@ -15,5 +15,8 @@ public class SpellCard : CardHolder {
         throw new System.NotImplementedException();
     }
 
-
+    public override void Cast(Slot targetSlot)
+    {
+        throw new System.NotImplementedException();
+    }
 }

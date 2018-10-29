@@ -6,8 +6,8 @@ using TMPro;
 public class CreatureCard : CardHolder
 {
 
-    public TextMeshPro attack;
-    public TextMeshPro health;
+    public TMP_Text attack;
+    public TMP_Text health;
 
     Creature thisCardC;
 
@@ -26,9 +26,12 @@ public class CreatureCard : CardHolder
 
     public override void Cast()
     {
-        throw new System.NotImplementedException();
+       
     }
 
-
-
+    public override void Cast(Slot targetSlot)
+    {
+        gameObject.transform.position = targetSlot.transform.position + Vector3.up * .01f;
+        targetSlot.currentCard = this;
+    }
 }
