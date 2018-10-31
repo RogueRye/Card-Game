@@ -34,6 +34,11 @@ public class CamBehaviour : MonoBehaviour {
         }
 	}
 
+    public void SwitchToPosition(int posIndex)
+    {
+        curPosIndex = posIndex;
+        StartCoroutine(ChangePosition(positions[posIndex]));
+    }
 
     IEnumerator ChangePosition(Transform targetPos)
     {

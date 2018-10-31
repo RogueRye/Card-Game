@@ -16,6 +16,13 @@ public class Board : MonoBehaviour {
     public static Slot[,] fieldB;
 
 
+    public void Awake()
+    {
+        CreateFields();
+
+       // Debug.Log(fieldA[1, 2].gameObject.name);
+    }
+
 
     public void FindRows()
     {
@@ -66,7 +73,7 @@ public class Board : MonoBehaviour {
             for (int k = 0; k < rows[i].transform.childCount; k++)
             {
                 fieldA[i, k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
-                Debug.Log(fieldA[i, k] + " is in field A");
+               // Debug.Log(fieldA[i, k] + " is in field A");
             }
         }
         for (int i = rows.Count / 2; i < rows.Count; i++)
@@ -74,7 +81,7 @@ public class Board : MonoBehaviour {
             for (int k = 0; k < rows[i].transform.childCount; k++)
             {
                 fieldB[(i - (rows.Count / 2)), k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
-                Debug.Log(fieldB[(i - (rows.Count / 2)), k] + " is in field B");
+               // Debug.Log(fieldB[(i - (rows.Count / 2)), k] + " is in field B");
             }
         }
     }

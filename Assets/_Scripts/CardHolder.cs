@@ -55,6 +55,13 @@ public abstract class CardHolder : MonoBehaviour {
         }
     }
 
+    //public void OnMouseDown()
+    //{
+    //    if (thisPlayer.hand.Contains(this) && thisPlayer.selectedCard != this)
+    //    {
+    //        SelectCard();
+    //    }
+    //}
 
 
     public void StopHover()

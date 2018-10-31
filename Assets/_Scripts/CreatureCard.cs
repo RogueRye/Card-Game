@@ -11,6 +11,8 @@ public class CreatureCard : CardHolder
 
     Creature thisCardC;
 
+    GameObject model;
+
     public override void CreateCard()
     {
         base.CreateCard();
@@ -26,12 +28,18 @@ public class CreatureCard : CardHolder
 
     public override void Cast()
     {
-       
+        
     }
 
     public override void Cast(Slot targetSlot)
     {
-        gameObject.transform.position = targetSlot.transform.position + Vector3.up * .01f;
+       
+        transform.SetParent(targetSlot.transform);
+        transform.position = targetSlot.transform.position + Vector3.up * 2.51f;
+        transform.localRotation = Quaternion.Euler(Vector3.right * -180);
+        
         targetSlot.currentCard = this;
+        thisPlayer.hand.Remove(this);
+
     }
 }
