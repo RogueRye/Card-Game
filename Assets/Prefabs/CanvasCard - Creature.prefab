@@ -324,6 +324,7 @@ MonoBehaviour:
   nameDisplay: {fileID: 114555991552456484}
   costDisplay: {fileID: 114485353201926298}
   description: {fileID: 114791593722501902}
+  inSlot: 0
   attack: {fileID: 114279537688682156}
   health: {fileID: 114555550128685176}
 --- !u!114 &114485353201926298
@@ -854,7 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2783019, g: 0.8822172, b: 1, a: 0}
+  m_Color: {r: 0, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

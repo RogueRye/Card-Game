@@ -33,7 +33,7 @@ public class CreatureCard : CardHolder
 
     public override void Cast(Slot targetSlot)
     {
-       
+        inSlot = true;
         transform.SetParent(targetSlot.transform);
         transform.position = targetSlot.transform.position + Vector3.up * 2.51f;
         transform.localRotation = Quaternion.Euler(Vector3.right * -180);

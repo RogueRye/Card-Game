@@ -8,6 +8,7 @@ public abstract class CardHolder : MonoBehaviour {
 
     public Card thisCard;
     public Player thisPlayer;
+    public Player otherPlayer;
     public SpriteRenderer artWork;
     public Image imageArt;
     public TMP_Text nameDisplay;
@@ -15,10 +16,13 @@ public abstract class CardHolder : MonoBehaviour {
     public TMP_Text description;
 
     Image cardGraphics;
+    [HideInInspector]
+    public bool inSlot = false;
 
-    public void Init(Card mCard, Player mPlayer)
+    public void Init(Card mCard, Player mPlayer, Player oPlayer)
     {
         thisCard = mCard;
+        otherPlayer = oPlayer;
         thisPlayer = mPlayer;
         CreateCard();
         cardGraphics = GetComponent<Image>();
@@ -47,17 +51,23 @@ public abstract class CardHolder : MonoBehaviour {
 
     public virtual bool IsVisible()
     {
-        return transform.Find("CardBack").gameObject.activeInHierarchy;
+        return !transform.Find("CardBack").gameObject.activeInHierarchy;
     }
 
     public void Hover()
     {
-        if (thisPlayer.hand.Contains(this))
+        if (thisPlayer.hand.Contains(this) && IsVisible())
         {
             var newColor = cardGraphics.color;
             newColor.a = 70;
             cardGraphics.color = newColor;
         }
+
+        else if (inSlot && thisPlayer.currentPhase == TurnPhase.Combat)
+        {
+            cardGraphics.color = Color.red;
+        }
+
     }
 
     //public void OnMouseDown()
@@ -75,6 +85,11 @@ public abstract class CardHolder : MonoBehaviour {
         {
             var newColor = cardGraphics.color;
             newColor.a = 0;
+            cardGraphics.color = newColor;
+        }
+        else if (inSlot)
+        {
+            var newColor = new Color(0, 255, 255, 0);            
             cardGraphics.color = newColor;
         }
     }

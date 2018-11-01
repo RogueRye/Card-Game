@@ -63,7 +63,7 @@ public class Slot : MonoBehaviour
 
     public void OnTouchUp()
     {
-        if (!isLocked && owner.isSelecting)
+        if (!isLocked && owner.currentPhase == TurnPhase.Casting)
         {
             Debug.Log("HI");
             owner.selectedSlot = this;
@@ -72,7 +72,7 @@ public class Slot : MonoBehaviour
 
     public void Hover()
     {
-        if(!isLocked && owner.isSelecting)
+        if(!isLocked && owner.currentPhase == TurnPhase.Casting)
             graphics.color = highlightColor;
     }
 
@@ -84,7 +84,9 @@ public class Slot : MonoBehaviour
 
     public void LoseCard()
     {
+        
         owner.DiscardCard(currentCard);
+        currentCard.inSlot = false;
         currentCard = null;
         Unblock();
     }

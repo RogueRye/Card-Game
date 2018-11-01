@@ -8,6 +8,7 @@ using System;
 public class Player : MonoBehaviour {
 
     public bool isPlayerA = true;
+    public Player opponent;
     public float lifePoints;
     public int maxAP = 10;
     public Deck deck;
@@ -20,12 +21,17 @@ public class Player : MonoBehaviour {
     public GameObject TextPanel;
     public TMP_Text closeUp;
 
+
+
     [HideInInspector]
     public List<CardHolder> hand = new List<CardHolder>();
     Stack<CardHolder> deckStack = new Stack<CardHolder>();
     Stack<CardHolder> gyStack = new Stack<CardHolder>();
     Slot[,] field; 
     float curLifePoints;
+
+    public TurnPhase currentPhase;
+
 
     [HideInInspector]
     public CardHolder selectedCard;
@@ -39,6 +45,9 @@ public class Player : MonoBehaviour {
     private bool inAttackPhase;
 
     HorizontalLayoutGroup layout;
+
+
+
 
     #region Inputs
     bool input1;
@@ -67,7 +76,11 @@ public class Player : MonoBehaviour {
 
         if (isPlayerA)
         {
-            StartTurn();
+            currentPhase = TurnPhase.Start;
+        }
+        else
+        {
+            currentPhase = TurnPhase.NotTurnMyTurn;
         }
     }
 
@@ -75,18 +88,21 @@ public class Player : MonoBehaviour {
     {
         DrawCard(1);
         currentAP = maxAP;
+        
         StartCoroutine(PickingCard());
     }
 
     public void EndTurn()
     {
-
+        currentPhase = TurnPhase.NotTurnMyTurn;
+        opponent.currentPhase = TurnPhase.Start;
     }
 
 
     #region Turn States
     private IEnumerator PickingCard()
     {
+        currentPhase = TurnPhase.Main;
         while(selectedCard == null)
         {
 
@@ -98,6 +114,7 @@ public class Player : MonoBehaviour {
     {
 
         isSelecting = true;
+        currentPhase = TurnPhase.Casting;
         optionsMenu.gameObject.SetActive(false);
         while (selectedSlot == null)
         {
@@ -109,6 +126,8 @@ public class Player : MonoBehaviour {
             //Draw line
             yield return null;
         }
+        currentPhase = TurnPhase.Main;
+
         isSelecting = false;
         if (selectedCard != null && selectedSlot.currentCard == null)
         {
@@ -122,18 +141,38 @@ public class Player : MonoBehaviour {
 
     public void StartAttackPhase()
     {
-        inAttackPhase = true;
+
+        if(currentPhase == TurnPhase.Combat)
+        {
+            StopAttackPhase();
+            return;
+        }
+
+        currentPhase = TurnPhase.Combat;
+     
+        CamBehaviour.singleton.SwitchToPosition(1);
+
+
     }
 
     public void StopAttackPhase()
     {
-        inAttackPhase = false;
+        currentPhase = TurnPhase.Main;
+        CamBehaviour.singleton.SwitchToPosition(0);
     }
 
     #endregion
 
     virtual protected void Update()
     {
+
+        if (currentPhase == TurnPhase.NotTurnMyTurn)
+            return;
+        else if (currentPhase == TurnPhase.Start)
+        {
+            StartTurn();
+        }
+
         GetInput();
         if (input2)
         {
@@ -175,16 +214,19 @@ public class Player : MonoBehaviour {
           
             var newCard = deckStack.Pop();
 
+            //Only reveal card if its the players and not the AI
+            if(isPlayerA)
+                newCard.ToggleVisible(true);
+
             if (hand.Count > 7)
             {
                 DiscardCard(newCard);
-                newCard.ToggleVisible(true);              
+                              
             }
             else
             {
                 hand.Add(newCard);
-                newCard.transform.SetParent(handObj);
-                newCard.ToggleVisible(true);
+                newCard.transform.SetParent(handObj);                
                 newCard.transform.localRotation = Quaternion.Euler(Vector3.up * 180);
                 newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .01f * hand.Count);
 
@@ -307,10 +349,20 @@ public class Player : MonoBehaviour {
             var pos = deckSpot.position + (Vector3.up * (i * 0.075f));
             var deckCard = Instantiate(cardTypes[(int)cardToPlace.type], pos, deckSpot.rotation, deckSpot);
 
-            deckCard.Init(cardToPlace, this);
+            deckCard.Init(cardToPlace, this, opponent);
             deckCard.ToggleVisible(false);
             deckStack.Push(deckCard);
         }
     }
    
+}
+
+public enum TurnPhase
+{
+    Start,
+    Main,
+    Casting,
+    Combat,
+    End,
+    NotTurnMyTurn
 }
