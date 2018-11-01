@@ -37,9 +37,21 @@ public class CreatureCard : CardHolder
         transform.SetParent(targetSlot.transform);
         transform.position = targetSlot.transform.position + Vector3.up * 2.51f;
         transform.localRotation = Quaternion.Euler(Vector3.right * -180);
-        
         targetSlot.currentCard = this;
         thisPlayer.hand.Remove(this);
 
+    }
+
+    public void Attack(CreatureCard target)
+    {
+        if( target.thisCardC.TakeDamage(thisCardC.attackValue) <= 0)
+        {
+            target.thisPlayer.DiscardCard(target);
+        }
+    }
+
+    public void Attack(Player target)
+    {
+        target.TakeDamage(thisCardC.attackValue);
     }
 }

@@ -9,7 +9,9 @@ public class Creature : Card
     public int attackCost;
     public int attackValue;
     public int healthValue;
-    
+
+    private int currentHealth;
+
     public AttackDir[] attackDirs = new AttackDir[1] { AttackDir.Forward };
 
     public enum AttackDir
@@ -17,14 +19,15 @@ public class Creature : Card
         Forward, Left, Right
     }
 
-
-    public override void Cast()
+    public int TakeDamage(int amount)
     {
-        throw new System.NotImplementedException();
+        currentHealth -= amount;
+        return currentHealth;
     }
 
-    public override void Destroy()
+    public int GetHealth()
     {
-        throw new System.NotImplementedException();
+        return currentHealth;
     }
+
 }

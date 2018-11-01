@@ -45,6 +45,11 @@ public abstract class CardHolder : MonoBehaviour {
 
     }
 
+    public virtual bool IsVisible()
+    {
+        return transform.Find("CardBack").gameObject.activeInHierarchy;
+    }
+
     public void Hover()
     {
         if (thisPlayer.hand.Contains(this))

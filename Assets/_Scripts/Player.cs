@@ -36,6 +36,8 @@ public class Player : MonoBehaviour {
     [HideInInspector]
     public int currentAP;
 
+    private bool inAttackPhase;
+
     HorizontalLayoutGroup layout;
 
     #region Inputs
@@ -44,7 +46,7 @@ public class Player : MonoBehaviour {
     #endregion
 
 
-    private void Start()
+    virtual protected void Start()
     {
         layout = handObj.GetComponent<HorizontalLayoutGroup>();
         deck.Init();
@@ -118,9 +120,19 @@ public class Player : MonoBehaviour {
        
     }
 
+    public void StartAttackPhase()
+    {
+        inAttackPhase = true;
+    }
+
+    public void StopAttackPhase()
+    {
+        inAttackPhase = false;
+    }
+
     #endregion
 
-    private void Update()
+    virtual protected void Update()
     {
         GetInput();
         if (input2)
@@ -129,9 +141,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-
-
-    void GetInput()
+    virtual protected void GetInput()
     {
 #if UNITY_STANDALONE
 
@@ -190,7 +200,7 @@ public class Player : MonoBehaviour {
     /// Send Card to the graveyard and add it to the GY stack/list
     /// </summary>
     /// <param name="card">card to discard</param>
-    public void DiscardCard(CardHolder card)
+     public void DiscardCard(CardHolder card)
     {
         //Unselect it, add to to stack, reset transform to the graveyard
         DelselectCard();
@@ -235,11 +245,14 @@ public class Player : MonoBehaviour {
             optionsMenu.gameObject.transform.position = Input.mousePosition;
             selectedCard.transform.position += (Vector3.up * 2.5f);
         }
-        else
+        else if(inAttackPhase)
         {
+
             // Do some attacking things
         }
     }
+
+
     /// <summary>
     /// move a selected card back and hide options menu when the card is no longer selected
     /// </summary>

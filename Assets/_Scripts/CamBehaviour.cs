@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CamBehaviour : MonoBehaviour {
 
+
+    public static CamBehaviour singleton;
+
     [Range(0, 10)]
     public float speed = 4;
     public Transform[] positions = new Transform[2];
@@ -13,6 +16,9 @@ public class CamBehaviour : MonoBehaviour {
     bool inTransition = false;
 	// Use this for initialization
 	void Awake () {
+        if(singleton == null)
+            singleton = this;
+
         GetComponent<Camera>().transparencySortMode = TransparencySortMode.CustomAxis;
         GetComponent<Camera>().transparencySortAxis = Vector3.forward;
     }

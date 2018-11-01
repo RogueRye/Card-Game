@@ -11,7 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7756b80f7fb9ffc48a5b5fcae7fded34, type: 3}
   m_Name: Bear
   m_EditorClassIdentifier: 
-  cardName: Bear
+  cardName: Zombie
+  type: 0
   castCost: 1
   description: Mighty Bear of Doom!
   sprite: {fileID: 21300000, guid: 1c4ee99c4f3168e459adf2202458941b, type: 3}
