@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Dragon
   type: 0
-  castCost: 4
+  castCost: 0
   description: Might Dragon!!!
   sprite: {fileID: 21300000, guid: b7d245916891cca47a0144e12a82e086, type: 3}
   model: {fileID: 0}

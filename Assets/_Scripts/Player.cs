@@ -7,47 +7,51 @@ using System;
 
 public class Player : MonoBehaviour {
 
+    #region Public Fields
+
     public bool isPlayerA = true;
     public Player opponent;
-    public float lifePoints;
+    public int lifePoints;
     public int maxAP = 10;
     public Deck deck;
     public int startingHandSize = 5;
     public Transform handObj;
     public CardHolder[] cardTypes;
     public Transform optionsMenu;
+    public Transform combatOptionsMenu;
     public RectTransform deckSpot;
     public RectTransform gySpot; 
     public GameObject TextPanel;
     public TMP_Text closeUp;
+    public TurnPhase currentPhase;
+    #endregion
 
-
-
+    #region Hidden Public
     [HideInInspector]
     public List<CardHolder> hand = new List<CardHolder>();
-    Stack<CardHolder> deckStack = new Stack<CardHolder>();
-    Stack<CardHolder> gyStack = new Stack<CardHolder>();
-    Slot[,] field; 
-    float curLifePoints;
-
-    public TurnPhase currentPhase;
-
-
     [HideInInspector]
     public CardHolder selectedCard;
     [HideInInspector]
+    public Slot[,] field;
+    [HideInInspector]
     public Slot selectedSlot;
     [HideInInspector]
-    public bool isSelecting = false;
-    [HideInInspector]
-    public int currentAP;
+    public List<CreatureCard> creaturesOnField = new List<CreatureCard>();
+    #endregion
 
-    private bool inAttackPhase;
-
+    #region Private References
+    Stack<CardHolder> deckStack = new Stack<CardHolder>();
+    Stack<CardHolder> gyStack = new Stack<CardHolder>();
     HorizontalLayoutGroup layout;
+    
+    #endregion
 
+    #region Private Values
 
-
+    int curLifePoints;
+    int currentAP;
+    int currentMaxAp;
+    #endregion
 
     #region Inputs
     bool input1;
@@ -57,9 +61,11 @@ public class Player : MonoBehaviour {
 
     virtual protected void Start()
     {
+
         layout = handObj.GetComponent<HorizontalLayoutGroup>();
         deck.Init();
         curLifePoints = lifePoints;
+        currentMaxAp = (isPlayerA) ? 0 : 1;
         field = (isPlayerA) ? Board.fieldA : Board.fieldB;
 
         foreach(var slot in field)
@@ -87,7 +93,15 @@ public class Player : MonoBehaviour {
     public void StartTurn()
     {
         DrawCard(1);
-        currentAP = maxAP;
+
+        foreach (var card in creaturesOnField)
+            card.canAttack = true;
+
+        if(currentMaxAp < maxAP)
+        {
+            currentMaxAp++;
+        }
+        currentAP = currentMaxAp;
         
         StartCoroutine(PickingCard());
     }
@@ -110,39 +124,59 @@ public class Player : MonoBehaviour {
         }        
     }
 
-    private IEnumerator CastingCard()
+    public void CastCard()
     {
+        if(selectedCard.thisCard.castCost <= GetAP())
+        {
+            StartCoroutine(CastingCard());
+        }
+        else
+        {
+            Debug.Log("Can't Cast card");
+            DelselectCard();
+        }
+        
+    }
 
-        isSelecting = true;
+    private IEnumerator CastingCard()
+    {  
         currentPhase = TurnPhase.Casting;
         optionsMenu.gameObject.SetActive(false);
-        while (selectedSlot == null)
+
+        if (selectedCard is CreatureCard)
         {
-            if(selectedCard == null)
+            while (selectedSlot == null)
             {
-                break;
+                if (selectedCard == null)
+                {
+                    break;
+                }
+
+                //Draw line
+                yield return null;
             }
+            currentPhase = TurnPhase.Main;
 
-            //Draw line
-            yield return null;
+            if (selectedCard != null && selectedSlot.currentCard == null)
+            {
+                selectedCard.Cast(selectedSlot);
+                creaturesOnField.Add((CreatureCard)selectedCard);
+                selectedSlot.Block();
+                DelselectCard();
+                selectedSlot = null;
+            }
         }
-        currentPhase = TurnPhase.Main;
-
-        isSelecting = false;
-        if (selectedCard != null && selectedSlot.currentCard == null)
+        else if(selectedCard is SpellCard)
         {
-            selectedCard.Cast(selectedSlot);
-            selectedSlot.Block();
-            DelselectCard();
-            selectedSlot = null;
+            //Do different Things
         }
        
     }
 
     public void StartAttackPhase()
     {
-
-        if(currentPhase == TurnPhase.Combat)
+        DelselectCard();
+        if(currentPhase == TurnPhase.Combat || currentPhase == TurnPhase.Attacking)
         {
             StopAttackPhase();
             return;
@@ -153,6 +187,57 @@ public class Player : MonoBehaviour {
         CamBehaviour.singleton.SwitchToPosition(1);
 
 
+    }
+
+    public void Attack()
+    {
+        if(selectedCard != null)
+        {
+            var temp = selectedCard as CreatureCard;
+            if (temp.canAttack)
+                StartCoroutine(WaitForAttackTarget(temp));
+            else
+                Debug.Log("cant attack");
+        }
+    }
+
+    private IEnumerator WaitForAttackTarget(CreatureCard attackingCreature)
+    {
+        currentPhase = TurnPhase.Attacking;
+        combatOptionsMenu.gameObject.SetActive(false);
+        foreach (var slot in field)
+            slot.Lock();            
+        
+        foreach(var slot in opponent.field)
+        {
+            //check if its in creature's attack pattern. use switch statement? maybe not since they can have multiple patterns
+            if (slot.currentCard != null)
+                slot.Unlock();
+            else
+                slot.Lock();
+        }
+
+        while (selectedSlot == null)
+        {
+            if (selectedCard == null || currentPhase == TurnPhase.Main)
+                break;
+            yield return null;
+        }
+        if (currentPhase != TurnPhase.Main)
+        {
+            if (selectedCard != null)
+            {
+                attackingCreature.Attack(selectedSlot.currentCard);
+                Debug.Log("Attack now!");
+            }          
+            currentPhase = TurnPhase.Combat;
+        }
+        DelselectCard();
+        selectedSlot = null;
+        foreach (var slot in field)
+            slot.Unlock();
+        foreach (var slot in opponent.field)
+            slot.Lock();
     }
 
     public void StopAttackPhase()
@@ -168,6 +253,7 @@ public class Player : MonoBehaviour {
 
         if (currentPhase == TurnPhase.NotTurnMyTurn)
             return;
+
         else if (currentPhase == TurnPhase.Start)
         {
             StartTurn();
@@ -176,7 +262,7 @@ public class Player : MonoBehaviour {
         GetInput();
         if (input2)
         {
-            DelselectCard();
+            DelselectCard(true);
         }
     }
 
@@ -190,9 +276,10 @@ public class Player : MonoBehaviour {
 
 
 #elif UNITY_ANDROID || UNITY_IOS || UNITY_EDITOR
-                if(Input.touchCount > 1)
+
+        if (Input.touchCount > 1)
         {
-           // input1 = Input.GetTouch(0).phase == TouchPhase.Began;
+            // input1 = Input.GetTouch(0).phase == TouchPhase.Began;
             input2 = Input.GetTouch(1).phase == TouchPhase.Began;
         }
 #endif
@@ -257,6 +344,10 @@ public class Player : MonoBehaviour {
         {
             hand.Remove(card);
         }
+        if (creaturesOnField.Contains((CreatureCard)card))
+        {
+            creaturesOnField.Remove((CreatureCard)card);
+        }
         
     }
 
@@ -271,25 +362,26 @@ public class Player : MonoBehaviour {
         }
     }
 
-
-
     /// <summary>
     /// Pick the card, show options menu, move card position to indicate selection
     /// </summary>
     /// <param name="card">card to select</param>
     public void SelectCard(CardHolder card)
     {
-        if (hand.Contains(card))
+        if (hand.Contains(card) && currentPhase == TurnPhase.Main)
         {
             DelselectCard();
             selectedCard = card;
             optionsMenu.gameObject.SetActive(true);
             optionsMenu.gameObject.transform.position = Input.mousePosition;
-            selectedCard.transform.position += (Vector3.up * 2.5f);
+            selectedCard.transform.localPosition += (Vector3.up * 2.5f);
         }
-        else if(inAttackPhase)
+        else if(currentPhase == TurnPhase.Combat && card is CreatureCard)
         {
-
+            DelselectCard();
+            selectedCard = card;
+            combatOptionsMenu.gameObject.SetActive(true);
+            combatOptionsMenu.gameObject.transform.position = Input.mousePosition;
             // Do some attacking things
         }
     }
@@ -298,15 +390,16 @@ public class Player : MonoBehaviour {
     /// <summary>
     /// move a selected card back and hide options menu when the card is no longer selected
     /// </summary>
-    public void DelselectCard()
+    public void DelselectCard(bool needsDisplacing = false)
     {
         if (selectedCard == null)
             return;
-      
-        selectedCard.transform.position -= (Vector3.up * 2.5f);
+        if(needsDisplacing)
+            selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
+
         selectedCard = null;
         optionsMenu.gameObject.SetActive(false);
-       
+        combatOptionsMenu.gameObject.SetActive(false);
 
     }
 
@@ -324,19 +417,26 @@ public class Player : MonoBehaviour {
         closeUp.text = selectedCard.thisCard.description;
     }
 
-    public void CastCard()
-    {
-        StartCoroutine(CastingCard());
-    }
 
-    public void TakeDamage(float power)
+
+    public void TakeDamage(int power)
     {
         curLifePoints -= power;
     }
 
-    public float GetLifePoints()
+    public int GetLifePoints()
     {
         return curLifePoints;
+    }
+
+    public void SpendAP(int amount)
+    {
+        currentAP -= amount;
+    }
+
+    public int GetAP()
+    {
+        return currentAP;
     }
 
     private void StackDeck()
@@ -363,6 +463,7 @@ public enum TurnPhase
     Main,
     Casting,
     Combat,
+    Attacking,
     End,
     NotTurnMyTurn
 }

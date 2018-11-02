@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Lion
   type: 0
-  castCost: 2
+  castCost: 0
   description: Mighty Lion
   sprite: {fileID: 21300000, guid: c97203eae5f474d43a4a35caa786fa40, type: 3}
   model: {fileID: 0}

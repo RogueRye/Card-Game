@@ -7,15 +7,23 @@ public class Slot : MonoBehaviour
 {
 
     public Color highlightColor = new Color(0, 255, 255, 255);
+    public Color opponentColor = new Color(255, 0, 0, 255);
     public CreatureCard currentCard;
     public Player owner;
 
-
+    /// <summary>
+    /// Is there a creature in the slot?
+    /// </summary>
     bool isBlocked = false;
+    /// <summary>
+    /// is the slot locked due to game state/owner?
+    /// </summary>
     bool isLocked = true;
 
 
-
+    /// <summary>
+    /// is the slot locked due to game state/owner?
+    /// </summary>
     public bool IsLocked
     {
         get
@@ -29,6 +37,9 @@ public class Slot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Is there a creature in the slot?
+    /// </summary>
     public bool IsBlocked
     {
         get
@@ -43,9 +54,12 @@ public class Slot : MonoBehaviour
     }
 
     Image graphics;
+
+
     // Use this for initialization
     void Start()
     {
+        Lock();
         Unblock();
         graphics = GetComponent<Image>();
     }
@@ -63,22 +77,28 @@ public class Slot : MonoBehaviour
 
     public void OnTouchUp()
     {
-        if (!isLocked && owner.currentPhase == TurnPhase.Casting)
-        {
-            Debug.Log("HI");
+        if (!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
+        {            
             owner.selectedSlot = this;
+        }
+        else if(!isLocked && owner.opponent.currentPhase == TurnPhase.Attacking)
+        {
+            owner.opponent.selectedSlot = this;
         }
     }
 
     public void Hover()
     {
-        if(!isLocked && owner.currentPhase == TurnPhase.Casting)
+        if(!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
             graphics.color = highlightColor;
+        else if (!isLocked && owner.opponent.currentPhase == TurnPhase.Attacking)
+        {
+            graphics.color = opponentColor;
+        }
     }
 
     public void StopHover()
     {
-        if(!isLocked)
             graphics.color = Color.white;
     }
 
@@ -94,6 +114,11 @@ public class Slot : MonoBehaviour
     public void Unlock()
     {
         IsLocked = false;
+
+    }
+    public void Lock()
+    {
+        IsLocked = true;
     }
 
     public void Unblock()
@@ -103,6 +128,6 @@ public class Slot : MonoBehaviour
 
     public void Block()
     {
-        isBlocked = true;
+        IsBlocked = true;
     }
 }

@@ -6,12 +6,13 @@ using TMPro;
 public class CreatureCard : CardHolder
 {
 
+    public bool canAttack;
     public TMP_Text attack;
     public TMP_Text health;
 
     Creature thisCardC;
-
     GameObject model;
+
 
     public override void CreateCard()
     {
@@ -33,25 +34,35 @@ public class CreatureCard : CardHolder
 
     public override void Cast(Slot targetSlot)
     {
-        inSlot = true;
-        transform.SetParent(targetSlot.transform);
-        transform.position = targetSlot.transform.position + Vector3.up * 2.51f;
-        transform.localRotation = Quaternion.Euler(Vector3.right * -180);
-        targetSlot.currentCard = this;
-        thisPlayer.hand.Remove(this);
+        if (!targetSlot.IsBlocked && !targetSlot.IsLocked)
+        {
+            
+            canAttack = true;
+            inSlot = true;
+            transform.SetParent(targetSlot.transform);
+            transform.localPosition = (Vector3.forward * .1f);
+            transform.localRotation = Quaternion.Euler(Vector3.right * -180);
+            targetSlot.currentCard = this;
+            thisPlayer.SpendAP(thisCardC.castCost);
+            thisPlayer.hand.Remove(this);
+        }
 
     }
 
     public void Attack(CreatureCard target)
     {
+
         if( target.thisCardC.TakeDamage(thisCardC.attackValue) <= 0)
         {
             target.thisPlayer.DiscardCard(target);
         }
+
+        canAttack = false;
     }
 
     public void Attack(Player target)
     {
         target.TakeDamage(thisCardC.attackValue);
+        canAttack = false;
     }
 }

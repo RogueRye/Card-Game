@@ -56,7 +56,7 @@ public abstract class CardHolder : MonoBehaviour {
 
     public void Hover()
     {
-        if (thisPlayer.hand.Contains(this) && IsVisible())
+        if (thisPlayer.hand.Contains(this) && IsVisible() && thisPlayer.currentPhase == TurnPhase.Main)
         {
             var newColor = cardGraphics.color;
             newColor.a = 70;
@@ -69,14 +69,6 @@ public abstract class CardHolder : MonoBehaviour {
         }
 
     }
-
-    //public void OnMouseDown()
-    //{
-    //    if (thisPlayer.hand.Contains(this) && thisPlayer.selectedCard != this)
-    //    {
-    //        SelectCard();
-    //    }
-    //}
 
 
     public void StopHover()
@@ -95,7 +87,7 @@ public abstract class CardHolder : MonoBehaviour {
     }
 
     public void SelectCard()
-    {
+    {       
         thisPlayer.SelectCard(this);
     }
 
