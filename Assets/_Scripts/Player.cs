@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     public GameObject TextPanel;
     public TMP_Text closeUp;
     public TurnPhase currentPhase;
+    public bool hasAI = false;
     #endregion
 
     #region Hidden Public
@@ -133,7 +134,8 @@ public class Player : MonoBehaviour {
         else
         {
             Debug.Log("Can't Cast card");
-            DelselectCard();
+            DelselectCard(true);
+            currentPhase = TurnPhase.Main;
         }
         
     }
@@ -141,7 +143,8 @@ public class Player : MonoBehaviour {
     private IEnumerator CastingCard()
     {  
         currentPhase = TurnPhase.Casting;
-        optionsMenu.gameObject.SetActive(false);
+        if(optionsMenu != null)
+            optionsMenu.gameObject.SetActive(false);
 
         if (selectedCard is CreatureCard)
         {
@@ -155,13 +158,12 @@ public class Player : MonoBehaviour {
                 //Draw line
                 yield return null;
             }
-            currentPhase = TurnPhase.Main;
-
+          
             if (selectedCard != null && selectedSlot.currentCard == null)
             {
                 selectedCard.Cast(selectedSlot);
                 creaturesOnField.Add((CreatureCard)selectedCard);
-                selectedSlot.Block();
+                selectedSlot.Block();               
                 DelselectCard();
                 selectedSlot = null;
             }
@@ -170,7 +172,7 @@ public class Player : MonoBehaviour {
         {
             //Do different Things
         }
-       
+       // currentPhase = TurnPhase.Main;
     }
 
     public void StartAttackPhase()
@@ -258,11 +260,13 @@ public class Player : MonoBehaviour {
         {
             StartTurn();
         }
-
-        GetInput();
-        if (input2)
+        if (!hasAI)
         {
-            DelselectCard(true);
+            GetInput();
+            if (input2)
+            {
+                DelselectCard(true);
+            }
         }
     }
 
@@ -372,16 +376,23 @@ public class Player : MonoBehaviour {
         {
             DelselectCard();
             selectedCard = card;
-            optionsMenu.gameObject.SetActive(true);
-            optionsMenu.gameObject.transform.position = Input.mousePosition;
+            if (optionsMenu != null)
+            {
+                optionsMenu.gameObject.SetActive(true);
+                optionsMenu.gameObject.transform.position = Input.mousePosition;
+            }
+
             selectedCard.transform.localPosition += (Vector3.up * 2.5f);
         }
         else if(currentPhase == TurnPhase.Combat && card is CreatureCard)
         {
             DelselectCard();
             selectedCard = card;
-            combatOptionsMenu.gameObject.SetActive(true);
-            combatOptionsMenu.gameObject.transform.position = Input.mousePosition;
+            if (combatOptionsMenu != null)
+            {
+                combatOptionsMenu.gameObject.SetActive(true);
+                combatOptionsMenu.gameObject.transform.position = Input.mousePosition;
+            }
             // Do some attacking things
         }
     }
@@ -398,8 +409,11 @@ public class Player : MonoBehaviour {
             selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
 
         selectedCard = null;
-        optionsMenu.gameObject.SetActive(false);
-        combatOptionsMenu.gameObject.SetActive(false);
+        if (optionsMenu != null)
+        {
+            optionsMenu.gameObject.SetActive(false);
+            combatOptionsMenu.gameObject.SetActive(false);
+        }
 
     }
 
@@ -412,7 +426,8 @@ public class Player : MonoBehaviour {
         if (selectedCard == null)
             return;
 
-        TextPanel.SetActive(true);
+        if(TextPanel != null)
+            TextPanel.SetActive(true);
        
         closeUp.text = selectedCard.thisCard.description;
     }
