@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour {
+public class Board : MonoBehaviour
+{
 
     public Slot slotPrefab;
 
@@ -10,7 +11,7 @@ public class Board : MonoBehaviour {
     public int slotsPerRow = 5;
     public float paddingPerRow;
 
-    public List<GameObject> rows = new List<GameObject>(); 
+    public List<GameObject> rows = new List<GameObject>();
 
     public static Slot[,] fieldA;
     public static Slot[,] fieldB;
@@ -19,30 +20,23 @@ public class Board : MonoBehaviour {
     public void Awake()
     {
         CreateFields();
-
-       // Debug.Log(fieldA[1, 2].gameObject.name);
     }
-
 
     public void FindRows()
     {
         rows.Clear();
-        foreach(Transform child in transform.GetChild(0))
+        foreach (Transform child in transform.GetChild(0))
         {
             if (child.CompareTag("Row"))
             {
                 rows.Add(child.gameObject);
             }
         }
-
-
-
     }
     public void CreateRows()
     {
-
         FindRows();
-        foreach(GameObject row in rows)
+        foreach (GameObject row in rows)
         {
             for (int i = 0; i < slotsPerRow; i++)
             {
@@ -50,12 +44,10 @@ public class Board : MonoBehaviour {
                 temp.transform.position = new Vector3(
                     row.transform.localPosition.x + ((temp.transform.localScale.x / 2)) + (paddingPerRow * i),
                     row.transform.localPosition.y,
-                    row.transform.localPosition.z               
-                    ); 
+                    row.transform.localPosition.z
+                    );
             }
         }
-
-
     }
 
     public void CreateFields()
@@ -72,23 +64,25 @@ public class Board : MonoBehaviour {
         {
             for (int k = 0; k < rows[i].transform.childCount; k++)
             {
-                fieldA[i, k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
-               // Debug.Log(fieldA[i, k] + " is in field A");
+                //i = row number, k = spot in row
+                var temp = rows[i].transform.GetChild(k).GetComponent<Slot>();
+                fieldA[i, k] = temp;
+                temp.Init(i, k);                
             }
         }
         for (int i = rows.Count / 2; i < rows.Count; i++)
         {
             for (int k = 0; k < rows[i].transform.childCount; k++)
             {
-                fieldB[(i - (rows.Count / 2)), k] = rows[i].transform.GetChild(k).GetComponent<Slot>();
-               // Debug.Log(fieldB[(i - (rows.Count / 2)), k] + " is in field B");
+                var temp = rows[i].transform.GetChild(k).GetComponent<Slot>();
+                fieldB[(i - (rows.Count / 2)), k] = temp;
+                temp.Init((i - (rows.Count / 2)), k);
             }
         }
     }
 
     public void DeleteRows()
     {
-        
         foreach (GameObject row in rows)
         {
             for (int i = 0; i < row.transform.childCount; i++)
@@ -96,8 +90,6 @@ public class Board : MonoBehaviour {
                 DestroyImmediate(row.transform.GetChild(i).gameObject);
             }
         }
-
-
     }
 
 }

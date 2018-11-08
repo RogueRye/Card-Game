@@ -11,8 +11,4 @@ public abstract class Card : ScriptableObject {
     public Sprite sprite;
     public GameObject model; // will be some kind of FX for spells
 
-
-
-
-
 }

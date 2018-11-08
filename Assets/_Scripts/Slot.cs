@@ -10,7 +10,8 @@ public class Slot : MonoBehaviour
     public Color opponentColor = new Color(255, 0, 0, 255);
     public CreatureCard currentCard;
     public Player owner;
-
+    public int id_X; // row number
+    public int id_Y; // column number
     /// <summary>
     /// Is there a creature in the slot?
     /// </summary>
@@ -57,17 +58,13 @@ public class Slot : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
+    public void Init(int x, int y)
     {
+        id_X = x;
+        id_Y = y;
         Lock();
         Unblock();
         graphics = GetComponent<Image>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void Touch()

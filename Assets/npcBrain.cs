@@ -9,6 +9,7 @@ public class npcBrain : MonoBehaviour
 
     bool isPickingCard = false;
     bool isPickingSlot = false;
+    int cardsPlayed = 0;
     private void Start()
     {
         controller = GetComponent<Player>();
@@ -25,12 +26,18 @@ public class npcBrain : MonoBehaviour
     {
         switch (controller.currentPhase)
         {
+            case TurnPhase.Start:
+                cardsPlayed = 0;
+                break;
             case TurnPhase.Main:
-                if (controller.selectedCard == null)
+                if (cardsPlayed >= 1)
+                    controller.EndTurn();
+                else if (controller.selectedCard == null)
                     PickRandomCard();
                 break;
             case TurnPhase.Casting:
-                PickSlot();
+                if(controller.selectedCard is CreatureCard)
+                    PickSlot();
                 break;
             case TurnPhase.Combat:
                 break;
@@ -43,6 +50,14 @@ public class npcBrain : MonoBehaviour
 
     void PickRandomCard()
     {
+        //var randSeed = Random.Range(0, controller.hand.Count);
+        //controller.SelectCard(controller.hand[randSeed]);
+        //if (controller.selectedCard != null)
+        //{
+        //    controller.CastCard();
+        //    cardsPlayed++;
+        //}
+
         if (!isPickingCard)
             StartCoroutine(AIPickCard());
     }
@@ -53,11 +68,10 @@ public class npcBrain : MonoBehaviour
 
         var randSeed = Random.Range(0, controller.hand.Count);
         controller.SelectCard(controller.hand[randSeed]);
-        yield return null;
-
-
+        
         controller.CastCard();
-       
+        cardsPlayed++;
+        yield return null;
         isPickingCard = false;
     }
 
@@ -65,41 +79,31 @@ public class npcBrain : MonoBehaviour
     {
         if (!isPickingSlot)
         {
-
-            isPickingSlot = true;
-
-            foreach (var slot in controller.field)
-            {
-                if (!slot.IsBlocked)
-                {
-                    controller.selectedSlot = slot;
-                    controller.selectedCard.ToggleVisible(true);
-                }
-            }
-
-            controller.EndTurn();
-            isPickingSlot = false;
-            //  StartCoroutine(AIPickSlot());
+             StartCoroutine(AIPickSlot());
         }
     }
 
     IEnumerator AIPickSlot()
     {
         isPickingSlot = true;
-        
-
+       
 
         foreach(var slot in controller.field)
         {
-            if (!slot.IsBlocked)
+            var rand = Random.Range(0, 100);
+            if (!slot.IsBlocked && rand <= 40)
             {
                 controller.selectedSlot = slot;
                 controller.selectedCard.ToggleVisible(true);
             }
         }
+
+        if (controller.selectedSlot == null)
+            controller.DelselectCard(true);
         controller.EndTurn();
-        isPickingSlot = false;
         yield return null;
+        isPickingSlot = false;
+      
     }
 
 }

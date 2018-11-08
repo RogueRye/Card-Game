@@ -83,51 +83,25 @@ public class Player : MonoBehaviour {
 
         if (isPlayerA)
         {
-            currentPhase = TurnPhase.Start;
+            StartTurn();
         }
         else
         {
             currentPhase = TurnPhase.NotTurnMyTurn;
         }
     }
-
+    #region Turn State Calls
     public void StartTurn()
     {
-        DrawCard(1);
-
-        foreach (var card in creaturesOnField)
-            card.canAttack = true;
-
-        if(currentMaxAp < maxAP)
+        if(currentPhase != TurnPhase.Start)
         {
-            currentMaxAp++;
+            StartCoroutine(TurnStart());
         }
-        currentAP = currentMaxAp;
-        
-        StartCoroutine(PickingCard());
-    }
-
-    public void EndTurn()
-    {
-        currentPhase = TurnPhase.NotTurnMyTurn;
-        opponent.currentPhase = TurnPhase.Start;
-    }
-
-
-    #region Turn States
-    private IEnumerator PickingCard()
-    {
-        currentPhase = TurnPhase.Main;
-        while(selectedCard == null)
-        {
-
-            yield return null;
-        }        
     }
 
     public void CastCard()
     {
-        if(selectedCard.thisCard.castCost <= GetAP())
+        if (selectedCard.thisCard.castCost <= GetAP())
         {
             StartCoroutine(CastingCard());
         }
@@ -137,7 +111,77 @@ public class Player : MonoBehaviour {
             DelselectCard(true);
             currentPhase = TurnPhase.Main;
         }
-        
+
+    }
+
+    public void StartAttackPhase()
+    {
+        DelselectCard();
+        if (currentPhase == TurnPhase.Combat || currentPhase == TurnPhase.Attacking)
+        {
+            StopAttackPhase();
+            return;
+        }
+
+        currentPhase = TurnPhase.Combat;
+
+        CamBehaviour.singleton.SwitchToPosition(1);
+    }
+
+    public void Attack()
+    {
+        if (selectedCard != null)
+        {
+            var temp = selectedCard as CreatureCard;
+            if (temp.canAttack)
+                StartCoroutine(WaitForAttackTarget(temp));
+            else
+                Debug.Log("cant attack");
+        }
+    }
+
+    public void StopAttackPhase()
+    {
+        currentPhase = TurnPhase.Main;
+        CamBehaviour.singleton.SwitchToPosition(0);
+    }
+
+    public void EndTurn()
+    {
+        currentPhase = TurnPhase.NotTurnMyTurn;
+        opponent.StartTurn();
+    }
+
+    #endregion
+
+    #region Turn State Coroutines
+
+    private IEnumerator TurnStart()
+    {
+        currentPhase = TurnPhase.Start;
+        DrawCard(1);
+
+        foreach (var card in creaturesOnField)
+            card.canAttack = true;
+
+        if (currentMaxAp < maxAP)
+        {
+            currentMaxAp++;
+        }
+        currentAP = currentMaxAp;
+
+        yield return null;
+        StartCoroutine(PickingCard());
+    }
+
+    private IEnumerator PickingCard()
+    {
+        currentPhase = TurnPhase.Main;
+        while(selectedCard == null)
+        {
+
+            yield return null;
+        }        
     }
 
     private IEnumerator CastingCard()
@@ -172,35 +216,8 @@ public class Player : MonoBehaviour {
         {
             //Do different Things
         }
-       // currentPhase = TurnPhase.Main;
-    }
 
-    public void StartAttackPhase()
-    {
-        DelselectCard();
-        if(currentPhase == TurnPhase.Combat || currentPhase == TurnPhase.Attacking)
-        {
-            StopAttackPhase();
-            return;
-        }
-
-        currentPhase = TurnPhase.Combat;
-     
-        CamBehaviour.singleton.SwitchToPosition(1);
-
-
-    }
-
-    public void Attack()
-    {
-        if(selectedCard != null)
-        {
-            var temp = selectedCard as CreatureCard;
-            if (temp.canAttack)
-                StartCoroutine(WaitForAttackTarget(temp));
-            else
-                Debug.Log("cant attack");
-        }
+       currentPhase = TurnPhase.Main;
     }
 
     private IEnumerator WaitForAttackTarget(CreatureCard attackingCreature)
@@ -242,12 +259,6 @@ public class Player : MonoBehaviour {
             slot.Lock();
     }
 
-    public void StopAttackPhase()
-    {
-        currentPhase = TurnPhase.Main;
-        CamBehaviour.singleton.SwitchToPosition(0);
-    }
-
     #endregion
 
     virtual protected void Update()
@@ -256,10 +267,7 @@ public class Player : MonoBehaviour {
         if (currentPhase == TurnPhase.NotTurnMyTurn)
             return;
 
-        else if (currentPhase == TurnPhase.Start)
-        {
-            StartTurn();
-        }
+   
         if (!hasAI)
         {
             GetInput();
@@ -338,7 +346,7 @@ public class Player : MonoBehaviour {
         //Unselect it, add to to stack, reset transform to the graveyard
         DelselectCard();
         gyStack.Push(card);
-        card.transform.parent = gySpot;
+        card.transform.SetParent(gySpot);
         var pos = gySpot.position + (Vector3.up * (gyStack.Count * 0.075f));
         card.transform.position = pos;
         card.transform.rotation = gySpot.rotation;
@@ -431,8 +439,6 @@ public class Player : MonoBehaviour {
        
         closeUp.text = selectedCard.thisCard.description;
     }
-
-
 
     public void TakeDamage(int power)
     {
