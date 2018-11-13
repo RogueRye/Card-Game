@@ -90,6 +90,8 @@ public class Player : MonoBehaviour {
             currentPhase = TurnPhase.NotTurnMyTurn;
         }
     }
+
+
     #region Turn State Calls
     public void StartTurn()
     {
@@ -142,6 +144,7 @@ public class Player : MonoBehaviour {
 
     public void StopAttackPhase()
     {
+        selectedSlot = null;
         currentPhase = TurnPhase.Main;
         CamBehaviour.singleton.SwitchToPosition(0);
     }
@@ -225,15 +228,48 @@ public class Player : MonoBehaviour {
         currentPhase = TurnPhase.Attacking;
         combatOptionsMenu.gameObject.SetActive(false);
         foreach (var slot in field)
-            slot.Lock();            
-        
-        foreach(var slot in opponent.field)
+            slot.Lock();
+        foreach (var slot in opponent.field)
+            slot.Lock();
+
+        foreach(var dir in attackingCreature.thisCardC.attackDirs)
         {
-            //check if its in creature's attack pattern. use switch statement? maybe not since they can have multiple patterns
-            if (slot.currentCard != null)
-                slot.Unlock();
-            else
-                slot.Lock();
+            switch(dir)
+            {
+                case Creature.AttackDir.Forward:
+                    for (int i = 0; i < 2; i++)
+                    {
+                        var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y];
+                        if (tempSlot != null )
+                        {
+                            if (tempSlot.currentCard != null)
+                                tempSlot.Unlock();
+                        }
+                    }
+                    break;
+                case Creature.AttackDir.Left:
+                    for (int i = 0; i < 2; i++)
+                    {
+                        var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
+                        if (tempSlot != null)
+                        {
+                            if (tempSlot.currentCard != null)
+                                tempSlot.Unlock();
+                        }
+                    }
+                    break;
+                case Creature.AttackDir.Right:
+                    for (int i = 0; i < 2; i++)
+                    {
+                        var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y -1];
+                        if (tempSlot != null)
+                        {
+                            if (tempSlot.currentCard != null)
+                                tempSlot.Unlock();
+                        }
+                    }
+                    break;
+            }
         }
 
         while (selectedSlot == null)
@@ -256,7 +292,7 @@ public class Player : MonoBehaviour {
         foreach (var slot in field)
             slot.Unlock();
         foreach (var slot in opponent.field)
-            slot.Lock();
+            slot.Unlock();
     }
 
     #endregion
@@ -297,6 +333,8 @@ public class Player : MonoBehaviour {
 #endif
     }
 
+
+    #region Gameplay Functions
     /// <summary>
     /// Add card from deck to hand
     /// </summary>
@@ -351,14 +389,18 @@ public class Player : MonoBehaviour {
         card.transform.position = pos;
         card.transform.rotation = gySpot.rotation;
 
-        //Remove card from hang
+        //Remove card from hand
         if (hand.Contains(card))
         {
             hand.Remove(card);
         }
+        //Remove card from field and unassign its slot
         if (creaturesOnField.Contains((CreatureCard)card))
         {
-            creaturesOnField.Remove((CreatureCard)card);
+            var temp = (CreatureCard)card;
+            temp.currentSlot = null;
+            temp.inSlot = false;
+            creaturesOnField.Remove(temp);
         }
         
     }
@@ -475,7 +517,9 @@ public class Player : MonoBehaviour {
             deckStack.Push(deckCard);
         }
     }
-   
+
+    #endregion
+
 }
 
 public enum TurnPhase

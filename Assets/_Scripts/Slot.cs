@@ -10,8 +10,14 @@ public class Slot : MonoBehaviour
     public Color opponentColor = new Color(255, 0, 0, 255);
     public CreatureCard currentCard;
     public Player owner;
-    public int id_X; // row number
-    public int id_Y; // column number
+    /// <summary>
+    /// Row Number
+    /// </summary>
+    public int id_X;
+    /// <summary>
+    /// Column Number
+    /// </summary>
+    public int id_Y; 
     /// <summary>
     /// Is there a creature in the slot?
     /// </summary>

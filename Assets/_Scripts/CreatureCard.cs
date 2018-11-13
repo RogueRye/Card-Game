@@ -10,7 +10,8 @@ public class CreatureCard : CardHolder
     public TMP_Text attack;
     public TMP_Text health;
 
-    Creature thisCardC;
+    public Creature thisCardC;
+    public Slot currentSlot;
     GameObject model;
 
 
@@ -36,7 +37,7 @@ public class CreatureCard : CardHolder
     {
         if (!targetSlot.IsBlocked && !targetSlot.IsLocked)
         {
-            
+            currentSlot = targetSlot;
             canAttack = true;
             inSlot = true;
             transform.SetParent(targetSlot.transform);
