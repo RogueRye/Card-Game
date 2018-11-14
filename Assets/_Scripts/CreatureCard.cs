@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class CreatureCard : CardHolder
 {
@@ -14,6 +15,8 @@ public class CreatureCard : CardHolder
     public Slot currentSlot;
     GameObject model;
 
+
+    Vector3 prevPosition;
 
     public override void CreateCard()
     {
@@ -66,4 +69,36 @@ public class CreatureCard : CardHolder
         target.TakeDamage(thisCardC.attackValue);
         canAttack = false;
     }
+
+
+    public override void OnDrag(PointerEventData eventData)
+    {
+        RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;
+
+        var rt = gameObject.GetComponent<RectTransform>();
+        Vector3 globalMousePos;
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(m_DraggingPlane, eventData.position, eventData.pressEventCamera, out globalMousePos))
+        {
+            rt.position = globalMousePos;
+        }      
+    }
+
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        prevPosition = transform.position;
+    }
+
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+
+        if (thisPlayer.selectedSlot != null)
+            thisPlayer.CastCard();
+        else
+        {
+            transform.position = prevPosition;
+            thisPlayer.DelselectCard(true);
+        }
+
+    }
+
 }

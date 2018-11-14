@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IDragHandler, IEndDragHandler
 {
 
     public Color highlightColor = new Color(0, 255, 255, 255);
@@ -132,5 +133,21 @@ public class Slot : MonoBehaviour
     public void Block()
     {
         IsBlocked = true;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (eventData.hovered.Contains(gameObject))
+        {
+            Hover();
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.hovered.Contains(gameObject))
+        {
+            OnTouchUp();
+        }
     }
 }

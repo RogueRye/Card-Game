@@ -20,6 +20,7 @@ public class Board : MonoBehaviour
     public void Awake()
     {
         CreateFields();
+
     }
 
     public void FindRows()

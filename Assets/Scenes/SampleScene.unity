@@ -800,7 +800,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -44.62509, y: -42.750046}
+  m_AnchoredPosition: {x: -44.62509, y: -42.75}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &113629081
@@ -2027,7 +2027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.17212, y: -27.40741}
+  m_AnchoredPosition: {x: 39.17212, y: -27.40747}
   m_SizeDelta: {x: 58.344227, y: 34.814816}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &315272232
@@ -3305,7 +3305,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &700465527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3406,7 +3406,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 39.17212, y: -62.22223}
+  m_AnchoredPosition: {x: 39.17212, y: -62.222168}
   m_SizeDelta: {x: 53.986927, y: 34.814816}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &734789236
@@ -6971,7 +6971,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &1643403466
 MonoBehaviour:
   m_ObjectHideFlags: 0

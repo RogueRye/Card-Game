@@ -35,7 +35,6 @@ public class Deck : ScriptableObject {
         mDeck.Clear();
         foreach (var value in values.OrderBy(x => rnd.Next()))
         {
-            
             mDeck.Push(value);
         }
     }

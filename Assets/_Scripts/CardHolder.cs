@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public abstract class CardHolder : MonoBehaviour {
+public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler {
 
     public Card thisCard;
     public Player thisPlayer;
@@ -56,20 +57,24 @@ public abstract class CardHolder : MonoBehaviour {
 
     public void Hover()
     {
-        if (thisPlayer.hand.Contains(this) && IsVisible() && thisPlayer.currentPhase == TurnPhase.Main)
+        if (!Input.GetMouseButton(0))
         {
-            var newColor = cardGraphics.color;
-            newColor.a = 70;
-            cardGraphics.color = newColor;
-        }
+            if (thisPlayer.hand.Contains(this) && IsVisible() && thisPlayer.currentPhase == TurnPhase.Main)
+            {
+                var newColor = cardGraphics.color;
+                newColor.a = 70;
+                cardGraphics.color = newColor;
+            }
 
-        else if (inSlot && thisPlayer.currentPhase == TurnPhase.Combat)
-        {
-            cardGraphics.color = Color.red;
+            else if (inSlot && thisPlayer.currentPhase == TurnPhase.Combat)
+            {
+                cardGraphics.color = Color.red;
+            }
         }
 
     }
 
+   
 
     public void StopHover()
     {
@@ -91,4 +96,18 @@ public abstract class CardHolder : MonoBehaviour {
         thisPlayer.SelectCard(this);
     }
 
+    public virtual void OnDrag(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnBeginDrag(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void OnEndDrag(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
 }
