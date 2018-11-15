@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class CreatureCard : CardHolder
+public class CreatureCard : CardHolder, IPointerUpHandler
 {
 
     public bool canAttack;
@@ -27,7 +27,7 @@ public class CreatureCard : CardHolder
             thisCardC = (Creature)thisCard;
             attack.text = thisCardC.attackValue.ToString();
             health.text = thisCardC.healthValue.ToString();
-
+            thisCardC.InitHealth();
         }
     }
 
@@ -61,8 +61,11 @@ public class CreatureCard : CardHolder
             target.thisPlayer.DiscardCard(target);
         }
 
+        target.health.text = target.thisCardC.GetHealth().ToString();
         canAttack = false;
     }
+
+
 
     public void Attack(Player target)
     {
@@ -73,32 +76,83 @@ public class CreatureCard : CardHolder
 
     public override void OnDrag(PointerEventData eventData)
     {
+        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+            return;
+
+
         RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;
 
         var rt = gameObject.GetComponent<RectTransform>();
         Vector3 globalMousePos;
+
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(m_DraggingPlane, eventData.position, eventData.pressEventCamera, out globalMousePos))
         {
-            rt.position = globalMousePos;
-        }      
+            if(thisPlayer.currentPhase == TurnPhase.Main)
+                rt.position = globalMousePos;
+        }
+
     }
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
+        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+            return;
+
         prevPosition = transform.position;
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
+        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+            return;
 
-        if (thisPlayer.selectedSlot != null)
-            thisPlayer.CastCard();
-        else
+        
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+
+        pointerData.position = Input.mousePosition; // use the position from controller as start of raycast instead of mousePosition.
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        if (thisPlayer.currentPhase == TurnPhase.Main)
         {
-            transform.position = prevPosition;
-            thisPlayer.DelselectCard(true);
+            if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
+            {
+                Debug.Log("slot exits");
+                thisPlayer.CastCard();
+                foreach (var thing in results)
+                {
+                    var slot = thing.gameObject.GetComponent<Slot>();
+                    if (slot != null)
+                        slot.OnTouchUp();
+                }
+            }
+            else
+            {
+                transform.position = prevPosition;
+                thisPlayer.DelselectCard(true);
+            }
         }
 
     }
 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+
+        pointerData.position = Input.mousePosition; // use the position from controller as start of raycast instead of mousePosition.
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
+        {
+            foreach (var thing in results)
+            {
+                var slot = thing.gameObject.GetComponent<Slot>();
+                if (slot != null)
+                    slot.OnTouchUp();
+            }
+        }
+    }
 }

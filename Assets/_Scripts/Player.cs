@@ -38,6 +38,8 @@ public class Player : MonoBehaviour {
     public Slot selectedSlot;
     [HideInInspector]
     public List<CreatureCard> creaturesOnField = new List<CreatureCard>();
+    [HideInInspector]
+    public GraphicRaycaster graphicRaycaster;
     #endregion
 
     #region Private References
@@ -59,10 +61,10 @@ public class Player : MonoBehaviour {
     bool input2;
     #endregion
 
-
+    
     virtual protected void Start()
     {
-
+        graphicRaycaster = GetComponentInChildren<GraphicRaycaster>();
         layout = handObj.GetComponent<HorizontalLayoutGroup>();
         deck.Init();
         curLifePoints = lifePoints;

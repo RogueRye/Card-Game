@@ -110,4 +110,6 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
     {
         throw new System.NotImplementedException();
     }
+
+
 }

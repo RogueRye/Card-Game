@@ -151,7 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &22124611
 GameObject:
@@ -3305,7 +3305,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
 --- !u!114 &700465527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3363,7 +3363,7 @@ RectTransform:
   - {fileID: 1512410638}
   - {fileID: 453206871}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3684,7 +3684,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851921409
 GameObject:
@@ -6318,6 +6318,7 @@ MonoBehaviour:
   selectedCard: {fileID: 0}
   selectedSlot: {fileID: 0}
   creaturesOnField: []
+  graphicRaycaster: {fileID: 0}
 --- !u!4 &1572112858
 Transform:
   m_ObjectHideFlags: 0
@@ -6331,7 +6332,7 @@ Transform:
   m_Children:
   - {fileID: 746774409}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 22.964, y: 180, z: 0}
 --- !u!114 &1572112859
 MonoBehaviour:
@@ -6971,7 +6972,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
 --- !u!114 &1643403466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7255,7 +7256,7 @@ RectTransform:
   - {fileID: 2097863207}
   - {fileID: 1022921488}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7771,7 +7772,7 @@ Transform:
   m_Children:
   - {fileID: 1643403464}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1892245245
 MonoBehaviour:
@@ -7823,6 +7824,7 @@ MonoBehaviour:
   selectedCard: {fileID: 0}
   selectedSlot: {fileID: 0}
   creaturesOnField: []
+  graphicRaycaster: {fileID: 0}
 --- !u!224 &1931360900 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224323441423908672, guid: d684b8252186b0b49a71652e680ab8b6,

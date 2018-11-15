@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IDragHandler, IEndDragHandler
+public class Slot : MonoBehaviour, IDragHandler
 {
 
     public Color highlightColor = new Color(0, 255, 255, 255);
@@ -143,11 +143,6 @@ public class Slot : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (eventData.hovered.Contains(gameObject))
-        {
-            OnTouchUp();
-        }
-    }
+
+
 }
