@@ -93,10 +93,12 @@ public class Slot : MonoBehaviour, IDragHandler
 
     public void Hover()
     {
+        Debug.Log("hovering first call");
         if(!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
             graphics.color = highlightColor;
         else if (!isLocked && owner.opponent.currentPhase == TurnPhase.Attacking)
         {
+            Debug.Log("hovering");
             graphics.color = opponentColor;
         }
     }

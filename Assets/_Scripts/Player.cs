@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
     public Deck deck;
     public int startingHandSize = 5;
     public Transform handObj;
+    public Slot playerSlot;
     public CardHolder[] cardTypes;
     public Transform optionsMenu;
     public Transform combatOptionsMenu;
@@ -71,6 +72,7 @@ public class Player : MonoBehaviour {
         currentMaxAp = (isPlayerA) ? 0 : 1;
         field = (isPlayerA) ? Board.fieldA : Board.fieldB;
 
+        playerSlot.Init(-1, -1);
         foreach(var slot in field)
         {
             slot.Unlock();
@@ -229,11 +231,13 @@ public class Player : MonoBehaviour {
     {
         currentPhase = TurnPhase.Attacking;
         combatOptionsMenu.gameObject.SetActive(false);
+        playerSlot.Lock();
+        opponent.playerSlot.Lock();
         foreach (var slot in field)
             slot.Lock();
         foreach (var slot in opponent.field)
             slot.Lock();
-
+        int creaturesInRange = 0;
         foreach(var dir in attackingCreature.thisCardC.attackDirs)
         {
             switch(dir)
@@ -245,7 +249,10 @@ public class Player : MonoBehaviour {
                         if (tempSlot != null )
                         {
                             if (tempSlot.currentCard != null)
+                            {
                                 tempSlot.Unlock();
+                                creaturesInRange++;
+                            }
                         }
                     }
                     break;
@@ -256,7 +263,10 @@ public class Player : MonoBehaviour {
                         if (tempSlot != null)
                         {
                             if (tempSlot.currentCard != null)
+                            {
                                 tempSlot.Unlock();
+                                creaturesInRange++;
+                            }
                         }
                     }
                     break;
@@ -267,11 +277,18 @@ public class Player : MonoBehaviour {
                         if (tempSlot != null)
                         {
                             if (tempSlot.currentCard != null)
+                            {
                                 tempSlot.Unlock();
+                                creaturesInRange++;
+                            }
                         }
                     }
                     break;
             }
+        }
+        if(creaturesInRange == 0)
+        {          
+            opponent.playerSlot.Unlock();
         }
 
         while (selectedSlot == null)
@@ -284,7 +301,10 @@ public class Player : MonoBehaviour {
         {
             if (selectedCard != null)
             {
-                attackingCreature.Attack(selectedSlot.currentCard);
+                if (selectedSlot.currentCard != null)
+                    attackingCreature.Attack(selectedSlot.currentCard);
+                else if (selectedSlot == opponent.playerSlot)
+                    attackingCreature.Attack(opponent);
                 Debug.Log("Attack now!");
             }          
             currentPhase = TurnPhase.Combat;

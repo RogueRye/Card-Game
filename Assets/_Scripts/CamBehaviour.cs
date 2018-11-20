@@ -14,6 +14,8 @@ public class CamBehaviour : MonoBehaviour {
 
     int curPosIndex = 0;
     bool inTransition = false;
+
+    Coroutine movingCamera;
 	// Use this for initialization
 	void Awake () {
         if(singleton == null)
@@ -35,15 +37,27 @@ public class CamBehaviour : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.P) && !inTransition)
         {
-            curPosIndex++;
-            StartCoroutine( ChangePosition(positions[curPosIndex % 2]));
+            TogglePosition();
         }
 	}
 
+
+    public void TogglePosition()
+    {
+        if(inTransition)
+            StopCoroutine(movingCamera);
+        
+        curPosIndex++;
+        movingCamera = StartCoroutine(ChangePosition(positions[curPosIndex % 2]));
+    }
     public void SwitchToPosition(int posIndex)
     {
+
         curPosIndex = posIndex;
-        StartCoroutine(ChangePosition(positions[posIndex]));
+        if (inTransition)
+            StopCoroutine(movingCamera);
+        
+        movingCamera = StartCoroutine(ChangePosition(positions[posIndex]));
     }
 
     IEnumerator ChangePosition(Transform targetPos)
@@ -51,7 +65,7 @@ public class CamBehaviour : MonoBehaviour {
         Debug.Log("transitioning");
         inTransition = true;
         
-        while (Vector3.Distance(transform.position, targetPos.position) > 0.05f)
+        while (Vector3.Distance(transform.position, targetPos.position) > 0.1f)
         {
             var curPos = transform.position;
             var curRot = transform.rotation;
