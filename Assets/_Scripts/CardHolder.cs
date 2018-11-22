@@ -74,8 +74,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
 
     }
 
-   
-
+ 
     public void StopHover()
     {
         if (thisPlayer.hand.Contains(this))
@@ -96,6 +95,8 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
         thisPlayer.SelectCard(this);
     }
 
+
+
     public virtual void OnDrag(PointerEventData eventData)
     {
         throw new System.NotImplementedException();
@@ -110,6 +111,8 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
     {
         throw new System.NotImplementedException();
     }
+
+
 
 
 }

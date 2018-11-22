@@ -19,21 +19,6 @@ public class Creature : Card
         Forward, Left, Right
     }
 
-    public void InitHealth()
-    {
-        currentHealth = healthValue;
-    }
 
-    public int TakeDamage(int amount)
-    {
-        currentHealth -= amount;
-        Debug.Log(cardName + " has a current health of: " +  currentHealth);
-        return currentHealth;
-    }
-
-    public int GetHealth()
-    {
-        return currentHealth;
-    }
 
 }

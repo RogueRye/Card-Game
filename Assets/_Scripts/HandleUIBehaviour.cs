@@ -8,7 +8,7 @@ public class HandleUIBehaviour : MonoBehaviour {
 
     public Slider lifePointSldr;
     public TMP_Text lifePointTxt;
-    [Range(0, 5)]
+    [Range(0, 20)]
     public float sliderSpeed = 1;
     public Slider manaSldr;
     public TMP_Text manaTxt;
@@ -36,7 +36,7 @@ public class HandleUIBehaviour : MonoBehaviour {
 
         if(lifePointSldr.value < m_Player.GetLifePoints())
         {
-            lifePointSldr.value += Time.deltaTime;
+            lifePointSldr.value = m_Player.GetLifePoints();
         }
 
         lifePointTxt.text = Mathf.RoundToInt(lifePointSldr.value).ToString();

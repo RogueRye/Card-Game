@@ -9,15 +9,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7756b80f7fb9ffc48a5b5fcae7fded34, type: 3}
-  m_Name: Lion
+  m_Name: Tree Ent
   m_EditorClassIdentifier: 
-  cardName: Lion
+  cardName: Tree Ent
   type: 0
-  castCost: 0
-  description: Mighty Lion
-  sprite: {fileID: 21300000, guid: 1f2cda5dafe68b747a7f56fad6478096, type: 3}
+  castCost: 3
+  description: "Living Tree. Its weak but sturdy \nAttack Direction(s): Forward"
+  sprite: {fileID: 0}
   model: {fileID: 0}
   attackCost: 0
-  attackValue: 4
-  healthValue: 5
+  attackValue: 2
+  healthValue: 10
   attackDirs: 00000000

@@ -15,7 +15,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     public Slot currentSlot;
     GameObject model;
 
-
+    private int currentHealth;
     Vector3 prevPosition;
 
     public override void CreateCard()
@@ -27,7 +27,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             thisCardC = (Creature)thisCard;
             attack.text = thisCardC.attackValue.ToString();
             health.text = thisCardC.healthValue.ToString();
-            thisCardC.InitHealth();
+            InitHealth();
         }
     }
 
@@ -56,13 +56,27 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     public void Attack(CreatureCard target)
     {
 
-        if( target.thisCardC.TakeDamage(thisCardC.attackValue) <= 0)
+        target.TakeDamage(thisCardC.attackValue);
+        TakeDamage(target.thisCardC.attackValue);
+        target.health.text = target.GetHealth().ToString();
+        health.text = GetHealth().ToString();
+        target.health.color = Color.red;
+        health.color = Color.red;
+        canAttack = false;
+
+        if (target.GetHealth() <= 0)
         {
-            target.thisPlayer.DiscardCard(target);
+            target.health.text = target.thisCardC.healthValue.ToString();
+            target.health.color = Color.white;
+            target.thisPlayer.DiscardCard(target);           
+        }
+        if (GetHealth() <=0)
+        {
+            health.text = thisCardC.healthValue.ToString();
+            health.color = Color.white;
+            thisPlayer.DiscardCard(this);
         }
 
-        target.health.text = target.thisCardC.GetHealth().ToString();
-        canAttack = false;
     }
 
 
@@ -154,5 +168,21 @@ public class CreatureCard : CardHolder, IPointerUpHandler
                     slot.OnTouchUp();
             }
         }
+    }
+
+
+    public void InitHealth()
+    {
+        currentHealth = thisCardC.healthValue;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        currentHealth -= amount;
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 }
