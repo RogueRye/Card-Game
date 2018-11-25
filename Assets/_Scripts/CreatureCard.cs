@@ -10,11 +10,13 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     public bool canAttack;
     public TMP_Text attack;
     public TMP_Text health;
-
+    public Material lineMat;
     public Creature thisCardC;
     public Slot currentSlot;
     GameObject model;
 
+
+    LineRenderer lineRenderer;
     private int currentHealth;
     Vector3 prevPosition;
 
@@ -27,7 +29,10 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             thisCardC = (Creature)thisCard;
             attack.text = thisCardC.attackValue.ToString();
             health.text = thisCardC.healthValue.ToString();
+            lineRenderer = GetComponent<LineRenderer>();
+
             InitHealth();
+
         }
     }
 
@@ -79,8 +84,6 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     }
 
-
-
     public void Attack(Player target)
     {
         target.TakeDamage(thisCardC.attackValue);
@@ -96,6 +99,12 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;
 
+        if(thisPlayer.currentPhase != TurnPhase.Main)
+        {
+            m_DraggingPlane = Board.instance.board;
+
+        }
+
         var rt = gameObject.GetComponent<RectTransform>();
         Vector3 globalMousePos;
 
@@ -103,6 +112,11 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         {
             if(thisPlayer.currentPhase == TurnPhase.Main)
                 rt.position = globalMousePos;
+            else if(thisPlayer.currentPhase == TurnPhase.Combat)
+            {
+                lineRenderer.SetPosition(0, rt.position);
+                lineRenderer.SetPosition(1, globalMousePos);
+            }
         }
 
     }
@@ -146,6 +160,11 @@ public class CreatureCard : CardHolder, IPointerUpHandler
                 transform.position = prevPosition;
                 thisPlayer.DelselectCard(true);
             }
+        }
+        else if(thisPlayer.currentPhase == TurnPhase.Combat)
+        {
+            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(0, Vector3.zero);
         }
 
     }

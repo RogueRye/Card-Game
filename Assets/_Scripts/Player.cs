@@ -142,7 +142,7 @@ public class Player : MonoBehaviour {
             if (temp.canAttack)
                 StartCoroutine(WaitForAttackTarget(temp));
             else
-                Debug.Log("cant attack");
+                DelselectCard();
         }
     }
 
@@ -238,11 +238,13 @@ public class Player : MonoBehaviour {
         foreach (var slot in opponent.field)
             slot.Lock();
         int creaturesInRange = 0;
+        bool canAttackPlayer = false;
         foreach(var dir in attackingCreature.thisCardC.attackDirs)
         {
             switch(dir)
             {
                 case Creature.AttackDir.Forward:
+                    creaturesInRange = 0;
                     for (int i = 0; i < 2; i++)
                     {
                         var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y];
@@ -250,13 +252,17 @@ public class Player : MonoBehaviour {
                         {
                             if (tempSlot.currentCard != null)
                             {
-                                tempSlot.Unlock();
                                 creaturesInRange++;
+                                tempSlot.Unlock();                                
                             }
+   
                         }
                     }
+                    if (creaturesInRange == 0)
+                        canAttackPlayer = true;
                     break;
                 case Creature.AttackDir.Left:
+                    creaturesInRange = 0;
                     for (int i = 0; i < 2; i++)
                     {
                         var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
@@ -269,8 +275,11 @@ public class Player : MonoBehaviour {
                             }
                         }
                     }
+                    if (creaturesInRange == 0)
+                        canAttackPlayer = true;
                     break;
                 case Creature.AttackDir.Right:
+                    creaturesInRange = 0;
                     for (int i = 0; i < 2; i++)
                     {
                         var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y -1];
@@ -283,10 +292,12 @@ public class Player : MonoBehaviour {
                             }
                         }
                     }
+                    if (creaturesInRange == 0)
+                        canAttackPlayer = true;
                     break;
             }
         }
-        if(creaturesInRange == 0)
+        if(canAttackPlayer)
         {          
             opponent.playerSlot.Unlock();
         }
@@ -458,14 +469,14 @@ public class Player : MonoBehaviour {
         }
         else if(currentPhase == TurnPhase.Combat && card is CreatureCard)
         {
+            var temp = card as CreatureCard;
             DelselectCard();
             selectedCard = card;
-            if (combatOptionsMenu != null)
+            if (combatOptionsMenu != null && temp.canAttack)
             {
                 combatOptionsMenu.gameObject.SetActive(true);
                 combatOptionsMenu.gameObject.transform.position = Input.mousePosition;
-            }
-            // Do some attacking things
+            }          
         }
     }
 

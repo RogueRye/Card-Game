@@ -17,7 +17,6 @@ MonoBehaviour:
   description: Mighty Lion
   sprite: {fileID: 21300000, guid: 1f2cda5dafe68b747a7f56fad6478096, type: 3}
   model: {fileID: 0}
-  attackCost: 0
   attackValue: 4
   healthValue: 5
-  attackDirs: 00000000
+  attackDirs: 0000000002000000

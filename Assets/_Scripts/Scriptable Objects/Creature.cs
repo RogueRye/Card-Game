@@ -6,7 +6,6 @@ using UnityEngine;
 public class Creature : Card
 {
 
-    public int attackCost;
     public int attackValue;
     public int healthValue;
 

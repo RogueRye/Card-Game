@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
+    public static Board instance;
 
+    public RectTransform board;
     public Slot slotPrefab;
 
     [Range(3, 10)]
@@ -19,6 +21,8 @@ public class Board : MonoBehaviour
 
     public void Awake()
     {
+        if (instance == null)
+            instance = this;
         CreateFields();
 
     }
