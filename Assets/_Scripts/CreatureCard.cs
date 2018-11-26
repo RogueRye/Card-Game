@@ -114,8 +114,28 @@ public class CreatureCard : CardHolder, IPointerUpHandler
                 rt.position = globalMousePos;
             else if(thisPlayer.currentPhase == TurnPhase.Combat)
             {
-                lineRenderer.SetPosition(0, rt.position);
-                lineRenderer.SetPosition(1, globalMousePos);
+                lineRenderer.SetPosition(0, rt.position + Vector3.up * .1f);
+                if (eventData.hovered.Count != 0)
+                {
+                    var linePost = eventData.hovered[0].transform.position;
+                    //linePost.z = linePost.y;
+                    linePost.y = transform.position.y + .1f;
+                    //linePost.z = 10f;
+                    lineRenderer.SetPosition(1, linePost);
+                }
+                else
+                {
+                    RaycastHit hit;
+                    var linePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if(Physics.Raycast(linePos, out hit))
+                    {
+                        var newPost = hit.point;
+                        newPost.y = transform.position.y + .1f;
+                        lineRenderer.SetPosition(1, newPost);
+                    }
+                    else
+                        lineRenderer.SetPosition(1, lineRenderer.GetPosition(0));
+                }
             }
         }
 
@@ -126,6 +146,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
             return;
 
+        thisPlayer.combatOptionsMenu.gameObject.SetActive(false);
         prevPosition = transform.position;
     }
 
@@ -163,8 +184,9 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         }
         else if(thisPlayer.currentPhase == TurnPhase.Combat)
         {
-            lineRenderer.SetPosition(0, Vector3.zero);
-            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(0, Vector3.up);
+            lineRenderer.SetPosition(1, Vector3.up);
+
         }
 
     }

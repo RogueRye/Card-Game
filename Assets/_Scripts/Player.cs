@@ -131,7 +131,8 @@ public class Player : MonoBehaviour {
 
         currentPhase = TurnPhase.Combat;
 
-        CamBehaviour.singleton.SwitchToPosition(1);
+        if(!hasAI)
+            CamBehaviour.singleton.SwitchToPosition(1);
     }
 
     public void Attack()
@@ -155,6 +156,9 @@ public class Player : MonoBehaviour {
 
     public void EndTurn()
     {
+        if(!hasAI)
+            CamBehaviour.singleton.SwitchToPosition(0);
+
         currentPhase = TurnPhase.NotTurnMyTurn;
         opponent.StartTurn();
     }

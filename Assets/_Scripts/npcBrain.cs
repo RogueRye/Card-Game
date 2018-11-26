@@ -10,14 +10,14 @@ public class npcBrain : MonoBehaviour
     bool isPickingCard = false;
     bool isPickingSlot = false;
     int cardsPlayed = 0;
+
     private void Start()
     {
         controller = GetComponent<Player>();
     }
 
     private void Update()
-    {
-       
+    {       
         PickAction();
     }
 
@@ -30,8 +30,8 @@ public class npcBrain : MonoBehaviour
                 cardsPlayed = 0;
                 break;
             case TurnPhase.Main:
-                if (cardsPlayed >= 1)
-                    controller.EndTurn();
+                if (cardsPlayed >= 3 || controller.GetAP() < 1)
+                    controller.StartAttackPhase();
                 else if (controller.selectedCard == null)
                     PickRandomCard();
                 break;
@@ -40,6 +40,7 @@ public class npcBrain : MonoBehaviour
                     PickSlot();
                 break;
             case TurnPhase.Combat:
+                PickAttacker();
                 break;
             case TurnPhase.Attacking:
                 break;
@@ -50,14 +51,6 @@ public class npcBrain : MonoBehaviour
 
     void PickRandomCard()
     {
-        //var randSeed = Random.Range(0, controller.hand.Count);
-        //controller.SelectCard(controller.hand[randSeed]);
-        //if (controller.selectedCard != null)
-        //{
-        //    controller.CastCard();
-        //    cardsPlayed++;
-        //}
-
         if (!isPickingCard)
             StartCoroutine(AIPickCard());
     }
@@ -86,24 +79,50 @@ public class npcBrain : MonoBehaviour
     IEnumerator AIPickSlot()
     {
         isPickingSlot = true;
-       
 
+        int i = 1;
         foreach(var slot in controller.field)
         {
             var rand = Random.Range(0, 100);
-            if (!slot.IsBlocked && rand <= 40)
+            if (!slot.IsBlocked && rand <= 10 * i)
             {
                 controller.selectedSlot = slot;
                 controller.selectedCard.ToggleVisible(true);
             }
+            i++;
         }
 
         if (controller.selectedSlot == null)
             controller.DelselectCard(true);
-        controller.EndTurn();
+
+       // controller.EndTurn();
         yield return null;
         isPickingSlot = false;
       
+    }
+
+    void PickAttacker()
+    {
+        if (!isPickingCard)
+            StartCoroutine(AIPickAttacker());
+    }
+
+    IEnumerator AIPickAttacker()
+    {
+        isPickingCard = true;
+
+        foreach(var potential in controller.creaturesOnField)
+        {
+            if (!potential.canAttack)
+            {
+                continue;
+            }
+
+        }
+
+        yield return null;
+
+        isPickingCard = false;
     }
 
 }
