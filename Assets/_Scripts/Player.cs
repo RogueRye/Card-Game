@@ -258,8 +258,7 @@ public class Player : MonoBehaviour {
                             {
                                 creaturesInRange++;
                                 tempSlot.Unlock();                                
-                            }
-   
+                            }   
                         }
                     }
                     if (creaturesInRange == 0)
@@ -269,13 +268,16 @@ public class Player : MonoBehaviour {
                     creaturesInRange = 0;
                     for (int i = 0; i < 2; i++)
                     {
-                        var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
-                        if (tempSlot != null)
+                        if (attackingCreature.currentSlot.id_Y +1 < opponent.field.GetLength(i))
                         {
-                            if (tempSlot.currentCard != null)
+                            var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
+                            if (tempSlot != null)
                             {
-                                tempSlot.Unlock();
-                                creaturesInRange++;
+                                if (tempSlot.currentCard != null)
+                                {
+                                    tempSlot.Unlock();
+                                    creaturesInRange++;
+                                }
                             }
                         }
                     }
@@ -286,13 +288,16 @@ public class Player : MonoBehaviour {
                     creaturesInRange = 0;
                     for (int i = 0; i < 2; i++)
                     {
-                        var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y -1];
-                        if (tempSlot != null)
+                        if (attackingCreature.currentSlot.id_Y - 1 >= 0)
                         {
-                            if (tempSlot.currentCard != null)
+                            var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y - 1];
+                            if (tempSlot != null)
                             {
-                                tempSlot.Unlock();
-                                creaturesInRange++;
+                                if (tempSlot.currentCard != null)
+                                {
+                                    tempSlot.Unlock();
+                                    creaturesInRange++;
+                                }
                             }
                         }
                     }

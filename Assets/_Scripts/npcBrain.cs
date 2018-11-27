@@ -30,8 +30,8 @@ public class npcBrain : MonoBehaviour
                 cardsPlayed = 0;
                 break;
             case TurnPhase.Main:
-                if (cardsPlayed >= 3 || controller.GetAP() < 1)
-                    controller.StartAttackPhase();
+                if (cardsPlayed >= 1 || controller.GetAP() < 1)
+                    controller.EndTurn();
                 else if (controller.selectedCard == null)
                     PickRandomCard();
                 break;
@@ -84,10 +84,12 @@ public class npcBrain : MonoBehaviour
         foreach(var slot in controller.field)
         {
             var rand = Random.Range(0, 100);
+            Debug.Log(i);
             if (!slot.IsBlocked && rand <= 10 * i)
             {
                 controller.selectedSlot = slot;
                 controller.selectedCard.ToggleVisible(true);
+                break;
             }
             i++;
         }

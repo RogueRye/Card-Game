@@ -81,12 +81,13 @@ public class Slot : MonoBehaviour, IDragHandler
 
     public void OnTouchUp()
     {
+        
         if (!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
         {            
             owner.selectedSlot = this;
         }
         else if(!isLocked && owner.opponent.currentPhase == TurnPhase.Attacking)
-        {
+        {          
             owner.opponent.selectedSlot = this;
         }
     }

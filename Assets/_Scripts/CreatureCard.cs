@@ -13,7 +13,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     public Material lineMat;
     public Creature thisCardC;
     public Slot currentSlot;
-    GameObject model;
+    [HideInInspector]
+    public CreatureVisual model;
 
 
     LineRenderer lineRenderer;
@@ -45,6 +46,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         if (!targetSlot.IsBlocked && !targetSlot.IsLocked)
         {
+            model = Instantiate(thisCardC.model, transform).GetComponent<CreatureVisual>();
+            model.Init(this);
             currentSlot = targetSlot;
             canAttack = true;
             inSlot = true;
@@ -60,7 +63,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     public void Attack(CreatureCard target)
     {
-
+        model.anim.Play("Attack");
+        target.model.anim.Play("Hit");
         target.TakeDamage(thisCardC.attackValue);
         TakeDamage(target.thisCardC.attackValue);
         target.health.text = target.GetHealth().ToString();
@@ -71,21 +75,18 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         if (target.GetHealth() <= 0)
         {
-            target.health.text = target.thisCardC.healthValue.ToString();
-            target.health.color = Color.white;
-            target.thisPlayer.DiscardCard(target);           
+            Die();        
         }
         if (GetHealth() <=0)
         {
-            health.text = thisCardC.healthValue.ToString();
-            health.color = Color.white;
-            thisPlayer.DiscardCard(this);
+            Die();
         }
 
     }
 
     public void Attack(Player target)
     {
+        model.anim.Play("Attack");
         target.TakeDamage(thisCardC.attackValue);
         canAttack = false;
     }
@@ -112,30 +113,37 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         {
             if(thisPlayer.currentPhase == TurnPhase.Main)
                 rt.position = globalMousePos;
-            else if(thisPlayer.currentPhase == TurnPhase.Combat)
+            else if(thisPlayer.currentPhase == TurnPhase.Attacking)
             {
                 lineRenderer.SetPosition(0, rt.position + Vector3.up * .1f);
-                if (eventData.hovered.Count != 0)
+
+                RaycastHit hit;
+                var linePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(linePos, out hit))
                 {
-                    var linePost = eventData.hovered[0].transform.position;
-                    //linePost.z = linePost.y;
-                    linePost.y = transform.position.y + .1f;
-                    //linePost.z = 10f;
-                    lineRenderer.SetPosition(1, linePost);
+                    var newPost = hit.point;
+                    newPost.y = transform.position.y + .1f;
+                    lineRenderer.SetPosition(1, newPost);
                 }
                 else
+                    lineRenderer.SetPosition(1, lineRenderer.GetPosition(0));
+
+                if (eventData.hovered.Count != 0)
                 {
-                    RaycastHit hit;
-                    var linePos = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if(Physics.Raycast(linePos, out hit))
+                    var slot = eventData.hovered[0].GetComponent<Slot>();
+                    if (slot != null)
                     {
-                        var newPost = hit.point;
-                        newPost.y = transform.position.y + .1f;
-                        lineRenderer.SetPosition(1, newPost);
+                        if (!slot.IsLocked)
+                        {
+                            var linePost = slot.transform.position;
+
+                            //linePost.z = linePost.y;
+                            linePost.y = transform.position.y + .1f;
+                            //linePost.z = 10f;
+                            lineRenderer.SetPosition(1, linePost);
+                        }
                     }
-                    else
-                        lineRenderer.SetPosition(1, lineRenderer.GetPosition(0));
-                }
+                }               
             }
         }
 
@@ -148,6 +156,12 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         thisPlayer.combatOptionsMenu.gameObject.SetActive(false);
         prevPosition = transform.position;
+
+        if(thisPlayer.currentPhase == TurnPhase.Combat)
+        {
+            thisPlayer.Attack();
+        }
+
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -165,9 +179,10 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         if (thisPlayer.currentPhase == TurnPhase.Main)
         {
+            transform.position = prevPosition;
             if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
             {
-                Debug.Log("slot exits");
+                
                 thisPlayer.CastCard();
                 foreach (var thing in results)
                 {
@@ -178,15 +193,24 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             }
             else
             {
-                transform.position = prevPosition;
+               
                 thisPlayer.DelselectCard(true);
             }
         }
-        else if(thisPlayer.currentPhase == TurnPhase.Combat)
+        else if(thisPlayer.currentPhase == TurnPhase.Attacking)
         {
             lineRenderer.SetPosition(0, Vector3.up);
             lineRenderer.SetPosition(1, Vector3.up);
-
+            if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
+            {
+                Debug.Log("slot exits");                
+                foreach (var thing in results)
+                {
+                    var slot = thing.gameObject.GetComponent<Slot>();
+                    if (slot != null)
+                        slot.OnTouchUp();
+                }
+            }
         }
 
     }
@@ -225,5 +249,24 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     public int GetHealth()
     {
         return currentHealth;
+    }
+
+    bool isDying = false;
+    public void Die()
+    {
+        if (!isDying)
+            StartCoroutine(Dying());
+    }
+
+    IEnumerator Dying()
+    {
+        isDying = true;
+        model.anim.Play("Die");
+        yield return new WaitForSeconds(2);
+        health.text = thisCardC.healthValue.ToString();
+        health.color = Color.white;
+        thisPlayer.DiscardCard(this);
+        Destroy(model.gameObject);
+        isDying = false;
     }
 }
