@@ -7,4 +7,12 @@ AnimatorOverrideController:
   m_PrefabInternal: {fileID: 0}
   m_Name: Tree Ent
   m_Controller: {fileID: 9100000, guid: 81a447375ef9709428f70c34866fed81, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 39ee6fa27f4e4274aafd0365a64d8fe6, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: a82c08a837f87b24ba00af134a343365, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5e242dca57d01b143901bfac16896123, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 054b56998887e7144894cf6ad9a124e0, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5dd5e98359ab2ed43bd7084bd2bea5ab, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 7691f3428eb002748ad2910856d81830, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: eaf74aecfd04d5548a903f24c36175cd, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 9e186f69c132ad24ea5891e30d86a70e, type: 3}

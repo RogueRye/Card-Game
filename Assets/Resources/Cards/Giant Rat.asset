@@ -18,8 +18,7 @@ MonoBehaviour:
 
     Attack Direction(s): Forward'
   sprite: {fileID: 0}
-  model: {fileID: 0}
-  attackCost: 0
+  model: {fileID: 1969290936885528, guid: 426cdb645097e8b40839e7a02d678602, type: 2}
   attackValue: 3
   healthValue: 1
   attackDirs: 00000000

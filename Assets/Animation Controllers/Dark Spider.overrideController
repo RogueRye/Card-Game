@@ -7,4 +7,12 @@ AnimatorOverrideController:
   m_PrefabInternal: {fileID: 0}
   m_Name: Dark Spider
   m_Controller: {fileID: 9100000, guid: 81a447375ef9709428f70c34866fed81, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 39ee6fa27f4e4274aafd0365a64d8fe6, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: b7338372f3a68294ba3b5f04b73a8f0d, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5e242dca57d01b143901bfac16896123, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: aace99c0361559c40812647bc312c165, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: eaf74aecfd04d5548a903f24c36175cd, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 070aabe7d8eb99a48b79b14e5aa24650, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5dd5e98359ab2ed43bd7084bd2bea5ab, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 46448593c80468a4c95b7f1be00935a4, type: 3}

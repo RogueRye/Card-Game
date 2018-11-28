@@ -7,4 +7,12 @@ AnimatorOverrideController:
   m_PrefabInternal: {fileID: 0}
   m_Name: Wyvern
   m_Controller: {fileID: 9100000, guid: 81a447375ef9709428f70c34866fed81, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5e242dca57d01b143901bfac16896123, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 1f08be8c2677b4141b074c61150d2f67, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5dd5e98359ab2ed43bd7084bd2bea5ab, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 753e2193fa2e6c849b00f92867eeeb9b, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: eaf74aecfd04d5548a903f24c36175cd, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 042ad9464b0683a488d4f39b4bd681f0, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 39ee6fa27f4e4274aafd0365a64d8fe6, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 76681e918c3736c4585f10e042e1db8e, type: 3}

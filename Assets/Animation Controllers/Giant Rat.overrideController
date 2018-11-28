@@ -7,4 +7,12 @@ AnimatorOverrideController:
   m_PrefabInternal: {fileID: 0}
   m_Name: Giant Rat
   m_Controller: {fileID: 9100000, guid: 81a447375ef9709428f70c34866fed81, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5e242dca57d01b143901bfac16896123, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 0fb4a0ec3c8b03f45b7d1b044eb7c35a, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: eaf74aecfd04d5548a903f24c36175cd, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 13b1282f305078147acf537f69fce75a, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 39ee6fa27f4e4274aafd0365a64d8fe6, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 1c14ae50b0cf3994cb716fb67c1222d5, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5dd5e98359ab2ed43bd7084bd2bea5ab, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: c65eb61a102f2d44b9125f9ff0eb8e01, type: 3}
