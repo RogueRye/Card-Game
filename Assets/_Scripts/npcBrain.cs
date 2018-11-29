@@ -83,8 +83,7 @@ public class npcBrain : MonoBehaviour
         int i = 1;
         foreach(var slot in controller.field)
         {
-            var rand = Random.Range(0, 100);
-            Debug.Log(i);
+            var rand = Random.Range(0, 100);            
             if (!slot.IsBlocked && rand <= 10 * i)
             {
                 controller.selectedSlot = slot;

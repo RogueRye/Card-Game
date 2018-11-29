@@ -55,7 +55,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
         return !transform.Find("CardBack").gameObject.activeInHierarchy;
     }
 
-    public void Hover()
+    public virtual void Hover()
     {
         if (!Input.GetMouseButton(0))
         {

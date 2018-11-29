@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Harpy
   type: 0
-  castCost: 0
+  castCost: 3
   description: "Half-woman, half-bird, she will claw you to shreds! \nAttack Direction(s):
     Left and Right"
   sprite: {fileID: 21300000, guid: 1f2cda5dafe68b747a7f56fad6478096, type: 3}

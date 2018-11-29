@@ -46,6 +46,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         if (!targetSlot.IsBlocked && !targetSlot.IsLocked)
         {
+            //ToggleVisible(false);
             model = Instantiate(thisCardC.model, transform).GetComponent<CreatureVisual>();
             model.Init(this);
             currentSlot = targetSlot;
@@ -75,7 +76,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         if (target.GetHealth() <= 0)
         {
-            Die();        
+            target.Die();        
         }
         if (GetHealth() <=0)
         {
@@ -111,7 +112,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(m_DraggingPlane, eventData.position, eventData.pressEventCamera, out globalMousePos))
         {
-            if(thisPlayer.currentPhase == TurnPhase.Main)
+            if(thisPlayer.currentPhase == TurnPhase.Main && thisPlayer.hand.Contains(this))
                 rt.position = globalMousePos;
             else if(thisPlayer.currentPhase == TurnPhase.Attacking)
             {
@@ -177,10 +178,10 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
 
-        if (thisPlayer.currentPhase == TurnPhase.Main)
+        if (thisPlayer.currentPhase == TurnPhase.Main )
         {
             transform.position = prevPosition;
-            if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
+            if (results.Exists(e => e.gameObject.GetComponent<Slot>()) && thisPlayer.hand.Contains(this))
             {
                 
                 thisPlayer.CastCard();
@@ -235,6 +236,14 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         }
     }
 
+    public override void Hover()
+    {
+        if (inSlot && !canAttack)
+            return; 
+
+        base.Hover();
+
+    }
 
     public void InitHealth()
     {
@@ -261,7 +270,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     IEnumerator Dying()
     {
         isDying = true;
-        model.anim.Play("Die");
+        model.anim.Play("Death");
         yield return new WaitForSeconds(2);
         health.text = thisCardC.healthValue.ToString();
         health.color = Color.white;

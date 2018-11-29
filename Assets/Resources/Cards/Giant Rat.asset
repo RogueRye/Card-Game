@@ -13,11 +13,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Giant Rat
   type: 0
-  castCost: 2
+  castCost: 1
   description: 'Give it some cheese~
 
     Attack Direction(s): Forward'
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: a9c5e0abc81588f44b3ddfbcb2eb7200, type: 3}
   model: {fileID: 1969290936885528, guid: 426cdb645097e8b40839e7a02d678602, type: 2}
   attackValue: 3
   healthValue: 1

@@ -13,13 +13,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Dark Spider
   type: 0
-  castCost: 1
+  castCost: 2
   description: 'Combines Dark and Spider. A true nightmare!
 
     Attack Direction(s): Forward and Right'
-  sprite: {fileID: 0}
-  model: {fileID: 0}
-  attackCost: 0
+  sprite: {fileID: 21300000, guid: 7010c07d1263a7a4d8ce38670b66e726, type: 3}
+  model: {fileID: 1969290936885528, guid: 5cc3cf6eee59b5f45b74fdb76d1544ca, type: 2}
   attackValue: 2
   healthValue: 2
   attackDirs: 02000000

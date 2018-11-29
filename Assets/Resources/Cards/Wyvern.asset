@@ -17,9 +17,8 @@ MonoBehaviour:
   description: 'The Mighty Wyvern strikes from above!
 
     Attack Direction(s): Forward, Left, Right'
-  sprite: {fileID: 0}
-  model: {fileID: 0}
-  attackCost: 0
+  sprite: {fileID: 21300000, guid: f3959a60b3a139e41837b5d9a63b9eee, type: 3}
+  model: {fileID: 1969290936885528, guid: 6fb1a04df2caf21448d78eaec54787a4, type: 2}
   attackValue: 9
   healthValue: 7
   attackDirs: 000000000100000002000000

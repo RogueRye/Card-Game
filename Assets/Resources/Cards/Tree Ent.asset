@@ -15,9 +15,8 @@ MonoBehaviour:
   type: 0
   castCost: 3
   description: "Living Tree. Its weak but sturdy \nAttack Direction(s): Forward"
-  sprite: {fileID: 0}
-  model: {fileID: 0}
-  attackCost: 0
+  sprite: {fileID: 21300000, guid: 23a01c056fa28234fada3eb78820ec05, type: 3}
+  model: {fileID: 1969290936885528, guid: 0f4eb2223beb3234f8dec63b62086c3e, type: 2}
   attackValue: 2
   healthValue: 10
   attackDirs: 00000000

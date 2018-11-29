@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     #region Public Fields
 
@@ -21,7 +22,7 @@ public class Player : MonoBehaviour {
     public Transform optionsMenu;
     public Transform combatOptionsMenu;
     public RectTransform deckSpot;
-    public RectTransform gySpot; 
+    public RectTransform gySpot;
     public GameObject TextPanel;
     public TMP_Text closeUp;
     public TurnPhase currentPhase;
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour {
     Stack<CardHolder> deckStack = new Stack<CardHolder>();
     Stack<CardHolder> gyStack = new Stack<CardHolder>();
     HorizontalLayoutGroup layout;
-    
+
     #endregion
 
     #region Private Values
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour {
     bool input2;
     #endregion
 
-    
+
     virtual protected void Start()
     {
         graphicRaycaster = GetComponentInChildren<GraphicRaycaster>();
@@ -73,16 +74,16 @@ public class Player : MonoBehaviour {
         field = (isPlayerA) ? Board.fieldA : Board.fieldB;
 
         playerSlot.Init(-1, -1);
-        foreach(var slot in field)
+        foreach (var slot in field)
         {
             slot.Unlock();
             slot.owner = this;
         }
-        
+
         deck.Shuffle();
 
         StackDeck();
-      
+
         DrawCard(startingHandSize);
 
         if (isPlayerA)
@@ -99,7 +100,7 @@ public class Player : MonoBehaviour {
     #region Turn State Calls
     public void StartTurn()
     {
-        if(currentPhase != TurnPhase.Start)
+        if (currentPhase != TurnPhase.Start)
         {
             StartCoroutine(TurnStart());
         }
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour {
 
         currentPhase = TurnPhase.Combat;
 
-        if(!hasAI)
+        if (!hasAI)
             CamBehaviour.singleton.SwitchToPosition(1);
     }
 
@@ -156,7 +157,7 @@ public class Player : MonoBehaviour {
 
     public void EndTurn()
     {
-        if(!hasAI)
+        if (!hasAI)
             CamBehaviour.singleton.SwitchToPosition(0);
 
         currentPhase = TurnPhase.NotTurnMyTurn;
@@ -188,17 +189,17 @@ public class Player : MonoBehaviour {
     private IEnumerator PickingCard()
     {
         currentPhase = TurnPhase.Main;
-        while(selectedCard == null)
+        while (selectedCard == null)
         {
 
             yield return null;
-        }        
+        }
     }
 
     private IEnumerator CastingCard()
-    {  
+    {
         currentPhase = TurnPhase.Casting;
-        if(optionsMenu != null)
+        if (optionsMenu != null)
             optionsMenu.gameObject.SetActive(false);
 
         if (selectedCard is CreatureCard)
@@ -213,22 +214,22 @@ public class Player : MonoBehaviour {
                 //Draw line
                 yield return null;
             }
-          
+
             if (selectedCard != null && selectedSlot.currentCard == null)
             {
                 selectedCard.Cast(selectedSlot);
                 creaturesOnField.Add((CreatureCard)selectedCard);
-                selectedSlot.Block();               
+                selectedSlot.Block();
                 DelselectCard();
                 selectedSlot = null;
             }
         }
-        else if(selectedCard is SpellCard)
+        else if (selectedCard is SpellCard)
         {
             //Do different Things
         }
 
-       currentPhase = TurnPhase.Main;
+        currentPhase = TurnPhase.Main;
     }
 
     private IEnumerator WaitForAttackTarget(CreatureCard attackingCreature)
@@ -243,32 +244,33 @@ public class Player : MonoBehaviour {
             slot.Lock();
         int creaturesInRange = 0;
         bool canAttackPlayer = false;
-        foreach(var dir in attackingCreature.thisCardC.attackDirs)
+        foreach (var dir in attackingCreature.thisCardC.attackDirs)
         {
-            switch(dir)
+            switch (dir)
             {
                 case Creature.AttackDir.Forward:
                     creaturesInRange = 0;
                     for (int i = 0; i < 2; i++)
                     {
                         var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y];
-                        if (tempSlot != null )
+                        if (tempSlot != null)
                         {
                             if (tempSlot.currentCard != null)
                             {
                                 creaturesInRange++;
-                                tempSlot.Unlock();                                
-                            }   
+                                tempSlot.Unlock();
+                            }
                         }
                     }
                     if (creaturesInRange == 0)
                         canAttackPlayer = true;
                     break;
                 case Creature.AttackDir.Left:
-                    creaturesInRange = 0;
-                    for (int i = 0; i < 2; i++)
+                    if (attackingCreature.currentSlot.id_Y + 1 < 5)
                     {
-                        if (attackingCreature.currentSlot.id_Y +1 < opponent.field.GetLength(i))
+                        for (int i = 0; i < 2; i++)
+
+
                         {
                             var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
                             if (tempSlot != null)
@@ -286,10 +288,12 @@ public class Player : MonoBehaviour {
                     break;
                 case Creature.AttackDir.Right:
                     creaturesInRange = 0;
-                    for (int i = 0; i < 2; i++)
+                    Debug.Log(attackingCreature.currentSlot.id_Y - 1);
+                    if (attackingCreature.currentSlot.id_Y - 1 >= 0)
                     {
-                        if (attackingCreature.currentSlot.id_Y - 1 >= 0)
+                        for (int i = 0; i < 2; i++)
                         {
+
                             var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y - 1];
                             if (tempSlot != null)
                             {
@@ -306,8 +310,9 @@ public class Player : MonoBehaviour {
                     break;
             }
         }
-        if(canAttackPlayer)
-        {          
+
+        if (canAttackPlayer)
+        {
             opponent.playerSlot.Unlock();
         }
 
@@ -326,7 +331,7 @@ public class Player : MonoBehaviour {
                 else if (selectedSlot == opponent.playerSlot)
                     attackingCreature.Attack(opponent);
                 Debug.Log("Attack now!");
-            }          
+            }
             currentPhase = TurnPhase.Combat;
         }
         DelselectCard();
@@ -345,7 +350,7 @@ public class Player : MonoBehaviour {
         if (currentPhase == TurnPhase.NotTurnMyTurn)
             return;
 
-   
+
         if (!hasAI)
         {
             GetInput();
@@ -382,7 +387,7 @@ public class Player : MonoBehaviour {
     /// </summary>
     /// <param name="numOfCards">Number of cards to draw</param>
     public void DrawCard(int numOfCards)
-    {  
+    {
         for (int i = 0; i < numOfCards; i++)
         {
             if (deckStack.Count == 0)
@@ -390,22 +395,22 @@ public class Player : MonoBehaviour {
                 Debug.Log("out of cards");
                 return;
             }
-          
+
             var newCard = deckStack.Pop();
 
             //Only reveal card if its the players and not the AI
-            if(isPlayerA)
+            if (isPlayerA)
                 newCard.ToggleVisible(true);
 
             if (hand.Count > 7)
             {
                 DiscardCard(newCard);
-                              
+
             }
             else
             {
                 hand.Add(newCard);
-                newCard.transform.SetParent(handObj);                
+                newCard.transform.SetParent(handObj);
                 newCard.transform.localRotation = Quaternion.Euler(Vector3.up * 180);
                 newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .01f * hand.Count);
 
@@ -414,14 +419,14 @@ public class Player : MonoBehaviour {
                 else if (hand.Count < 6)
                     layout.spacing = .7f;
             }
-        }   
+        }
     }
 
     /// <summary>
     /// Send Card to the graveyard and add it to the GY stack/list
     /// </summary>
     /// <param name="card">card to discard</param>
-     public void DiscardCard(CardHolder card)
+    public void DiscardCard(CardHolder card)
     {
         //Unselect it, add to to stack, reset transform to the graveyard
         DelselectCard();
@@ -444,14 +449,14 @@ public class Player : MonoBehaviour {
             temp.inSlot = false;
             creaturesOnField.Remove(temp);
         }
-        
+
     }
 
     /// <summary>
     /// Default override to discard the currently selected card. Used for UI buttons/Testing
     /// </summary>
     public void DiscardCard()
-    {       
+    {
         if (selectedCard != null)
         {
             DiscardCard(selectedCard);
@@ -466,7 +471,7 @@ public class Player : MonoBehaviour {
     {
         if (hand.Contains(card) && currentPhase == TurnPhase.Main)
         {
-            DelselectCard();
+            DelselectCard(true);
             selectedCard = card;
             if (optionsMenu != null)
             {
@@ -476,7 +481,7 @@ public class Player : MonoBehaviour {
 
             selectedCard.transform.localPosition += (Vector3.up * 2.5f);
         }
-        else if(currentPhase == TurnPhase.Combat && card is CreatureCard)
+        else if (currentPhase == TurnPhase.Combat && card is CreatureCard)
         {
             var temp = card as CreatureCard;
             DelselectCard();
@@ -485,7 +490,7 @@ public class Player : MonoBehaviour {
             {
                 combatOptionsMenu.gameObject.SetActive(true);
                 combatOptionsMenu.gameObject.transform.position = Input.mousePosition;
-            }          
+            }
         }
     }
 
@@ -497,7 +502,7 @@ public class Player : MonoBehaviour {
     {
         if (selectedCard == null)
             return;
-        if(needsDisplacing)
+        if (needsDisplacing)
             selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
 
         selectedCard = null;
@@ -514,13 +519,13 @@ public class Player : MonoBehaviour {
     /// </summary>
     public void ShowText()
     {
-        
+
         if (selectedCard == null)
             return;
 
-        if(TextPanel != null)
+        if (TextPanel != null)
             TextPanel.SetActive(true);
-       
+
         closeUp.text = selectedCard.thisCard.description;
     }
 

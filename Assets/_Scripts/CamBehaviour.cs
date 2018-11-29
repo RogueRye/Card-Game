@@ -28,7 +28,8 @@ public class CamBehaviour : MonoBehaviour {
     private void Start()
     {
         curPosIndex = 0;
-        ChangePosition(positions[curPosIndex]);
+        SwitchToPosition(0);
+
     }
 
     // Update is called once per frame
@@ -62,7 +63,6 @@ public class CamBehaviour : MonoBehaviour {
 
     IEnumerator ChangePosition(Transform targetPos)
     {
-        Debug.Log("transitioning");
         inTransition = true;
         
         while (Vector3.Distance(transform.position, targetPos.position) > 0.1f)
