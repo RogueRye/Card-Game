@@ -21,4 +21,4 @@ MonoBehaviour:
   model: {fileID: 1969290936885528, guid: 5cc3cf6eee59b5f45b74fdb76d1544ca, type: 2}
   attackValue: 2
   healthValue: 2
-  attackDirs: 02000000
+  attackDirs: 0000000002000000

@@ -98,7 +98,6 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
             return;
 
-
         RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;
 
         if(thisPlayer.currentPhase != TurnPhase.Main)
@@ -137,7 +136,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
                         if (!slot.IsLocked)
                         {
                             var linePost = slot.transform.position;
-
+                           
                             //linePost.z = linePost.y;
                             linePost.y = transform.position.y + .1f;
                             //linePost.z = 10f;
