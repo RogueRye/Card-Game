@@ -31,7 +31,6 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             attack.text = thisCardC.attackValue.ToString();
             health.text = thisCardC.healthValue.ToString();
             lineRenderer = GetComponent<LineRenderer>();
-
             InitHealth();
 
         }
@@ -46,7 +45,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         if (!targetSlot.IsBlocked && !targetSlot.IsLocked)
         {
-            //ToggleVisible(false);
+            ToggleVisible(true);
             model = Instantiate(thisCardC.model, transform).GetComponent<CreatureVisual>();
             model.Init(this);
             currentSlot = targetSlot;
@@ -151,29 +150,26 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
+        base.OnBeginDrag(eventData);
+
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
             return;
 
         thisPlayer.combatOptionsMenu.gameObject.SetActive(false);
         prevPosition = transform.position;
 
-        if(thisPlayer.currentPhase == TurnPhase.Combat)
+        if (thisPlayer.currentPhase == TurnPhase.Combat)
         {
             thisPlayer.Attack();
         }
-
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
-            return;
-
-        
+            return;        
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
-
         pointerData.position = Input.mousePosition; // use the position from controller as start of raycast instead of mousePosition.
-
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
 
@@ -194,7 +190,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             else
             {
                
-                thisPlayer.DelselectCard(true);
+                thisPlayer.DelselectCard();
             }
         }
         else if(thisPlayer.currentPhase == TurnPhase.Attacking)
@@ -211,12 +207,19 @@ public class CreatureCard : CardHolder, IPointerUpHandler
                         slot.OnTouchUp();
                 }
             }
+            else
+            {
+                thisPlayer.DelselectCard();
+            }
         }
 
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public override void OnPointerUp(PointerEventData eventData)
     {
+
+        base.OnPointerUp(eventData);
+
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
 
         pointerData.position = Input.mousePosition; // use the position from controller as start of raycast instead of mousePosition.
@@ -269,7 +272,10 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     IEnumerator Dying()
     {
         isDying = true;
-        model.anim.Play("Death");
+        model.anim.SetBool("Dead", true);
+        if(thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+            currentSlot.Lock();
+        currentSlot.StopHover();
         yield return new WaitForSeconds(2);
         health.text = thisCardC.healthValue.ToString();
         health.color = Color.white;

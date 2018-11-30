@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler {
+public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerUpHandler {
 
     public Card thisCard;
     public Player thisPlayer;
@@ -104,7 +104,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        SelectCard();
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -112,7 +112,8 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
         throw new System.NotImplementedException();
     }
 
-
-
-
+    public virtual void OnPointerUp(PointerEventData eventData)
+    {
+        SelectCard();
+    }
 }

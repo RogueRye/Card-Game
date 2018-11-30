@@ -318,19 +318,19 @@ public class Player : MonoBehaviour
 
         while (selectedSlot == null)
         {
-            if (selectedCard == null || currentPhase == TurnPhase.Main)
+            if (selectedCard != attackingCreature || currentPhase == TurnPhase.Main)
                 break;
             yield return null;
         }
         if (currentPhase != TurnPhase.Main)
         {
-            if (selectedCard != null)
+            if (selectedCard == attackingCreature)
             {
                 if (selectedSlot.currentCard != null)
                     attackingCreature.Attack(selectedSlot.currentCard);
                 else if (selectedSlot == opponent.playerSlot)
                     attackingCreature.Attack(opponent);
-                Debug.Log("Attack now!");
+                
             }
             currentPhase = TurnPhase.Combat;
         }
@@ -464,28 +464,28 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Pick the card, show options menu, move card position to indicate selection
+    /// Pick the card, show options menu, indicate selection
     /// </summary>
     /// <param name="card">card to select</param>
     public void SelectCard(CardHolder card)
     {
+        DelselectCard();
+        selectedCard = card;
         if (hand.Contains(card) && currentPhase == TurnPhase.Main)
-        {
-            DelselectCard(true);
-            selectedCard = card;
+        {          
+            
             if (optionsMenu != null)
             {
                 optionsMenu.gameObject.SetActive(true);
                 optionsMenu.gameObject.transform.position = Input.mousePosition;
             }
 
-            selectedCard.transform.localPosition += (Vector3.up * 2.5f);
+            //selectedCard.transform.localPosition += (Vector3.up * 2.5f);
         }
         else if (currentPhase == TurnPhase.Combat && card is CreatureCard)
         {
-            var temp = card as CreatureCard;
-            DelselectCard();
-            selectedCard = card;
+            var temp = card as CreatureCard;            
+            
             if (combatOptionsMenu != null && temp.canAttack)
             {
                 combatOptionsMenu.gameObject.SetActive(true);
@@ -502,8 +502,8 @@ public class Player : MonoBehaviour
     {
         if (selectedCard == null)
             return;
-        if (needsDisplacing)
-            selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
+        //if (needsDisplacing)
+        //    selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
 
         selectedCard = null;
         if (optionsMenu != null)
@@ -519,7 +519,6 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ShowText()
     {
-
         if (selectedCard == null)
             return;
 

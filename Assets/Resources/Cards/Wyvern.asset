@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Wyvern
   type: 0
-  castCost: 8
+  castCost: 0
   description: 'The Mighty Wyvern strikes from above!
 
     Attack Direction(s): Forward, Left, Right'

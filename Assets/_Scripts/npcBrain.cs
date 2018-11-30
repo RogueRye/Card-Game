@@ -86,15 +86,14 @@ public class npcBrain : MonoBehaviour
             var rand = Random.Range(0, 100);            
             if (!slot.IsBlocked && rand <= 10 * i)
             {
-                controller.selectedSlot = slot;
-                controller.selectedCard.ToggleVisible(true);
+                controller.selectedSlot = slot;              
                 break;
             }
             i++;
         }
 
         if (controller.selectedSlot == null)
-            controller.DelselectCard(true);
+            controller.DelselectCard();
 
        // controller.EndTurn();
         yield return null;

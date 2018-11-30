@@ -7,6 +7,7 @@ using TMPro;
 public class HandleUIBehaviour : MonoBehaviour {
 
     public Slider lifePointSldr;
+    public TMP_Text selectedCard;
     public TMP_Text lifePointTxt;
     [Range(0, 20)]
     public float sliderSpeed = 1;
@@ -52,6 +53,7 @@ public class HandleUIBehaviour : MonoBehaviour {
         }
 
         manaTxt.text = m_Player.GetAP().ToString();
-
+        if(selectedCard != null)
+            selectedCard.text = m_Player.selectedCard == null ? "None" : m_Player.selectedCard.thisCard.cardName;
     }
 }
