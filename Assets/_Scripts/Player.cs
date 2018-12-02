@@ -24,7 +24,6 @@ public class Player : MonoBehaviour
     public RectTransform deckSpot;
     public RectTransform gySpot;
     public GameObject TextPanel;
-    public TMP_Text closeUp;
     public TurnPhase currentPhase;
     public bool hasAI = false;
     #endregion
@@ -471,6 +470,7 @@ public class Player : MonoBehaviour
     {
         DelselectCard();
         selectedCard = card;
+        selectedCard.selectionFX.Play();
         if (hand.Contains(card) && currentPhase == TurnPhase.Main)
         {          
             
@@ -504,7 +504,7 @@ public class Player : MonoBehaviour
             return;
         //if (needsDisplacing)
         //    selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
-
+        selectedCard.selectionFX.Stop();
         selectedCard = null;
         if (optionsMenu != null)
         {
@@ -523,9 +523,13 @@ public class Player : MonoBehaviour
             return;
 
         if (TextPanel != null)
+        {
             TextPanel.SetActive(true);
-
-        closeUp.text = selectedCard.thisCard.description;
+            var displayCard = TextPanel.transform.GetComponentInChildren<CardHolder>();
+            displayCard.Init();
+            displayCard.AssignNewCard(selectedCard.thisCard);
+        }
+       
     }
 
     public void TakeDamage(int power)

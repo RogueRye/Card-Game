@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HandleUIBehaviour : MonoBehaviour {
+public class HandleUIBehaviour : MonoBehaviour
+{
 
     public Slider lifePointSldr;
     public TMP_Text selectedCard;
@@ -16,8 +17,9 @@ public class HandleUIBehaviour : MonoBehaviour {
 
     private Player m_Player;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
 
         m_Player = GetComponent<Player>();
 
@@ -28,14 +30,15 @@ public class HandleUIBehaviour : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
         if (lifePointSldr.value > m_Player.GetLifePoints())
         {
             lifePointSldr.value -= (Time.deltaTime * sliderSpeed);
         }
 
-        if(lifePointSldr.value < m_Player.GetLifePoints())
+        if (lifePointSldr.value < m_Player.GetLifePoints())
         {
             lifePointSldr.value = m_Player.GetLifePoints();
         }
@@ -53,7 +56,7 @@ public class HandleUIBehaviour : MonoBehaviour {
         }
 
         manaTxt.text = m_Player.GetAP().ToString();
-        if(selectedCard != null)
-            selectedCard.text = m_Player.selectedCard == null ? "None" : m_Player.selectedCard.thisCard.cardName;
+        if(selectedCard != null && m_Player.currentPhase != TurnPhase.NotTurnMyTurn)
+            selectedCard.text = m_Player.currentPhase.ToString();
     }
 }

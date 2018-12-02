@@ -9,8 +9,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
 
     public Card thisCard;
     public Player thisPlayer;
-    public Player otherPlayer;
-    public SpriteRenderer artWork;
+    public Player otherPlayer; 
     public Image imageArt;
     public TMP_Text nameDisplay;
     public TMP_Text costDisplay;
@@ -20,19 +19,33 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
     [HideInInspector]
     public bool inSlot = false;
 
+    [HideInInspector]
+    public ParticleSystem selectionFX;
+
     public void Init(Card mCard, Player mPlayer, Player oPlayer)
     {
         thisCard = mCard;
         otherPlayer = oPlayer;
         thisPlayer = mPlayer;
         CreateCard();
+        Init();
+    }
+
+    public void Init()
+    {       
         cardGraphics = GetComponent<Image>();
+        selectionFX = transform.GetComponentInChildren<ParticleSystem>();
+    }
+
+    public void AssignNewCard(Card newCard)
+    {
+        thisCard = newCard;
+        CreateCard();
     }
 
     public virtual void CreateCard()
     {        
-        if(artWork != null)
-            artWork.sprite = thisCard.sprite;
+
         if (imageArt != null)
             imageArt.sprite = thisCard.sprite;
         nameDisplay.text = thisCard.cardName;
@@ -96,15 +109,33 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
     }
 
 
-
     public virtual void OnDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+            return;
+
+        RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;
+
+        if (thisPlayer.currentPhase != TurnPhase.Main)
+        {
+            m_DraggingPlane = Board.instance.board;
+
+        }
+
+        var rt = gameObject.GetComponent<RectTransform>();
+        Vector3 globalMousePos;
+
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(m_DraggingPlane, eventData.position, eventData.pressEventCamera, out globalMousePos))
+        {
+            if (thisPlayer.currentPhase == TurnPhase.Main && thisPlayer.hand.Contains(this) || thisPlayer == null)
+                rt.position = globalMousePos;
+        }
     }
 
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
-        SelectCard();
+        if (thisPlayer.hand.Contains(this) || (thisPlayer.creaturesOnField.Contains(this as CreatureCard) && (this as CreatureCard).canAttack))
+            SelectCard();
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
@@ -114,6 +145,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
-        SelectCard();
+        if (thisPlayer.hand.Contains(this) || (thisPlayer.creaturesOnField.Contains(this as CreatureCard) && (this as CreatureCard).canAttack))
+            SelectCard();
     }
 }

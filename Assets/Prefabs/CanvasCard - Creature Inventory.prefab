@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 114502514454668512}
   - component: {fileID: 114265029027067832}
   - component: {fileID: 120398369111919034}
+  - component: {fileID: 114982177267005838}
   m_Layer: 5
   m_Name: CanvasCard - Creature Inventory
   m_TagString: Untagged
@@ -357,7 +358,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.85
+  m_fontSize: 8.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -470,7 +471,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.85
+  m_fontSize: 6.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -583,7 +584,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: mighty beast of the wilds.
+  m_text: Mighty Beast of the Wilds!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -610,12 +611,12 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.4
+  m_fontSize: 7.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0.1
-  m_fontSizeMax: 0.4
+  m_fontSizeMax: 10
   m_fontStyle: 0
   m_textAlignment: 257
   m_isAlignmentEnumConverted: 1
@@ -656,7 +657,7 @@ MonoBehaviour:
     spaceCount: 4
     wordCount: 5
     linkCount: 0
-    lineCount: 1
+    lineCount: 3
     pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
@@ -723,7 +724,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.85
+  m_fontSize: 8.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -836,7 +837,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.85
+  m_fontSize: 8.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -903,6 +904,33 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114982177267005838
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1250317580061372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1495e0a537ac44d8632df68c8c3aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisCard: {fileID: 0}
+  thisPlayer: {fileID: 0}
+  otherPlayer: {fileID: 0}
+  imageArt: {fileID: 114030407420553428}
+  nameDisplay: {fileID: 114409849644991658}
+  costDisplay: {fileID: 114693736458375748}
+  description: {fileID: 114529095932449574}
+  inSlot: 0
+  selectionFX: {fileID: 0}
+  canAttack: 0
+  attack: {fileID: 114360380782702618}
+  health: {fileID: 114594709072234514}
+  lineMat: {fileID: 2100000, guid: e79c00cd0132dcb4890de4c932d1f6c5, type: 2}
+  thisCardC: {fileID: 0}
+  currentSlot: {fileID: 0}
+  model: {fileID: 0}
 --- !u!120 &120398369111919034
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -1073,8 +1101,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1.2799988}
-  m_SizeDelta: {x: 4.2300005, y: 0.96000004}
+  m_AnchoredPosition: {x: 0, y: -12.6}
+  m_SizeDelta: {x: 35, y: 7.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224091440737128258
 RectTransform:
@@ -1091,8 +1119,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.68499947, y: 0.97999954}
-  m_SizeDelta: {x: 0.8499999, y: 0.96000004}
+  m_AnchoredPosition: {x: 7, y: 10}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224436069898227562
 RectTransform:
@@ -1171,8 +1199,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 0.91}
-  m_SizeDelta: {x: 4.5, y: 2.95}
+  m_AnchoredPosition: {x: -0, y: 9}
+  m_SizeDelta: {x: 45, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224772833444552412
 RectTransform:
@@ -1189,8 +1217,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.00999999, y: 2.21}
-  m_SizeDelta: {x: 4.59, y: 2.7200007}
+  m_AnchoredPosition: {x: 0, y: 23}
+  m_SizeDelta: {x: 35, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224833326220213542
 RectTransform:
@@ -1207,8 +1235,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.7049999, y: 0.97999954}
-  m_SizeDelta: {x: 0.8499999, y: 0.96000004}
+  m_AnchoredPosition: {x: -7, y: 10}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224884968727306822
 RectTransform:
@@ -1225,6 +1253,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.68499947, y: -0.920002}
-  m_SizeDelta: {x: 0.8499999, y: 0.96000004}
+  m_AnchoredPosition: {x: 7, y: -9}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -18,6 +18,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
 
     LineRenderer lineRenderer;
+    
     private int currentHealth;
     Vector3 prevPosition;
 
@@ -31,6 +32,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             attack.text = thisCardC.attackValue.ToString();
             health.text = thisCardC.healthValue.ToString();
             lineRenderer = GetComponent<LineRenderer>();
+            
             InitHealth();
 
         }
@@ -94,6 +96,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     public override void OnDrag(PointerEventData eventData)
     {
+        if (thisPlayer == null)
+            return;
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
             return;
 
@@ -135,10 +139,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
                         if (!slot.IsLocked)
                         {
                             var linePost = slot.transform.position;
-                           
-                            //linePost.z = linePost.y;
-                            linePost.y = transform.position.y + .1f;
-                            //linePost.z = 10f;
+                                                       
+                            linePost.y = transform.position.y + .1f;                           
                             lineRenderer.SetPosition(1, linePost);
                         }
                     }
@@ -150,6 +152,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
+        if (thisPlayer == null)
+            return;
         base.OnBeginDrag(eventData);
 
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
@@ -166,6 +170,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     public override void OnEndDrag(PointerEventData eventData)
     {
+        if (thisPlayer == null)
+            return;
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
             return;        
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
@@ -217,7 +223,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-
+        if (thisPlayer == null)
+            return;
         base.OnPointerUp(eventData);
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current);

@@ -18,17 +18,28 @@ public class CardCollection : MonoBehaviour {
 
         List<Card> collection = new List<Card>();
         
-        var path = "Assets/Resources/Cards/";
+        var path = Application.dataPath + "/Resources/Cards/";
         DirectoryInfo dir = new DirectoryInfo(path);
+       // Debug.Log(dir);
         FileInfo[] info = dir.GetFiles("*.*");
         foreach(var f in info)
         {
-            var newCard = Resources.Load(f.Name, typeof(Card)) as Card;
+           
+
+            var name = f.Name;
+            var extension = f.Extension;
+            if (extension == ".meta")
+                continue;
+            var result = name.Replace(extension, "");
+            
+            var newCard = Resources.Load("Cards/" + result, typeof(Card)) as Card;
+
 
             var newHolder = Instantiate(holderPrefab, parentForCards);
-
-            newHolder.thisCard = newCard;
-            newHolder.CreateCard();
+            newHolder.transform.localPosition = Vector3.zero;
+            newHolder.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            newHolder.Init();
+            newHolder.AssignNewCard(newCard);
 
         }
 
