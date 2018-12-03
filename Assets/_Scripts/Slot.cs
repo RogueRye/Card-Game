@@ -90,6 +90,17 @@ public class Slot : MonoBehaviour, IDragHandler
         {          
             owner.opponent.selectedSlot = this;
         }
+
+        if(owner.currentPhase == TurnPhase.NotTurnMyTurn && currentCard != null)
+        {
+            if (owner.opponent.optionsOpponentCard != null)
+            {
+                owner.opponent.SelectCard(currentCard);
+                owner.opponent.optionsOpponentCard.gameObject.SetActive(true);
+                owner.opponent.optionsOpponentCard.gameObject.transform.position = Input.mousePosition;
+            }
+        }
+
     }
 
     public void Hover()
@@ -97,7 +108,7 @@ public class Slot : MonoBehaviour, IDragHandler
 
         if(!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
             graphics.color = highlightColor;
-        else if (!isLocked && owner.opponent.currentPhase == TurnPhase.Attacking)
+        else if (!isLocked && owner.currentPhase == TurnPhase.NotTurnMyTurn)
         {         
             graphics.color = opponentColor;
         }
@@ -110,7 +121,7 @@ public class Slot : MonoBehaviour, IDragHandler
 
     public void LoseCard()
     {
-        
+        StopHover();
         owner.DiscardCard(currentCard);
         currentCard.inSlot = false;
         currentCard = null;

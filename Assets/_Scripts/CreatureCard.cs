@@ -59,6 +59,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             targetSlot.currentCard = this;
             thisPlayer.SpendAP(thisCardC.castCost);
             thisPlayer.hand.Remove(this);
+            targetSlot.Block();
         }
 
     }
@@ -279,15 +280,20 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     IEnumerator Dying()
     {
         isDying = true;
-        model.anim.SetBool("Dead", true);
+        model.anim.SetBool("Dead", true);        
+            
         if(thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
             currentSlot.Lock();
-        currentSlot.StopHover();
+
+       
         yield return new WaitForSeconds(2);
         health.text = thisCardC.healthValue.ToString();
-        health.color = Color.white;
-        thisPlayer.DiscardCard(this);
+        health.color = Color.white;       
         Destroy(model.gameObject);
+        currentSlot.LoseCard();
+        currentSlot = null;
+        thisPlayer.selectedSlot = null;
         isDying = false;
+        
     }
 }

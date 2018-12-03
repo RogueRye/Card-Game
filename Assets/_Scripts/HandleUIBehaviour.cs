@@ -25,13 +25,15 @@ public class HandleUIBehaviour : MonoBehaviour
 
         lifePointSldr.maxValue = m_Player.lifePoints;
         lifePointSldr.value = lifePointSldr.maxValue;
+
         manaSldr.maxValue = m_Player.maxAP;
-        manaSldr.maxValue = m_Player.GetAP();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+       
 
         if (lifePointSldr.value > m_Player.GetLifePoints())
         {
@@ -55,8 +57,11 @@ public class HandleUIBehaviour : MonoBehaviour
             manaSldr.value++;
         }
 
-        manaTxt.text = m_Player.GetAP().ToString();
-        if(selectedCard != null && m_Player.currentPhase != TurnPhase.NotTurnMyTurn)
+        manaTxt.text = string.Format("{0}/{1}", m_Player.GetAP().ToString(), m_Player.CurrentMaxAp);
+        if (selectedCard != null && m_Player.currentPhase != TurnPhase.NotTurnMyTurn)
+        {
             selectedCard.text = m_Player.currentPhase.ToString();
+           // selectedCard.text = m_Player.selectedCard == null ? "None" : m_Player.selectedCard.thisCard.cardName;
+        }
     }
 }

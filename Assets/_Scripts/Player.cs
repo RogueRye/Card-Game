@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public CardHolder[] cardTypes;
     public Transform optionsMenu;
     public Transform combatOptionsMenu;
+    public Transform optionsOpponentCard;
     public RectTransform deckSpot;
     public RectTransform gySpot;
     public GameObject TextPanel;
@@ -60,6 +61,19 @@ public class Player : MonoBehaviour
     #region Inputs
     bool input1;
     bool input2;
+
+    public int CurrentMaxAp
+    {
+        get
+        {
+            return currentMaxAp;
+        }
+
+        private set
+        {
+            currentMaxAp = value;
+        }
+    }
     #endregion
 
 
@@ -69,7 +83,7 @@ public class Player : MonoBehaviour
         layout = handObj.GetComponent<HorizontalLayoutGroup>();
         deck.Init();
         curLifePoints = lifePoints;
-        currentMaxAp = (isPlayerA) ? 0 : 1;
+        CurrentMaxAp = (isPlayerA) ? 0 : 1;
         field = (isPlayerA) ? Board.fieldA : Board.fieldB;
 
         playerSlot.Init(-1, -1);
@@ -175,11 +189,11 @@ public class Player : MonoBehaviour
         foreach (var card in creaturesOnField)
             card.canAttack = true;
 
-        if (currentMaxAp < maxAP)
+        if (CurrentMaxAp < maxAP)
         {
-            currentMaxAp++;
+            CurrentMaxAp++;
         }
-        currentAP = currentMaxAp;
+        currentAP = CurrentMaxAp;
 
         yield return null;
         StartCoroutine(PickingCard());
@@ -218,10 +232,14 @@ public class Player : MonoBehaviour
             {
                 selectedCard.Cast(selectedSlot);
                 creaturesOnField.Add((CreatureCard)selectedCard);
-                selectedSlot.Block();
+                if (hand.Contains(selectedCard))
+                    hand.Remove(selectedCard);
                 DelselectCard();
                 selectedSlot = null;
             }
+
+            if (hand.Count <= 6)
+                layout.spacing = .7f;
         }
         else if (selectedCard is SpellCard)
         {
@@ -286,8 +304,7 @@ public class Player : MonoBehaviour
                         canAttackPlayer = true;
                     break;
                 case Creature.AttackDir.Right:
-                    creaturesInRange = 0;
-                    Debug.Log(attackingCreature.currentSlot.id_Y - 1);
+                    creaturesInRange = 0;                    
                     if (attackingCreature.currentSlot.id_Y - 1 >= 0)
                     {
                         for (int i = 0; i < 2; i++)
@@ -411,11 +428,11 @@ public class Player : MonoBehaviour
                 hand.Add(newCard);
                 newCard.transform.SetParent(handObj);
                 newCard.transform.localRotation = Quaternion.Euler(Vector3.up * 180);
-                newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .01f * hand.Count);
+                newCard.transform.localPosition = Vector3.zero - (Vector3.forward * .01f * hand.Count);               
 
                 if (hand.Count != 0 && hand.Count > 6)
                     layout.spacing -= (.7f);
-                else if (hand.Count < 6)
+                else if (hand.Count <= 6)
                     layout.spacing = .7f;
             }
         }
@@ -510,6 +527,7 @@ public class Player : MonoBehaviour
         {
             optionsMenu.gameObject.SetActive(false);
             combatOptionsMenu.gameObject.SetActive(false);
+            optionsOpponentCard.gameObject.SetActive(false);
         }
 
     }
@@ -522,14 +540,17 @@ public class Player : MonoBehaviour
         if (selectedCard == null)
             return;
 
+        optionsMenu.gameObject.SetActive(false);
+        combatOptionsMenu.gameObject.SetActive(false);
+        optionsOpponentCard.gameObject.SetActive(false);
+
         if (TextPanel != null)
         {
             TextPanel.SetActive(true);
             var displayCard = TextPanel.transform.GetComponentInChildren<CardHolder>();
             displayCard.Init();
             displayCard.AssignNewCard(selectedCard.thisCard);
-        }
-       
+        }       
     }
 
     public void TakeDamage(int power)
