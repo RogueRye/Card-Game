@@ -145,8 +145,8 @@ public class Player : MonoBehaviour
 
         currentPhase = TurnPhase.Combat;
 
-        if (!hasAI)
-            CamBehaviour.singleton.SwitchToPosition(1);
+        //if (!hasAI)
+        //    CamBehaviour.singleton.SwitchToPosition(1);
     }
 
     public void Attack()
@@ -255,32 +255,36 @@ public class Player : MonoBehaviour
         combatOptionsMenu.gameObject.SetActive(false);
         playerSlot.Lock();
         opponent.playerSlot.Lock();
+        int creaturesInBackRow = 0;
         foreach (var slot in field)
             slot.Lock();
         foreach (var slot in opponent.field)
+        {
+            if (slot.id_X == 0 && slot.currentCard != null)
+                creaturesInBackRow++;
             slot.Lock();
-        int creaturesInRange = 0;
-        bool canAttackPlayer = false;
+        }        
+
         foreach (var dir in attackingCreature.thisCardC.attackDirs)
         {
             switch (dir)
             {
                 case Creature.AttackDir.Forward:
-                    creaturesInRange = 0;
+                    
                     for (int i = 0; i < 2; i++)
                     {
                         var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y];
                         if (tempSlot != null)
                         {
                             if (tempSlot.currentCard != null)
-                            {
-                                creaturesInRange++;
+                            {                               
                                 tempSlot.Unlock();
+                                
+
                             }
                         }
                     }
-                    if (creaturesInRange == 0)
-                        canAttackPlayer = true;
+
                     break;
                 case Creature.AttackDir.Left:
                     if (attackingCreature.currentSlot.id_Y + 1 < 5)
@@ -295,16 +299,13 @@ public class Player : MonoBehaviour
                                 if (tempSlot.currentCard != null)
                                 {
                                     tempSlot.Unlock();
-                                    creaturesInRange++;
+                                   
                                 }
                             }
                         }
                     }
-                    if (creaturesInRange == 0)
-                        canAttackPlayer = true;
                     break;
-                case Creature.AttackDir.Right:
-                    creaturesInRange = 0;                    
+                case Creature.AttackDir.Right:                   
                     if (attackingCreature.currentSlot.id_Y - 1 >= 0)
                     {
                         for (int i = 0; i < 2; i++)
@@ -315,19 +316,18 @@ public class Player : MonoBehaviour
                             {
                                 if (tempSlot.currentCard != null)
                                 {
-                                    tempSlot.Unlock();
-                                    creaturesInRange++;
+                                    tempSlot.Unlock();                                   
                                 }
                             }
                         }
                     }
-                    if (creaturesInRange == 0)
-                        canAttackPlayer = true;
+
                     break;
             }
         }
 
-        if (canAttackPlayer)
+        Debug.Log(creaturesInBackRow +" creatures are in the backrow" );
+        if (creaturesInBackRow <= 0)
         {
             opponent.playerSlot.Unlock();
         }

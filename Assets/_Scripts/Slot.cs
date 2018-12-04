@@ -90,8 +90,7 @@ public class Slot : MonoBehaviour, IDragHandler
         {          
             owner.opponent.selectedSlot = this;
         }
-
-        if(owner.currentPhase == TurnPhase.NotTurnMyTurn && currentCard != null)
+        else if(owner.currentPhase == TurnPhase.NotTurnMyTurn && currentCard != null)
         {
             if (owner.opponent.optionsOpponentCard != null)
             {
