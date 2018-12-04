@@ -3704,8 +3704,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.4986155, y: 0.0026012752, z: -0.0014960892, w: 0.8668181}
-  m_LocalPosition: {x: 0, y: 43.2, z: -20.8}
+  m_LocalRotation: {x: -0.19905297, y: -0.0088197095, z: 0.0017916088, w: -0.97994745}
+  m_LocalPosition: {x: 0, y: 18.46, z: -46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -8233,7 +8233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifePointSldr: {fileID: 1783755890}
-  selectedCard: {fileID: 2084851190}
+  selectedCard: {fileID: 0}
   lifePointTxt: {fileID: 718352070}
   sliderSpeed: 10
   manaSldr: {fileID: 354280436}
@@ -10301,7 +10301,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -64.29, y: -10.46}
+  m_AnchoredPosition: {x: -64.29001, y: -10.460022}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2084851190

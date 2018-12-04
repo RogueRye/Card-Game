@@ -127,8 +127,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.Log("Can't Cast card");
-            DelselectCard(true);
+           
+            DelselectCard();
             currentPhase = TurnPhase.Main;
         }
 
@@ -154,6 +154,7 @@ public class Player : MonoBehaviour
         if (selectedCard != null)
         {
             var temp = selectedCard as CreatureCard;
+            
             if (temp.canAttack)
                 StartCoroutine(WaitForAttackTarget(temp));
             else
@@ -188,7 +189,7 @@ public class Player : MonoBehaviour
 
         foreach (var card in creaturesOnField)
             card.canAttack = true;
-
+        
         if (CurrentMaxAp < maxAP)
         {
             CurrentMaxAp++;
@@ -224,7 +225,6 @@ public class Player : MonoBehaviour
                     break;
                 }
 
-                //Draw line
                 yield return null;
             }
 
@@ -256,7 +256,7 @@ public class Player : MonoBehaviour
             combatOptionsMenu.gameObject.SetActive(false);
         playerSlot.Lock();
         opponent.playerSlot.Lock();
-        int creaturesInBackRow = 0;
+        int creaturesInBackRow = 0;       
         foreach (var slot in field)
             slot.Lock();
         foreach (var slot in opponent.field)
@@ -279,13 +279,10 @@ public class Player : MonoBehaviour
                         {
                             if (tempSlot.currentCard != null)
                             {                               
-                                tempSlot.Unlock();
-                                
-
+                                tempSlot.Unlock();                               
                             }
                         }
                     }
-
                     break;
                 case Creature.AttackDir.Left:
                     if (attackingCreature.currentSlot.id_Y + 1 < 5)
@@ -299,8 +296,7 @@ public class Player : MonoBehaviour
                             {
                                 if (tempSlot.currentCard != null)
                                 {
-                                    tempSlot.Unlock();
-                                   
+                                    tempSlot.Unlock();                                   
                                 }
                             }
                         }
@@ -322,27 +318,26 @@ public class Player : MonoBehaviour
                             }
                         }
                     }
-
                     break;
             }
         }
 
-       // Debug.Log(creaturesInBackRow +" creatures are in the backrow" );
         if (creaturesInBackRow <= 0)
         {
             opponent.playerSlot.Unlock();
         }
-
+       
         while (selectedSlot == null)
         {
-            if (selectedCard != attackingCreature || currentPhase == TurnPhase.Main)
+            if ((selectedCard as CreatureCard) != attackingCreature || currentPhase == TurnPhase.Main)
                 break;
             yield return null;
         }
+        Debug.Log(currentPhase);
         if (currentPhase != TurnPhase.Main)
         {
             if (selectedCard == attackingCreature)
-            {
+            {                
                 if (selectedSlot.currentCard != null)
                     attackingCreature.Attack(selectedSlot.currentCard);
                 else if (selectedSlot == opponent.playerSlot)
@@ -351,12 +346,14 @@ public class Player : MonoBehaviour
             }
             currentPhase = TurnPhase.Combat;
         }
+
         DelselectCard();
         selectedSlot = null;
         foreach (var slot in field)
             slot.Unlock();
         foreach (var slot in opponent.field)
             slot.Unlock();
+       
     }
 
     #endregion
@@ -373,7 +370,7 @@ public class Player : MonoBehaviour
             GetInput();
             if (input2)
             {
-                DelselectCard(true);
+                DelselectCard();
             }
         }
     }
@@ -516,10 +513,11 @@ public class Player : MonoBehaviour
     /// <summary>
     /// move a selected card back and hide options menu when the card is no longer selected
     /// </summary>
-    public void DelselectCard(bool needsDisplacing = false)
+    public void DelselectCard()
     {
         if (selectedCard == null)
             return;
+
         //if (needsDisplacing)
         //    selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
         selectedCard.selectionFX.Stop();

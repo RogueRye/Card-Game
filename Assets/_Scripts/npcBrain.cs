@@ -26,8 +26,7 @@ public class npcBrain : MonoBehaviour
     {
         switch (controller.currentPhase)
         {
-            case TurnPhase.Start:
-                Debug.Log("Start");
+            case TurnPhase.Start:               
                 cardsPlayed = 0;
                 break;
             case TurnPhase.Main:
@@ -65,7 +64,7 @@ public class npcBrain : MonoBehaviour
         
         controller.CastCard();
         cardsPlayed++;
-        yield return new WaitForSeconds(2);
+        yield return null;
         isPickingCard = false;
     }
 
@@ -97,7 +96,7 @@ public class npcBrain : MonoBehaviour
             controller.DelselectCard();
 
         // controller.EndTurn();
-        yield return new WaitForSeconds(2);
+        yield return null;
         isPickingSlot = false;
       
     }
@@ -114,19 +113,23 @@ public class npcBrain : MonoBehaviour
 
         foreach(var potential in controller.creaturesOnField)
         {
+            
             if (!potential.canAttack)
             {
                 continue;
             }
             else
-            {
+            {               
                 potential.SelectCard();
+               // Debug.Log(controller.selectedCard.thisCard.cardName);
                 controller.Attack();
+                //Debug.Log(controller.selectedCard.thisCard.cardName);
                 StartCoroutine(AIPickAttackTarget());
             }
+            yield return new WaitForSeconds(1);
         }
 
-        yield return new WaitForSeconds(2);
+        yield return null;
 
         isPickingCard = false;
         controller.EndTurn();
@@ -135,7 +138,7 @@ public class npcBrain : MonoBehaviour
 
     IEnumerator AIPickAttackTarget()
     {
-        yield return new WaitForSeconds(2);
+        //yield return null;
 
         if (!controller.opponent.playerSlot.IsLocked)
         {
@@ -152,6 +155,6 @@ public class npcBrain : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(2);
+        yield return null;
     }
 }

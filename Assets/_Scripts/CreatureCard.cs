@@ -51,7 +51,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             model = Instantiate(thisCardC.model, transform).GetComponent<CreatureVisual>();
             model.Init(this);
             currentSlot = targetSlot;
-            canAttack = true;
+            canAttack = false;
             inSlot = true;
             transform.SetParent(targetSlot.transform);
             transform.localPosition = (Vector3.forward * .1f);
@@ -206,7 +206,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             lineRenderer.SetPosition(1, Vector3.up);
             if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
             {
-                Debug.Log("slot exits");                
+                //Debug.Log("slot exits");                
                 foreach (var thing in results)
                 {
                     var slot = thing.gameObject.GetComponent<Slot>();
