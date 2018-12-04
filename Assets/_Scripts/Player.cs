@@ -252,7 +252,8 @@ public class Player : MonoBehaviour
     private IEnumerator WaitForAttackTarget(CreatureCard attackingCreature)
     {
         currentPhase = TurnPhase.Attacking;
-        combatOptionsMenu.gameObject.SetActive(false);
+        if(combatOptionsMenu != null)
+            combatOptionsMenu.gameObject.SetActive(false);
         playerSlot.Lock();
         opponent.playerSlot.Lock();
         int creaturesInBackRow = 0;
@@ -326,7 +327,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        Debug.Log(creaturesInBackRow +" creatures are in the backrow" );
+       // Debug.Log(creaturesInBackRow +" creatures are in the backrow" );
         if (creaturesInBackRow <= 0)
         {
             opponent.playerSlot.Unlock();

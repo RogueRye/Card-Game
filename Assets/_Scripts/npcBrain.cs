@@ -27,11 +27,12 @@ public class npcBrain : MonoBehaviour
         switch (controller.currentPhase)
         {
             case TurnPhase.Start:
+                Debug.Log("Start");
                 cardsPlayed = 0;
                 break;
             case TurnPhase.Main:
                 if (cardsPlayed >= 1 || controller.GetAP() < 1)
-                    controller.EndTurn();
+                    PickAttacker();
                 else if (controller.selectedCard == null)
                     PickRandomCard();
                 break;
@@ -64,7 +65,7 @@ public class npcBrain : MonoBehaviour
         
         controller.CastCard();
         cardsPlayed++;
-        yield return null;
+        yield return new WaitForSeconds(2);
         isPickingCard = false;
     }
 
@@ -95,8 +96,8 @@ public class npcBrain : MonoBehaviour
         if (controller.selectedSlot == null)
             controller.DelselectCard();
 
-       // controller.EndTurn();
-        yield return null;
+        // controller.EndTurn();
+        yield return new WaitForSeconds(2);
         isPickingSlot = false;
       
     }
@@ -117,12 +118,40 @@ public class npcBrain : MonoBehaviour
             {
                 continue;
             }
-
+            else
+            {
+                potential.SelectCard();
+                controller.Attack();
+                StartCoroutine(AIPickAttackTarget());
+            }
         }
 
-        yield return null;
+        yield return new WaitForSeconds(2);
 
         isPickingCard = false;
+        controller.EndTurn();
     }
 
+
+    IEnumerator AIPickAttackTarget()
+    {
+        yield return new WaitForSeconds(2);
+
+        if (!controller.opponent.playerSlot.IsLocked)
+        {
+            controller.opponent.playerSlot.OnTouchUp();
+        }
+        else
+        {
+            foreach (var slot in controller.opponent.field)
+            {
+                if (!slot.IsLocked)
+                {
+                    slot.OnTouchUp();
+                    break;
+                }
+            }
+        }
+        yield return new WaitForSeconds(2);
+    }
 }
