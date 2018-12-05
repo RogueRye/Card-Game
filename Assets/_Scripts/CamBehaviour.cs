@@ -49,7 +49,7 @@ public class CamBehaviour : MonoBehaviour {
             StopCoroutine(movingCamera);
         
         curPosIndex++;
-        movingCamera = StartCoroutine(ChangePosition(positions[curPosIndex % 2]));
+        movingCamera = StartCoroutine(ChangePosition(positions[curPosIndex % positions.Length]));
     }
     public void SwitchToPosition(int posIndex)
     {

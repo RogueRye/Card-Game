@@ -145,8 +145,8 @@ public class Player : MonoBehaviour
 
         currentPhase = TurnPhase.Combat;
 
-        //if (!hasAI)
-        //    CamBehaviour.singleton.SwitchToPosition(1);
+        if (!hasAI)
+            CamBehaviour.singleton.SwitchToPosition(2);
     }
 
     public void Attack()
@@ -188,7 +188,10 @@ public class Player : MonoBehaviour
         DrawCard(1);
 
         foreach (var card in creaturesOnField)
-            card.canAttack = true;
+        {
+            if(card.currentSlot.id_X == 1)
+                card.canAttack = true;
+        }
         
         if (CurrentMaxAp < maxAP)
         {
@@ -459,8 +462,6 @@ public class Player : MonoBehaviour
         if (creaturesOnField.Contains((CreatureCard)card))
         {
             var temp = (CreatureCard)card;
-            temp.currentSlot = null;
-            temp.inSlot = false;
             creaturesOnField.Remove(temp);
         }
 

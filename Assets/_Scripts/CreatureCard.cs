@@ -18,7 +18,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
 
     LineRenderer lineRenderer;
-    
+    ParticleSystem tiredFX;
     private int currentHealth;
     Vector3 prevPosition;
 
@@ -205,8 +205,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             lineRenderer.SetPosition(0, Vector3.up);
             lineRenderer.SetPosition(1, Vector3.up);
             if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
-            {
-                //Debug.Log("slot exits");                
+            {              
                 foreach (var thing in results)
                 {
                     var slot = thing.gameObject.GetComponent<Slot>();

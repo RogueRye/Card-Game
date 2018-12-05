@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour, IDragHandler
 {
 
+    public int slotWeight = 30;
     public Color highlightColor = new Color(0, 255, 255, 255);
     public Color opponentColor = new Color(255, 0, 0, 255);
     public CreatureCard currentCard;

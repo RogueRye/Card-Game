@@ -30,7 +30,7 @@ public class npcBrain : MonoBehaviour
                 cardsPlayed = 0;
                 break;
             case TurnPhase.Main:
-                if (cardsPlayed >= 1 || controller.GetAP() < 1)
+                if (cardsPlayed >= 3 || controller.GetAP() < 1)
                     PickAttacker();
                 else if (controller.selectedCard == null)
                     PickRandomCard();
@@ -80,16 +80,16 @@ public class npcBrain : MonoBehaviour
     {
         isPickingSlot = true;
 
-        int i = 1;
+        ;
         foreach(var slot in controller.field)
         {
             var rand = Random.Range(0, 100);            
-            if (!slot.IsBlocked && rand <= 10 * i)
+            if (!slot.IsBlocked && rand <= slot.slotWeight)
             {
                 controller.selectedSlot = slot;              
                 break;
             }
-            i++;
+         
         }
 
         if (controller.selectedSlot == null)
@@ -137,8 +137,7 @@ public class npcBrain : MonoBehaviour
 
 
     IEnumerator AIPickAttackTarget()
-    {
-        //yield return null;
+    {       
 
         if (!controller.opponent.playerSlot.IsLocked)
         {
