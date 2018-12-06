@@ -10,6 +10,7 @@ public class HandleUIBehaviour : MonoBehaviour
     public Slider lifePointSldr;
     public TMP_Text selectedCard;
     public TMP_Text lifePointTxt;
+    public TMP_Text playerNameDisplay;
     [Range(0, 20)]
     public float sliderSpeed = 1;
     public Slider manaSldr;
@@ -22,11 +23,14 @@ public class HandleUIBehaviour : MonoBehaviour
     {
 
         m_Player = GetComponent<Player>();
-
+        
         lifePointSldr.maxValue = m_Player.lifePoints;
         lifePointSldr.value = lifePointSldr.maxValue;
 
         manaSldr.maxValue = m_Player.maxAP;
+
+        if (playerNameDisplay != null)
+            playerNameDisplay.text = m_Player.playerName;
 
     }
 
@@ -60,7 +64,7 @@ public class HandleUIBehaviour : MonoBehaviour
         manaTxt.text = string.Format("{0}/{1}", m_Player.GetAP().ToString(), m_Player.CurrentMaxAp);
         if (selectedCard != null && m_Player.currentPhase != TurnPhase.NotTurnMyTurn)
         {
-            selectedCard.text = m_Player.currentPhase.ToString();
+            selectedCard.text = string.Format("Current Phase: {0}", m_Player.currentPhase.ToString());
            // selectedCard.text = m_Player.selectedCard == null ? "None" : m_Player.selectedCard.thisCard.cardName;
         }
     }

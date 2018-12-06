@@ -64,7 +64,7 @@ public class npcBrain : MonoBehaviour
         
         controller.CastCard();
         cardsPlayed++;
-        yield return null;
+        yield return new WaitForSeconds(.4f);
         isPickingCard = false;
     }
 

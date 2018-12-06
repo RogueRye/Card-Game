@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
 
     #region Public Fields
-
+    public String playerName = "Ryan";
     public bool isPlayerA = true;
     public Player opponent;
     public int lifePoints;
