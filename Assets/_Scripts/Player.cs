@@ -288,13 +288,13 @@ public class Player : MonoBehaviour
                     }
                     break;
                 case Creature.AttackDir.Left:
-                    if (attackingCreature.currentSlot.id_Y + 1 < 5)
+                    if (attackingCreature.currentSlot.id_Y - 1 >= 0)
                     {
                         for (int i = 0; i < 2; i++)
 
 
                         {
-                            var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
+                            var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y - 1];
                             if (tempSlot != null)
                             {
                                 if (tempSlot.currentCard != null)
@@ -306,12 +306,12 @@ public class Player : MonoBehaviour
                     }
                     break;
                 case Creature.AttackDir.Right:                   
-                    if (attackingCreature.currentSlot.id_Y - 1 >= 0)
+                    if (attackingCreature.currentSlot.id_Y + 1 < 5)
                     {
                         for (int i = 0; i < 2; i++)
                         {
 
-                            var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y - 1];
+                            var tempSlot = opponent.field[i, attackingCreature.currentSlot.id_Y + 1];
                             if (tempSlot != null)
                             {
                                 if (tempSlot.currentCard != null)
