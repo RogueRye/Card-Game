@@ -121,15 +121,18 @@ public class Player : MonoBehaviour
 
     public void CastCard()
     {
-        if (selectedCard.thisCard.castCost <= GetAP())
+        if (currentPhase != TurnPhase.Casting)
         {
-            StartCoroutine(CastingCard());
-        }
-        else
-        {
-           
-            DelselectCard();
-            currentPhase = TurnPhase.Main;
+            if (selectedCard.thisCard.castCost <= GetAP())
+            {
+                StartCoroutine(CastingCard());
+            }
+            else
+            {
+
+                DelselectCard();
+                currentPhase = TurnPhase.Main;
+            }
         }
 
     }
@@ -171,11 +174,14 @@ public class Player : MonoBehaviour
 
     public void EndTurn()
     {
-        if (!hasAI)
-            CamBehaviour.singleton.SwitchToPosition(0);
+        if (currentPhase != TurnPhase.NotTurnMyTurn)
+        {
+            if (!hasAI)
+                CamBehaviour.singleton.SwitchToPosition(0);
 
-        currentPhase = TurnPhase.NotTurnMyTurn;
-        opponent.StartTurn();
+            currentPhase = TurnPhase.NotTurnMyTurn;
+            opponent.StartTurn();
+        }
     }
 
     #endregion
