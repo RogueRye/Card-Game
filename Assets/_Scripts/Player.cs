@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
         }
         currentAP = CurrentMaxAp;
 
-        yield return null;
+        yield return new WaitForSeconds(.1f);
         StartCoroutine(PickingCard());
     }
 
@@ -254,7 +254,7 @@ public class Player : MonoBehaviour
         {
             //Do different Things
         }
-
+        yield return new WaitForSeconds(.1f);
         currentPhase = TurnPhase.Main;
     }
 
@@ -342,7 +342,7 @@ public class Player : MonoBehaviour
                 break;
             yield return null;
         }
-        Debug.Log(currentPhase);
+      
         if (currentPhase != TurnPhase.Main)
         {
             if (selectedCard == attackingCreature)
@@ -353,6 +353,8 @@ public class Player : MonoBehaviour
                     attackingCreature.Attack(opponent);
                 
             }
+
+            yield return new WaitForSeconds(.1f);
             currentPhase = TurnPhase.Combat;
         }
 

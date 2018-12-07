@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < target.Length; i++)
         {
             winnerDisplay.text += target[i];
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.085f);
         }
         yield return new WaitForSeconds(1.3f);
         SceneManager.LoadScene(0);
