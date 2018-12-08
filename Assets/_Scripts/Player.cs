@@ -418,6 +418,7 @@ public class Player : MonoBehaviour
             if (deckStack.Count == 0)
             {
                 Debug.Log("out of cards");
+                TakeDamage(GetLifePoints());
                 return;
             }
 
@@ -457,22 +458,16 @@ public class Player : MonoBehaviour
         DelselectCard();
         gyStack.Push(card);
         card.transform.SetParent(gySpot);
-        var pos = gySpot.position + (Vector3.up * (gyStack.Count * 0.075f));
-        card.transform.position = pos;
+        card.transform.position = gySpot.position + (Vector3.up * (gyStack.Count * 0.075f));
+        
         card.transform.rotation = gySpot.rotation;
 
         //Remove card from hand
         if (hand.Contains(card))
-        {
             hand.Remove(card);
-        }
         //Remove card from field and unassign its slot
-        if (creaturesOnField.Contains((CreatureCard)card))
-        {
-            var temp = (CreatureCard)card;
-            creaturesOnField.Remove(temp);
-        }
-
+        if (creaturesOnField.Contains((CreatureCard)card))       
+            creaturesOnField.Remove(card as CreatureCard);       
     }
 
     /// <summary>
@@ -496,21 +491,16 @@ public class Player : MonoBehaviour
         selectedCard = card;
         selectedCard.selectionFX.Play();
         if (hand.Contains(card) && currentPhase == TurnPhase.Main)
-        {          
-            
+        {              
             if (optionsMenu != null)
             {
                 optionsMenu.gameObject.SetActive(true);
                 optionsMenu.gameObject.transform.position = Input.mousePosition;
-            }
-
-            //selectedCard.transform.localPosition += (Vector3.up * 2.5f);
+            }          
         }
         else if (currentPhase == TurnPhase.Combat && card is CreatureCard)
-        {
-            var temp = card as CreatureCard;            
-            
-            if (combatOptionsMenu != null && temp.canAttack)
+        {             
+            if (combatOptionsMenu != null && (card as CreatureCard).canAttack)
             {
                 combatOptionsMenu.gameObject.SetActive(true);
                 combatOptionsMenu.gameObject.transform.position = Input.mousePosition;
@@ -527,8 +517,6 @@ public class Player : MonoBehaviour
         if (selectedCard == null)
             return;
 
-        //if (needsDisplacing)
-        //    selectedCard.transform.localPosition -= (Vector3.up * 2.5f);
         selectedCard.selectionFX.Stop();
         selectedCard = null;
         if (optionsMenu != null)

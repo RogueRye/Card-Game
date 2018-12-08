@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IDragHandler
+public class Slot : MonoBehaviour
 {
 
     public int slotWeight = 30;
@@ -75,10 +75,6 @@ public class Slot : MonoBehaviour, IDragHandler
         graphics = GetComponent<Image>();
     }
 
-    public void Touch()
-    {
-        
-    }
 
     public void OnTouchUp()
     {
@@ -105,7 +101,6 @@ public class Slot : MonoBehaviour, IDragHandler
 
     public void Hover()
     {
-
         if(!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
             graphics.color = highlightColor;
         else if (!isLocked && owner.currentPhase == TurnPhase.NotTurnMyTurn)
@@ -148,13 +143,6 @@ public class Slot : MonoBehaviour, IDragHandler
         IsBlocked = true;
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (eventData.hovered.Contains(gameObject))
-        {
-            Hover();
-        }
-    }
 
 
 

@@ -174,7 +174,8 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         if (thisPlayer == null)
             return;
         if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
-            return;        
+            return;       
+        
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
         pointerData.position = Input.mousePosition; // use the position from controller as start of raycast instead of mousePosition.
         List<RaycastResult> results = new List<RaycastResult>();
@@ -183,40 +184,28 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         if (thisPlayer.currentPhase == TurnPhase.Main )
         {
             transform.position = prevPosition;
-            if (results.Exists(e => e.gameObject.GetComponent<Slot>()) && thisPlayer.hand.Contains(this))
-            {
-                
-                thisPlayer.CastCard();
-                foreach (var thing in results)
-                {
-                    var slot = thing.gameObject.GetComponent<Slot>();
-                    if (slot != null)
-                        slot.OnTouchUp();
-                }
-            }
-            else
-            {
-               
-                thisPlayer.DelselectCard();
-            }
         }
         else if(thisPlayer.currentPhase == TurnPhase.Attacking)
         {
             lineRenderer.SetPosition(0, Vector3.up);
             lineRenderer.SetPosition(1, Vector3.up);
-            if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
-            {              
-                foreach (var thing in results)
-                {
-                    var slot = thing.gameObject.GetComponent<Slot>();
-                    if (slot != null)
-                        slot.OnTouchUp();
-                }
-            }
-            else
+
+        }
+
+        if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
+        {
+            if (thisPlayer.hand.Contains(this))
+                thisPlayer.CastCard();
+            foreach (var thing in results)
             {
-                thisPlayer.DelselectCard();
+                var slot = thing.gameObject.GetComponent<Slot>();
+                if (slot != null)
+                    slot.OnTouchUp();
             }
+        }
+        else
+        {
+            thisPlayer.DelselectCard();
         }
 
     }
@@ -225,6 +214,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         if (thisPlayer == null)
             return;
+
         base.OnPointerUp(eventData);
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
@@ -270,6 +260,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     }
 
     bool isDying = false;
+
     public void Die()
     {
         if (!isDying)
