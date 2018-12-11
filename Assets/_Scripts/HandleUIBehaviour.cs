@@ -86,7 +86,7 @@ public class HandleUIBehaviour : MonoBehaviour
     void ChangeSelectedButton()
     {
 
-        Debug.Log(m_Player.currentPhase);
+        //Debug.Log(m_Player.currentPhase);
         EventSystem.current.SetSelectedGameObject(phaseBtns[(int)m_Player.currentPhase].gameObject);
         for (int i = 0; i < phaseBtns.Length; i++)
         {
