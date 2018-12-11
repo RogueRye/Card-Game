@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            currentPhase = TurnPhase.NotTurnMyTurn;
+            currentPhase = TurnPhase.End;
         }
     }
 
@@ -168,20 +168,14 @@ public class Player : MonoBehaviour
     public void StopAttackPhase()
     {
         selectedSlot = null;
+        DelselectCard();
         currentPhase = TurnPhase.Main;
         CamBehaviour.singleton.SwitchToPosition(0);
     }
 
     public void EndTurn()
     {
-        if (currentPhase != TurnPhase.NotTurnMyTurn)
-        {
-            if (!hasAI)
-                CamBehaviour.singleton.SwitchToPosition(0);
-
-            currentPhase = TurnPhase.NotTurnMyTurn;
-            opponent.StartTurn();
-        }
+        StartCoroutine(TurnEnding());      
     }
 
     #endregion
@@ -367,12 +361,25 @@ public class Player : MonoBehaviour
        
     }
 
+    private IEnumerator TurnEnding()
+    {
+        if (currentPhase != TurnPhase.End)
+        {
+            if (!hasAI)
+                CamBehaviour.singleton.SwitchToPosition(0);
+
+            currentPhase = TurnPhase.End;
+            yield return new WaitForSeconds(.3f);
+            opponent.StartTurn();
+        }
+    }
+
     #endregion
 
     virtual protected void Update()
     {
 
-        if (currentPhase == TurnPhase.NotTurnMyTurn)
+        if (currentPhase == TurnPhase.End)
             return;
 
 
@@ -596,6 +603,5 @@ public enum TurnPhase
     Casting,
     Combat,
     Attacking,
-    End,
-    NotTurnMyTurn
+    End
 }

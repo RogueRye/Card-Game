@@ -99,12 +99,12 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         if (thisPlayer == null)
             return;
-        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+        if (thisPlayer.currentPhase == TurnPhase.End)
             return;
 
         RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;
 
-        if(thisPlayer.currentPhase != TurnPhase.Main)
+        if(thisPlayer.currentPhase != TurnPhase.Casting && thisPlayer.currentPhase != TurnPhase.Main)
         {
             m_DraggingPlane = Board.instance.board;
 
@@ -115,7 +115,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(m_DraggingPlane, eventData.position, eventData.pressEventCamera, out globalMousePos))
         {
-            if(thisPlayer.currentPhase == TurnPhase.Main && thisPlayer.hand.Contains(this))
+            if((thisPlayer.currentPhase == TurnPhase.Casting || thisPlayer.currentPhase == TurnPhase.Main) && thisPlayer.hand.Contains(this))
                 rt.position = globalMousePos;
             else if(thisPlayer.currentPhase == TurnPhase.Attacking)
             {
@@ -157,8 +157,11 @@ public class CreatureCard : CardHolder, IPointerUpHandler
             return;
         base.OnBeginDrag(eventData);
 
-        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+        if (thisPlayer.currentPhase == TurnPhase.End)
             return;
+
+        if (thisPlayer.hand.Contains(this))
+            thisPlayer.CastCard();
 
         thisPlayer.combatOptionsMenu.gameObject.SetActive(false);
         prevPosition = transform.position;
@@ -173,7 +176,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         if (thisPlayer == null)
             return;
-        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+        if (thisPlayer.currentPhase == TurnPhase.End)
             return;       
         
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
@@ -181,7 +184,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
 
-        if (thisPlayer.currentPhase == TurnPhase.Main )
+        if (thisPlayer.currentPhase == TurnPhase.Main || thisPlayer.currentPhase == TurnPhase.Casting )
         {
             transform.position = prevPosition;
         }
@@ -194,8 +197,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
 
         if (results.Exists(e => e.gameObject.GetComponent<Slot>()))
         {
-            if (thisPlayer.hand.Contains(this))
-                thisPlayer.CastCard();
+
             foreach (var thing in results)
             {
                 var slot = thing.gameObject.GetComponent<Slot>();
@@ -272,7 +274,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         isDying = true;
         model.anim.SetBool("Dead", true);        
             
-        if(thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+        if(thisPlayer.currentPhase == TurnPhase.End)
             currentSlot.Lock();
 
        

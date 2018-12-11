@@ -111,7 +111,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
 
     public virtual void OnDrag(PointerEventData eventData)
     {
-        if (thisPlayer.currentPhase == TurnPhase.NotTurnMyTurn)
+        if (thisPlayer.currentPhase == TurnPhase.End)
             return;
 
         RectTransform m_DraggingPlane = thisPlayer.handObj as RectTransform;

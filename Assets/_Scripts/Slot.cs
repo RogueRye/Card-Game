@@ -87,7 +87,7 @@ public class Slot : MonoBehaviour
         {          
             owner.opponent.selectedSlot = this;
         }
-        else if(owner.currentPhase == TurnPhase.NotTurnMyTurn && currentCard != null)
+        else if(owner.currentPhase == TurnPhase.End && currentCard != null)
         {
             if (owner.opponent.optionsOpponentCard != null)
             {
@@ -103,7 +103,7 @@ public class Slot : MonoBehaviour
     {
         if(!isBlocked && !isLocked && owner.currentPhase == TurnPhase.Casting)
             graphics.color = highlightColor;
-        else if (!isLocked && owner.currentPhase == TurnPhase.NotTurnMyTurn)
+        else if (!isLocked && owner.currentPhase == TurnPhase.End)
         {         
             graphics.color = opponentColor;
         }
