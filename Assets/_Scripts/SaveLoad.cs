@@ -33,28 +33,40 @@ public static class SaveLoad {
     {
         ProfileData.currentProfile = data;
     }
+
+    public static void DeleteProfile(ProfileData data)
+    {
+        if (savedProfiles.Contains(data))
+        {
+            savedProfiles.Remove(data);
+        }
+    }
 }
 
 [System.Serializable]
 public class ProfileData
 {
     public static ProfileData currentProfile;
+    public string profileName = "Ryan";
 
-    public List<string> deckCardIndexes = new List<string>();
-    public List<CardData> cardCollection = new List<CardData>();
+    public ProfileData(string _name)
+    {
+        profileName = _name;
+    }
+
+    public List<string> deckCardNames = new List<string>();
+    //public List<CardData> cardCollection = new List<CardData>();
+    public Dictionary<string, Card> cardCollection = new Dictionary<string, Card>();
 }
 
 [System.Serializable]
 public class CardData
 {
     public string cardName;
-    public int cardLVL;
-    public int cardAmount;
+
 
     public CardData(Card card)
     {
         cardName = card.cardName;
-        cardLVL = 1;
-        cardAmount = 1;
     }
 }

@@ -12,11 +12,9 @@ public class CardCollection : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
         scrollRect = GetComponent<ScrollRect>();
-
         parentForCards = scrollRect.content;
-
-        List<Card> collection = new List<Card>();
         
         var path = Application.dataPath + "/Resources/Cards/";
         DirectoryInfo dir = new DirectoryInfo(path);
@@ -33,13 +31,15 @@ public class CardCollection : MonoBehaviour {
             var result = name.Replace(extension, "");
             
             var newCard = Resources.Load("Cards/" + result, typeof(Card)) as Card;
+            if (ProfileData.currentProfile.cardCollection.ContainsKey(newCard.cardName))
+            {
 
-
-            var newHolder = Instantiate(holderPrefab, parentForCards);
-            newHolder.transform.localPosition = Vector3.zero;
-            newHolder.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            newHolder.Init();
-            newHolder.AssignNewCard(newCard);
+                var newHolder = Instantiate(holderPrefab, parentForCards);
+                newHolder.transform.localPosition = Vector3.zero;
+                newHolder.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                newHolder.Init();
+                newHolder.AssignNewCard(newCard);
+            }
 
         }
 
