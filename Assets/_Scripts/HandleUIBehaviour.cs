@@ -21,7 +21,7 @@ public class HandleUIBehaviour : MonoBehaviour
     public UnityEvent onChangedPhase;
     TurnPhase prevPhase;
     public Color selectedButtonColor;
-
+    Color defaultColor;
     // Use this for initialization
     void Start()
     {
@@ -30,7 +30,8 @@ public class HandleUIBehaviour : MonoBehaviour
         prevPhase = m_Player.currentPhase;
         lifePointSldr.maxValue = m_Player.lifePoints;
         lifePointSldr.value = lifePointSldr.maxValue;
-
+        if(phaseBtns.Length > 0)
+            defaultColor = phaseBtns[0].color;
         manaSldr.maxValue = m_Player.maxAP;
 
         if (playerNameDisplay != null)
@@ -96,7 +97,7 @@ public class HandleUIBehaviour : MonoBehaviour
             }
             else
             {
-                phaseBtns[i].color = Color.white;
+                phaseBtns[i].color = defaultColor;
             }
         }
         prevPhase = m_Player.currentPhase;
