@@ -20,7 +20,7 @@ public static class SaveLoad {
 
     public static void LoadGames()
     {
-        if (File.Exists(Application.persistentDataPath + "/savedGames.gd"))
+        if (File.Exists(Application.persistentDataPath + "/deckProfiles.gd"))
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/deckProfiles.gd", FileMode.Open);
@@ -56,7 +56,7 @@ public class ProfileData
 
     public List<string> deckCardNames = new List<string>();
     //public List<CardData> cardCollection = new List<CardData>();
-    public Dictionary<string, Card> cardCollection = new Dictionary<string, Card>();
+    public Dictionary<string, CardData> cardCollection = new Dictionary<string, CardData>();
 }
 
 [System.Serializable]

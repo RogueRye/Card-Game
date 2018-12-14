@@ -5,38 +5,57 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ProfileManager : MonoBehaviour {
+public class ProfileManager : MonoBehaviour
+{
 
     [SerializeField]
-    InputField nameInput;
+    TMP_InputField nameInput;
     [SerializeField]
     Transform loadBtnPanel;
     [SerializeField]
     Button loadBtnPrefab;
+    [SerializeField]
+    TMP_Text nameDisplay;
+
 
     private void Awake()
     {
 
     }
 
+    private void Start()
+    {       
+        SaveLoad.LoadGames();
+
+        nameDisplay.text = ProfileData.currentProfile != null ? ProfileData.currentProfile.profileName : "None";
+
+
+    }
+
+    private void Update()
+    {  
+
+    }
+
     public void CreateNewProfile()
     {
         ProfileData newData;
-        if (nameInput == null || nameInput.text != string.Empty)
+        if (nameInput == null || nameInput.text == string.Empty)
         {
             newData = new ProfileData("No name");
         }
-        else {
+        else
+        {
             newData = new ProfileData(nameInput.text.ToString());
         }
 
         AddDefaultCollection(ref newData);
         SaveLoad.savedProfiles.Add(newData);
         SaveLoad.SaveGames();
-
         SaveLoad.SetCurrentProfile(newData);
+        DisplayCurrentProfileName();
     }
-    
+
     void AddDefaultCollection(ref ProfileData newData)
     {
         var path = Application.dataPath + "/Resources/Cards/";
@@ -45,8 +64,6 @@ public class ProfileManager : MonoBehaviour {
         FileInfo[] info = dir.GetFiles("*.*");
         foreach (var f in info)
         {
-
-
             var name = f.Name;
             var extension = f.Extension;
             if (extension == ".meta")
@@ -54,33 +71,41 @@ public class ProfileManager : MonoBehaviour {
             var result = name.Replace(extension, "");
 
             var newCard = Resources.Load("Cards/" + result, typeof(Card)) as Card;
+            var newCardData = new CardData(newCard);
             if (!newData.cardCollection.ContainsKey(newCard.cardName))
-                newData.cardCollection.Add(newCard.cardName, newCard);
-
+                newData.cardCollection.Add(newCard.cardName, newCardData);
 
         }
     }
 
     public void ShowProfilesToLoad()
     {
+        SaveLoad.SaveGames();
+        SaveLoad.LoadGames();
         ResetPanel();
         loadBtnPanel.gameObject.SetActive(true);
-        foreach(var data in SaveLoad.savedProfiles)
+        foreach (var data in SaveLoad.savedProfiles)
         {
             var newBtn = Instantiate(loadBtnPrefab, loadBtnPanel).GetComponent<Button>();
             newBtn.transform.localPosition = Vector3.zero;
             newBtn.onClick.AddListener(() => SaveLoad.SetCurrentProfile(data));
             newBtn.onClick.AddListener(() => loadBtnPanel.gameObject.SetActive(false));
+            newBtn.onClick.AddListener(() => DisplayCurrentProfileName());
             newBtn.GetComponentInChildren<TMP_Text>().text = data.profileName;
         }
     }
 
-    void ResetPanel()
+    public void ResetPanel()
     {
-        for (int i = 0; i < loadBtnPanel.childCount; i++)
+        for (int i = 1; i < loadBtnPanel.childCount; i++)
         {
             Destroy(loadBtnPanel.GetChild(i).gameObject);
         }
+    }
+
+    void DisplayCurrentProfileName()
+    {
+        nameDisplay.text = ProfileData.currentProfile != null ? ProfileData.currentProfile.profileName : "No Profile Set";
     }
 
 }
