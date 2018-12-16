@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
 
     virtual protected void Start()
     {
+        playerName = ProfileData.currentProfile != null ? ProfileData.currentProfile.profileName : "No profile";
         graphicRaycaster = GetComponentInChildren<GraphicRaycaster>();
         layout = handObj.GetComponent<HorizontalLayoutGroup>();
         deck.Init();
@@ -189,7 +190,9 @@ public class Player : MonoBehaviour
 
         foreach (var card in creaturesOnField)
         {
-            if(card.currentSlot.id_X == 1)
+            if (card == null)
+                creaturesOnField.Remove(card);
+            else if(card.currentSlot.id_X == 1)
                 card.canAttack = true;
         }
         
@@ -282,7 +285,8 @@ public class Player : MonoBehaviour
                         {
                             if (tempSlot.currentCard != null)
                             {                               
-                                tempSlot.Unlock();                               
+                                tempSlot.Unlock();
+                                tempSlot.currentCard.selectionFX.Play();
                             }
                         }
                     }
@@ -299,7 +303,8 @@ public class Player : MonoBehaviour
                             {
                                 if (tempSlot.currentCard != null)
                                 {
-                                    tempSlot.Unlock();                                   
+                                    tempSlot.Unlock();
+                                    tempSlot.currentCard.selectionFX.Play();
                                 }
                             }
                         }
@@ -316,7 +321,8 @@ public class Player : MonoBehaviour
                             {
                                 if (tempSlot.currentCard != null)
                                 {
-                                    tempSlot.Unlock();                                   
+                                    tempSlot.Unlock();
+                                    tempSlot.currentCard.selectionFX.Play();
                                 }
                             }
                         }
@@ -357,7 +363,12 @@ public class Player : MonoBehaviour
         foreach (var slot in field)
             slot.Unlock();
         foreach (var slot in opponent.field)
+        {
             slot.Unlock();
+            if (slot.currentCard != null)
+                slot.currentCard.selectionFX.Stop();
+        }
+
        
     }
 
@@ -550,9 +561,8 @@ public class Player : MonoBehaviour
         if (TextPanel != null)
         {
             TextPanel.SetActive(true);
-            var displayCard = TextPanel.transform.GetComponentInChildren<CardHolder>();
-            displayCard.Init();
-            displayCard.AssignNewCard(selectedCard.thisCard);
+            var displayCard = TextPanel.transform.GetComponentInChildren<InventoryCard>();
+            displayCard.Init(selectedCard.thisCard);         
         }       
     }
 

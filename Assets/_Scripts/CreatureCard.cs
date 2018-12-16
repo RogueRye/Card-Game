@@ -75,7 +75,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         target.health.color = Color.red;
         health.color = Color.red;
         canAttack = false;
-
+        StartCoroutine(ShowAttackArrow(target.transform.position));
         if (target.GetHealth() <= 0)
         {
             target.Die();        
@@ -91,9 +91,28 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     {
         model.anim.Play("Attack");
         target.TakeDamage(thisCardC.attackValue);
+        StartCoroutine(ShowAttackArrow(target.playerSlot.transform.position));
         canAttack = false;
     }
 
+    IEnumerator ShowAttackArrow(Vector3 destination)
+    {
+ 
+        lineRenderer.SetPosition(1, transform.position + Vector3.up *.1f);
+        lineRenderer.SetPosition(0, transform.position + Vector3.up * .1f);
+
+        while (Vector3.Distance(lineRenderer.GetPosition(1), destination) > 1f)
+        {
+            var newPos = Vector3.Lerp(lineRenderer.GetPosition(1), destination, Time.deltaTime * 2f);
+
+            lineRenderer.SetPosition(1, newPos);
+           
+            yield return null;           
+        }
+   
+        lineRenderer.SetPosition(1, Vector3.up);
+        lineRenderer.SetPosition(0, Vector3.up);
+    }
 
     public override void OnDrag(PointerEventData eventData)
     {
@@ -272,13 +291,15 @@ public class CreatureCard : CardHolder, IPointerUpHandler
     IEnumerator Dying()
     {
         isDying = true;
-        model.anim.SetBool("Dead", true);        
-            
-        if(thisPlayer.currentPhase == TurnPhase.End)
-            currentSlot.Lock();
+        model.anim.SetBool("Dead", true);
 
-       
+        if (thisPlayer.currentPhase == TurnPhase.End)
+            currentSlot.Lock();
+        
         yield return new WaitForSeconds(2);
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, transform.position);
+
         health.text = thisCardC.healthValue.ToString();
         health.color = Color.white;       
         Destroy(model.gameObject);
@@ -286,6 +307,7 @@ public class CreatureCard : CardHolder, IPointerUpHandler
         currentSlot = null;
         thisPlayer.selectedSlot = null;
         isDying = false;
-        
+       
+
     }
 }

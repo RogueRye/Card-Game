@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using System.Linq;
+using System.IO;
 
 [CreateAssetMenu(menuName = "Deck/New Deck")]
 public class Deck : ScriptableObject {
@@ -16,6 +17,12 @@ public class Deck : ScriptableObject {
 
     public void Init()
     {
+        deckList.Clear();
+        foreach(var name in ProfileData.currentProfile.deckCardNames)
+        {
+            LoadCard(name);
+        }
+
         deckSize = deckList.Count;
         foreach(Card card in deckList)
         {
@@ -36,6 +43,27 @@ public class Deck : ScriptableObject {
         foreach (var value in values.OrderBy(x => rnd.Next()))
         {
             mDeck.Push(value);
+        }
+    }
+
+    void LoadCard(string cardName)
+    {
+        var path = Application.dataPath + "/Resources/Cards/";
+        DirectoryInfo dir = new DirectoryInfo(path);
+        // Debug.Log(dir);
+        FileInfo[] info = dir.GetFiles("*.*");
+        foreach (var f in info)
+        {
+            var name = f.Name;
+            var extension = f.Extension;
+            if (extension == ".meta")
+                continue;
+            var result = name.Replace(extension, "");
+            if (result == cardName)
+            {
+                var newCard = Resources.Load("Cards/" + result, typeof(Card)) as Card;
+                deckList.Add(newCard);
+            }
         }
     }
 }

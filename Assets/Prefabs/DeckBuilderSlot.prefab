@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224105229303716808}
   - component: {fileID: 222191757059677088}
   - component: {fileID: 114651912579158948}
+  - component: {fileID: 114951815690652946}
   m_Layer: 5
   m_Name: DeckBuilderSlot
   m_TagString: Untagged
@@ -55,6 +56,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114951815690652946
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365326129963098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63ec61789ca164e438ff48f2bdde9778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222191757059677088
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -68,7 +80,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1365326129963098}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

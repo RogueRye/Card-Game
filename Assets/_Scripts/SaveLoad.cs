@@ -54,8 +54,7 @@ public class ProfileData
         profileName = _name;
     }
 
-    public List<string> deckCardNames = new List<string>();
-    //public List<CardData> cardCollection = new List<CardData>();
+    public List<string> deckCardNames = new List<string>();   
     public Dictionary<string, CardData> cardCollection = new Dictionary<string, CardData>();
 }
 
@@ -63,7 +62,6 @@ public class ProfileData
 public class CardData
 {
     public string cardName;
-
 
     public CardData(Card card)
     {

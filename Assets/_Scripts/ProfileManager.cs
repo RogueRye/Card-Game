@@ -18,23 +18,15 @@ public class ProfileManager : MonoBehaviour
     TMP_Text nameDisplay;
 
 
-    private void Awake()
-    {
-
-    }
-
     private void Start()
     {       
         SaveLoad.LoadGames();
 
+        if (SaveLoad.savedProfiles.Count > 0)
+            SaveLoad.SetCurrentProfile(SaveLoad.savedProfiles[0]);
+
         nameDisplay.text = ProfileData.currentProfile != null ? ProfileData.currentProfile.profileName : "None";
-
-
-    }
-
-    private void Update()
-    {  
-
+        
     }
 
     public void CreateNewProfile()
@@ -92,6 +84,10 @@ public class ProfileManager : MonoBehaviour
             newBtn.onClick.AddListener(() => loadBtnPanel.gameObject.SetActive(false));
             newBtn.onClick.AddListener(() => DisplayCurrentProfileName());
             newBtn.GetComponentInChildren<TMP_Text>().text = data.profileName;
+
+            var deleteBtn = newBtn.transform.GetChild(0).GetComponent<Button>();
+            deleteBtn.onClick.AddListener(() => SaveLoad.DeleteProfile(data));
+            deleteBtn.onClick.AddListener(() => ShowProfilesToLoad());
         }
     }
 

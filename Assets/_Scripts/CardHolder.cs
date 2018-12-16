@@ -22,6 +22,9 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
     [HideInInspector]
     public ParticleSystem selectionFX;
 
+    Color defaultFx;
+    Color targetFx = Color.red;
+
     public void Init(Card mCard, Player mPlayer, Player oPlayer)
     {
         thisCard = mCard;
@@ -35,6 +38,13 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
     {       
         cardGraphics = GetComponent<Image>();
         selectionFX = transform.GetComponentInChildren<ParticleSystem>();
+        if(selectionFX != null)
+            defaultFx = selectionFX.main.startColor.color;
+        if (thisPlayer.hasAI)
+        {
+            var main = selectionFX.main;
+            main.startColor = targetFx;
+        }
     }
 
     public void AssignNewCard(Card newCard)
@@ -86,6 +96,7 @@ public abstract class CardHolder : MonoBehaviour, IDragHandler, IBeginDragHandle
         }
 
     }
+
 
  
     public void StopHover()

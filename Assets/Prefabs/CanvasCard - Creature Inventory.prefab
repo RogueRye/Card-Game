@@ -55,9 +55,8 @@ GameObject:
   - component: {fileID: 224464007809838694}
   - component: {fileID: 222482365021414792}
   - component: {fileID: 114502514454668512}
-  - component: {fileID: 114265029027067832}
   - component: {fileID: 120398369111919034}
-  - component: {fileID: 114982177267005838}
+  - component: {fileID: 114404299498448754}
   m_Layer: 5
   m_Name: CanvasCard - Creature Inventory
   m_TagString: Untagged
@@ -248,70 +247,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114265029027067832
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1250317580061372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_MethodName: Hover
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_MethodName: StopHover
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_MethodName: SelectCard
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!114 &114360380782702618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -425,6 +360,30 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114404299498448754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1250317580061372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19fe39ac85b6754da3a05b5d7477034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisCard: {fileID: 0}
+  imageArt: {fileID: 114030407420553428}
+  nameDisplay: {fileID: 114409849644991658}
+  costDisplay: {fileID: 114693736458375748}
+  description: {fileID: 114529095932449574}
+  attack: {fileID: 114360380782702618}
+  health: {fileID: 114594709072234514}
+  thisCardC: {fileID: 0}
+  onTouch:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114409849644991658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -904,33 +863,6 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &114982177267005838
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1250317580061372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d1495e0a537ac44d8632df68c8c3aea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thisCard: {fileID: 0}
-  thisPlayer: {fileID: 0}
-  otherPlayer: {fileID: 0}
-  imageArt: {fileID: 114030407420553428}
-  nameDisplay: {fileID: 114409849644991658}
-  costDisplay: {fileID: 114693736458375748}
-  description: {fileID: 114529095932449574}
-  inSlot: 0
-  selectionFX: {fileID: 0}
-  canAttack: 0
-  attack: {fileID: 114360380782702618}
-  health: {fileID: 114594709072234514}
-  lineMat: {fileID: 2100000, guid: e79c00cd0132dcb4890de4c932d1f6c5, type: 2}
-  thisCardC: {fileID: 0}
-  currentSlot: {fileID: 0}
-  model: {fileID: 0}
 --- !u!120 &120398369111919034
 LineRenderer:
   m_ObjectHideFlags: 1

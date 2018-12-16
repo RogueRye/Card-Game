@@ -58,12 +58,14 @@ public class npcBrain : MonoBehaviour
     IEnumerator AIPickCard()
     {
         isPickingCard = true;
+        if (controller.hand.Count > 0)
+        {
+            var randSeed = Random.Range(0, controller.hand.Count);
+            controller.SelectCard(controller.hand[randSeed]);
 
-        var randSeed = Random.Range(0, controller.hand.Count);
-        controller.SelectCard(controller.hand[randSeed]);
-        
-        controller.CastCard();
-        cardsPlayed++;
+            controller.CastCard();
+            cardsPlayed++;
+        }
         yield return new WaitForSeconds(.4f);
         isPickingCard = false;
     }
@@ -111,7 +113,7 @@ public class npcBrain : MonoBehaviour
     {
         isPickingCard = true;
 
-        foreach(var potential in controller.creaturesOnField)
+        foreach(var potential in controller.creaturesOnField.ToArray())
         {
             
             if (!potential.canAttack)
