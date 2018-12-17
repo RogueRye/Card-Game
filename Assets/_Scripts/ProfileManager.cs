@@ -99,6 +99,8 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
+
+
     void DisplayCurrentProfileName()
     {
         nameDisplay.text = ProfileData.currentProfile != null ? ProfileData.currentProfile.profileName : "No Profile Set";

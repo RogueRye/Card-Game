@@ -9,19 +9,30 @@ public class CardCollection : MonoBehaviour {
 
     public InventoryCard displayCard;
     public GameObject textPanel;
+
     ScrollRect scrollRect;
     Transform parentForCards;
-   
+
 
     // Use this for initialization
     void Start () {
 
+    
+	}
+
+    private void OnEnable()
+    {
+        ShowCollection();
+    }
+
+    public void ShowCollection()
+    {
         scrollRect = GetComponent<ScrollRect>();
         parentForCards = scrollRect.content;
-        
+
         var path = Application.dataPath + "/Resources/Cards/";
         DirectoryInfo dir = new DirectoryInfo(path);
-       // Debug.Log(dir);
+        // Debug.Log(dir);
         FileInfo[] info = dir.GetFiles("*.*");
         foreach (var f in info)
         {
@@ -43,8 +54,7 @@ public class CardCollection : MonoBehaviour {
             }
 
         }
-	}
-
+    }
 
     /// <summary>
     /// Card text can be hard to read, this will show it in an easier to read panel

@@ -21,9 +21,10 @@ public class InventoryCard : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     Vector3 prevPosition;
 
-    bool isInDeck;
+    public bool isInDeck;
     InventoryCard cloneToPlace;
-    InventorySlot m_Slot;
+    [HideInInspector]
+    public InventorySlot m_Slot;
     public UnityEvent onTouch;
 
     public void CreateCard()
@@ -106,7 +107,7 @@ public class InventoryCard : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                     }
                     else if(slot != null && slot.locked)
                     {
-                        Destroy(cloneToPlace.gameObject);
+                        Destroy(cloneToPlace.gameObject);                       
                     }
                 }
             }
