@@ -103,13 +103,17 @@ public class InventoryCard : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                     if (slot != null && !slot.locked)
                     {
                         cloneToPlace.transform.position = slot.transform.position + (Vector3.forward * -.1f);
-                        cloneToPlace.AddToDeck(slot);                       
+                        cloneToPlace.AddToDeck(slot);
                     }
-                    else if(slot != null && slot.locked)
+                    else if (slot != null && slot.locked)
                     {
-                        Destroy(cloneToPlace.gameObject);                       
+                        Destroy(cloneToPlace.gameObject);
                     }
                 }
+            }
+            else
+            {
+                Destroy(cloneToPlace.gameObject);
             }
         }
         else

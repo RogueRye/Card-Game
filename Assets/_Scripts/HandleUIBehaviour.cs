@@ -9,6 +9,7 @@ public class HandleUIBehaviour : MonoBehaviour
 
     public Slider lifePointSldr;
     public Image[] phaseBtns;
+    public TMP_Text phaseTxt;
     public TMP_Text lifePointTxt;
     public TMP_Text playerNameDisplay;
     [Range(0, 20)]
@@ -88,6 +89,8 @@ public class HandleUIBehaviour : MonoBehaviour
     {
 
         //Debug.Log(m_Player.currentPhase);
+        if (phaseTxt != null)
+            phaseTxt.text = string.Format("Current Phase: {0}", m_Player.currentPhase.ToString());
         EventSystem.current.SetSelectedGameObject(phaseBtns[(int)m_Player.currentPhase].gameObject);
         for (int i = 0; i < phaseBtns.Length; i++)
         {

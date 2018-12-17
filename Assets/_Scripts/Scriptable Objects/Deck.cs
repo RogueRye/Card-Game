@@ -13,14 +13,17 @@ public class Deck : ScriptableObject {
     private List<Card> deckList;
     public int deckSize; 
     public Stack<Card> mDeck = new Stack<Card>();
-
+    public bool overrideWithProfile = true;
 
     public void Init()
     {
-        deckList.Clear();
-        foreach(var name in ProfileData.currentProfile.deckCardNames)
+        if (overrideWithProfile)
         {
-            LoadCard(name);
+            deckList.Clear();
+            foreach (var name in ProfileData.currentProfile.deckCardNames)
+            {
+                LoadCard(name);
+            }
         }
 
         deckSize = deckList.Count;
